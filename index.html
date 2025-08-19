@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fantasy League — Scores & Debts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1221;
+      --panel:#171a2b;
+      --panel2:#1f2340;
+      --ink:#e9ecff;
+      --muted:#a7afd9;
+      --accent:#7c9cff;
+      --good:#11c27f;
+      --bad:#ff6379;
+      --border: #2a2f55;
+      --chip:#2a2f55;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:24px;
+      background: radial-gradient(1200px 800px at 85% -10%, #223 0%, #0f1221 60%) no-repeat, var(--bg);
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    .wrap{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{
+      width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c9cff, #9d7cff);
+      box-shadow:var(--shadow);
+      display:grid;place-items:center;font-weight:800;color:white;letter-spacing:.5px;
+    }
+    h1{font-size:28px;margin:0}
+    .subtitle{color:var(--muted);margin-top:4px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid{grid-template-columns:1.2fr .8fr} }
+    .panel{
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+      border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .panel h2{font-size:18px;margin:0 0 12px 0}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
+    .chip{
+      background:var(--chip); border:1px solid var(--border); color:var(--muted);
+      padding:6px 10px; border-radius:999px; font-size:12px
+    }
+    table{width:100%; border-collapse:separate; border-spacing:0 10px}
+    thead th{
+      text-align:left; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted);
+      padding:8px 12px; cursor:pointer; user-select:none;
+    }
+    tbody td{
+      background:rgba(255,255,255,.02); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      padding:12px; vertical-align:middle;
+    }
+    tbody tr td:first-child{
+      border-left:1px solid var(--border); border-top-left-radius:10px; border-bottom-left-radius:10px;
+      font-weight:600; color:#fff;
+    }
+    tbody tr td:last-child{
+      border-right:1px solid var(--border); border-top-right-radius:10px; border-bottom-right-radius:10px;
+    }
+    .money{font-variant-numeric:tabular-nums}
+    .right{text-align:right}
+    .good{color:var(--good); font-weight:700}
+    .bad{color:var(--bad); font-weight:700}
+    .muted{color:var(--muted)}
+    .totals{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:8px; margin-bottom:8px;
+    }
+    .kpi{
+      background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:12px; padding:14px;
+    }
+    .kpi .label{font-size:12px; color:var(--muted)}
+    .kpi .value{font-size:20px; font-weight:700; margin-top:6px}
+    .small{font-size:12px}
+    .footer-note{margin-top:10px;color:var(--muted);font-size:12px}
+    .pill{
+      display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; background:#28305e; color:#b8c2ff; border:1px solid var(--border)
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">FL</div>
+    <div>
+      <h1>Fantasy League — Scores & Debts</h1>
+      <div class="subtitle">Automatically computes totals, debts, and balances from weekly scores.</div>
+      <div class="chips">
+        <span class="chip">Click headers to sort</span>
+        <span class="chip">Amounts in EUR</span>
+        <span class="chip" id="cpp-chip"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- Summary -->
+    <section class="panel">
+      <h2>Summary</h2>
+      <div class="totals" id="league-kpis"></div>
+      <table id="summary-table">
+        <thead>
+          <tr>
+            <th data-key="player">Player</th>
+            <th class="right" data-key="totalScore">Total Score</th>
+            <th class="right" data-key="paid">Total Paid</th>
+            <th class="right" data-key="owed">Total Owed</th>
+            <th class="right" data-key="balance">Balance</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="footer-note">Balance = Owed − Paid. Owed is the sum of per-GW debts where each week’s debt is rounded to cents.</div>
+    </section>
+
+    <!-- Per-Week Scoreboards -->
+    <section class="panel">
+      <h2 style="margin-bottom: 12px;">
+		Per-Gameweek Scoreboards
+		<select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
+		<option value="">All</option>
+		</select>
+	  </h2>
+      <div id="weeks"></div>
+      <div class="footer-note">Top score each week pays nothing; everyone else owes <span class="pill">(top − score) × cost_per_point</span>.</div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // ========= EDIT YOUR DATA BELOW (mirrors your Python script) =========
+
+  const PLAYERS = ["Diogo Lopes", "Bernardo Saraiva", "Rui Bimba", "Miguel Antunes", "Diogo Amarelo", "Joao Leitao"];
+
+  // One entry per GW. Keys can be "GW1", "GW2", etc. Scores must be per-player.
+  const MATCHWEEKS = {
+    "GW1": {"Diogo Lopes": 71, "Bernardo Saraiva": 50, "Rui Bimba": 50, "Miguel Antunes": 48, "Diogo Amarelo": 46, "Joao Leitao": 39},
+    //"GW2": {"Diogo Lopes": 20, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
+
+    // "GW2": {...}, "GW3": {...}
+  };
+
+  // Cost per point (EUR)
+  const COST_PER_POINT = 0.05;
+
+  // Manual payments (EUR) made so far by each player (optional)
+  const MANUAL_PAYMENTS = {
+    // "Diogo Lopes": 1.00,
+  };
+
+  // ========= END OF DATA SECTION =========
+
+  // Helpers
+  const euro = new Intl.NumberFormat('pt-PT', {style:'currency', currency:'EUR'});
+  const round2 = x => Math.round(x * 100) / 100;
+
+  function compute() {
+    // Precompute per-week tops
+    const weekTops = {};
+    for (const [gw, scores] of Object.entries(MATCHWEEKS)) {
+      const vals = Object.values(scores ?? {});
+      weekTops[gw] = vals.length ? Math.max(...vals) : 0;
+    }
+
+    // Per-player aggregates
+    const rows = PLAYERS.map(p => {
+      let totalScore = 0;
+      let totalOwed = 0;
+
+      for (const [gw, scores] of Object.entries(MATCHWEEKS)) {
+        const s = (scores && Number.isFinite(scores[p])) ? scores[p] : 0;
+        totalScore += s;
+
+        // Debt per week = round( (top - score) * COST_PER_POINT, 2 )
+        const diff = Math.max(0, (weekTops[gw] ?? 0) - s);
+        const weeklyDebt = round2(diff * COST_PER_POINT);
+        totalOwed = round2(totalOwed + weeklyDebt);
+      }
+
+      const paid = round2(MANUAL_PAYMENTS[p] ?? 0);
+      const balance = round2(totalOwed - paid);
+
+      return { player: p, totalScore, owed: totalOwed, paid, balance };
+    });
+
+    // League KPIs
+    const totalPaidAll = rows.reduce((a,r)=>a+r.paid,0);
+    const totalOwedAll = rows.reduce((a,r)=>a+r.owed,0);
+    const totalBalanceAll = round2(totalOwedAll - totalPaidAll);
+
+    return { rows, weekTops, totals: {
+      paid: round2(totalPaidAll),
+      owed: round2(totalOwedAll),
+      balance: totalBalanceAll,
+      gws: Object.keys(MATCHWEEKS).length
+    }};
+  }
+
+  function renderKPIs(kpis){
+    const el = document.getElementById('league-kpis');
+    el.innerHTML = `
+      <div class="kpi">
+        <div class="label">Gameweeks</div>
+        <div class="value">${kpis.gws}</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Total Owed (all players)</div>
+        <div class="value money">${euro.format(kpis.owed)}</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Total Paid (all players)</div>
+        <div class="value money">${euro.format(kpis.paid)}</div>
+      </div>
+    `;
+  }
+
+  function renderSummary(rows){
+    const tbody = document.querySelector('#summary-table tbody');
+    tbody.innerHTML = "";
+    rows.forEach(r=>{
+      const balClass = r.balance <= 0 ? 'good' : 'bad'; // <= 0 means settled or ahead
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.player}</td>
+        <td class="right">${r.totalScore}</td>
+        <td class="right money">${euro.format(r.paid)}</td>
+        <td class="right money">${euro.format(r.owed)}</td>
+        <td class="right money ${balClass}">${euro.format(r.balance)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+function renderWeeks(weekTops){
+  const wrapper = document.getElementById('weeks');
+  wrapper.innerHTML = "";
+
+  const gwSelector = document.getElementById('gw-selector');
+  const selectedGW = gwSelector?.value || "";
+
+  const weeks = Object.keys(MATCHWEEKS);
+  if (weeks.length === 0) {
+    wrapper.innerHTML = `<div class="muted small">No gameweeks yet. Add them in the data section of the file.</div>`;
+    return;
+  }
+
+  const toRender = selectedGW ? [selectedGW] : weeks;
+
+  toRender.forEach(gw => {
+    const scores = MATCHWEEKS[gw] || {};
+    const top = weekTops[gw] ?? 0;
+
+    const rows = PLAYERS.map(p => ({
+      player: p,
+      score: Number.isFinite(scores[p]) ? scores[p] : 0
+    })).sort((a, b) => b.score - a.score);
+
+    const table = document.createElement('table');
+table.innerHTML = `
+  <thead>
+    <tr>
+      <th>${gw}</th>
+      <th class="right">Score</th>
+      <th class="right">Diff to Top</th>
+      <th class="right">Weekly Debt</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${rows.map(r => {
+      const diff = Math.max(0, top - r.score);
+      const debt = round2(diff * COST_PER_POINT);
+      const isTop = r.score === top;
+      const badge = isTop ? ` <span class="pill">Top</span>` : "";
+      return `
+        <tr>
+          <td>${r.player}${badge}</td>
+          <td class="right">${r.score}</td>
+          <td class="right">${isTop ? '—' : diff}</td>
+          <td class="right money ${isTop ? 'good' : ''}">${isTop ? '—' : euro.format(debt)}</td>
+        </tr>
+      `;
+    }).join("")}
+  </tbody>
+`;
+
+
+    const panel = document.createElement('div');
+    panel.className = 'kpi';
+    panel.style.padding = 0;
+    panel.style.overflow = 'hidden';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '12px 14px';
+    header.style.borderBottom = '1px solid var(--border)';
+    header.innerHTML = `<div><strong>${gw}</strong> <span class="muted small">Top: ${top}</span></div>
+                        <div class="pill">Cost/pt: ${euro.format(COST_PER_POINT)}</div>`;
+    
+    const inner = document.createElement('div');
+    inner.style.padding = '6px 10px 12px';
+    inner.appendChild(table);
+
+    panel.appendChild(header);
+    panel.appendChild(inner);
+    wrapper.appendChild(panel);
+  });
+}
+
+
+
+  // Simple table sort on click (client-side)
+  function enableSorting(dataRows){
+    const headers = document.querySelectorAll('#summary-table thead th');
+    let current = {key:'balance', dir:'asc'};
+	
+
+
+    function renderSorted(){
+      const rows = [...dataRows];
+      rows.sort((a,b)=>{
+        const k = current.key;
+        const av = a[k], bv = b[k];
+        if (typeof av === 'string') return current.dir==='asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+        return current.dir==='asc' ? av - bv : bv - av;
+      });
+      renderSummary(rows);
+    }
+
+    headers.forEach(th=>{
+      th.addEventListener('click', ()=>{
+        const key = th.getAttribute('data-key');
+        if(!key) return;
+        current.dir = (current.key === key && current.dir === 'asc') ? 'desc' : 'asc';
+        current.key = key;
+        renderSorted();
+      });
+    });
+
+    // Initial sort by Balance (descending: who owes most at top)
+    current = {key:'totalScore', dir:'desc'};
+    renderSorted();
+  }
+
+  // Boot
+(function init(){
+  document.getElementById('cpp-chip').textContent = `Cost per point: ${euro.format(COST_PER_POINT)}`;
+  const {rows, weekTops, totals} = compute();
+  renderKPIs(totals);
+  renderWeeks(weekTops);
+  enableSorting(rows);
+
+  const gwSelector = document.getElementById('gw-selector');
+  if (gwSelector) {
+    const gws = Object.keys(MATCHWEEKS);
+    gws.forEach(gw => {
+      const opt = document.createElement('option');
+      opt.value = gw;
+      opt.textContent = gw;
+      gwSelector.appendChild(opt);
+    });
+
+    gwSelector.addEventListener('change', () => renderWeeks(weekTops));
+  }
+})();
+
+</script>
+</body>
+</html>
