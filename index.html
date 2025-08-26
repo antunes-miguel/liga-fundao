@@ -86,6 +86,13 @@
     .pill{
       display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; background:#28305e; color:#b8c2ff; border:1px solid var(--border)
     }
+    .rank-wrap{width:100%;height:auto;aspect-ratio: 5 / 2; background:rgba(255,255,255,.02); border:1px solid var(--border); border-radius:12px}
+    .rank-axis{stroke:#3a3f6b; stroke-width:1}
+    .rank-grid{stroke:#2a2f55; stroke-width:.8; opacity:.65}
+    .rank-label{fill:var(--muted); font-size:14px}
+    .rank-badge{font-size:14px; font-weight:600; fill:#fff; dominant-baseline:middle; text-anchor:middle; pointer-events:none}
+
+
   </style>
 </head>
 <body>
@@ -135,6 +142,15 @@
       <div id="weeks"></div>
       <div class="footer-note">Top score each week pays nothing; everyone else owes <span class="pill">(top − score) × cost_per_point</span>. Transfers are ignored when calculating debts.</div>
     </section>
+
+    <section class="panel" style="grid-column:1 / -1;">
+        <h2>Rank Evolution</h2>
+        <div id="rank-chart-wrap" class="rank-wrap">
+        <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+        <div class="footer-note small">Ranks per GW use cumulative (score − transfers). Tie-breakers: fewer cumulative transfers, then name. Equal after that → markers offset side-by-side.</div>
+    </section>
+
   </div>
 </div>
 
@@ -175,6 +191,20 @@
     const t = TRANSFERS?.[gw]?.[p];
     return Number.isFinite(t) ? t : 0;
   }
+
+// --- Helpers for rank chart ---
+const getInitials = name =>
+  name.split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
+
+function sortGWsNumeric(keys){
+  return keys.slice().sort((a,b)=>parseInt(a.replace(/\D/g,'')) - parseInt(b.replace(/\D/g,'')));
+}
+
+function distinctColors(n){
+  // evenly spaced hues; no custom colors set elsewhere
+  return Array.from({length:n}, (_,i)=>`hsl(${Math.round((360/n)*i)}, 70%, 60%)`);
+}
+
 
   function compute() {
     // Precompute per-week tops from ORIGINAL scores (transfers ignored)
@@ -369,6 +399,191 @@
     renderSorted();
   }
 
+function buildCumulativeSeries(){
+  const gws = sortGWsNumeric(Object.keys(MATCHWEEKS));
+  const series = {}; // per player: {color, points:[...], transfers:[...], ranks:[...]}
+  const colors = distinctColors(PLAYERS.length);
+  PLAYERS.forEach((p,i)=>{ series[p] = { color: colors[i], points:[], transfers:[], ranks:[] }; });
+
+  let cumPts = Object.fromEntries(PLAYERS.map(p=>[p,0]));
+  let cumTrf = Object.fromEntries(PLAYERS.map(p=>[p,0]));
+
+  gws.forEach(gw=>{
+    PLAYERS.forEach(p=>{
+      const s = Number.isFinite(MATCHWEEKS[gw]?.[p]) ? MATCHWEEKS[gw][p] : 0;
+      const t = Number.isFinite(TRANSFERS?.[gw]?.[p]) ? TRANSFERS[gw][p] : 0;
+      cumPts[p] += (s - t);
+      cumTrf[p] += t;
+      series[p].points.push(cumPts[p]);
+      series[p].transfers.push(cumTrf[p]);
+    });
+
+    // ranks for this GW using tie-breakers
+    const order = PLAYERS.slice().sort((a,b)=>{
+      if (cumPts[b] !== cumPts[a]) return cumPts[b] - cumPts[a];              // more points better
+      if (cumTrf[a] !== cumTrf[b]) return cumTrf[a] - cumTrf[b];              // fewer transfers better
+      return a.localeCompare(b);                                              // stable
+    });
+
+    const rankMap = Object.fromEntries(order.map((p,idx)=>[p, idx+1])); // 1-based rank
+    PLAYERS.forEach(p=> series[p].ranks.push(rankMap[p]));
+  });
+
+  return { gws: sortGWsNumeric(Object.keys(MATCHWEEKS)), series };
+}
+
+function renderRankChart(){
+  const svg = document.getElementById('rank-chart');
+  if(!svg) return;
+  const { gws, series } = buildCumulativeSeries();
+  const W = 1000, H = 600;   // viewBox size
+  const rMarker = 18; // circle radius
+  const xPad = rMarker + 8;
+  const yPad = rMarker + 6;
+  const margin = { left: 72, right: 28, top: 16, bottom: 64 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  // Clear
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+  // Root group
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('transform', `translate(${margin.left},${margin.top})`);
+  svg.appendChild(g);
+
+  const nG = gws.length;
+  if (nG === 0) {
+    const txt = document.createElementNS(svg.namespaceURI,'text');
+    txt.textContent = 'Add gameweeks to see rank evolution';
+    txt.setAttribute('x', W/2); txt.setAttribute('y', H/2);
+    txt.setAttribute('text-anchor','middle'); txt.setAttribute('fill','var(--muted)');
+    svg.appendChild(txt);
+    return;
+  }
+
+  // Scales
+ 
+  const maxRank = PLAYERS.length;
+  const xFor = i => {
+  if (nG <= 1) return innerW / 2; // single-GW fallback
+  const span = innerW - 2 * xPad;
+  return xPad + i * (span / (nG - 1));
+};
+const yFor = r => {
+  if (maxRank <= 1) return innerH / 2;
+  const span = innerH - 2 * yPad;
+  return yPad + (r - 1) * (span / (maxRank - 1));
+};
+
+  // Grid + axes
+  // horizontal lines for ranks
+  for(let r=1; r<=maxRank; r++){
+    const y = yFor(r);
+    const line = document.createElementNS(svg.namespaceURI,'line');
+    line.setAttribute('x1', 0); line.setAttribute('y1', y);
+    line.setAttribute('x2', innerW); line.setAttribute('y2', y);
+    line.setAttribute('class','rank-grid');
+    g.appendChild(line);
+
+    const lab = document.createElementNS(svg.namespaceURI,'text');
+    lab.textContent = `#${r}`;
+    lab.setAttribute('x', -8); lab.setAttribute('y', y+4);
+    lab.setAttribute('class','rank-label'); lab.setAttribute('text-anchor','end');
+    g.appendChild(lab);
+  }
+
+    // x labels (GWs)
+    // x labels (GWs)
+    gws.forEach((gw,i)=>{
+    const x = xFor(i);
+
+    const tick = document.createElementNS(svg.namespaceURI,'line');
+    tick.setAttribute('x1', x);
+    tick.setAttribute('y1', innerH);
+    tick.setAttribute('x2', x);
+    tick.setAttribute('y2', innerH + 6);
+    tick.setAttribute('class','rank-axis');
+    g.appendChild(tick);
+
+    const lab = document.createElementNS(svg.namespaceURI,'text');
+    lab.textContent = gw;
+    lab.setAttribute('x', x);
+    lab.setAttribute('y', innerH + 22);   // was +20
+    lab.setAttribute('class','rank-label');
+    lab.setAttribute('text-anchor','middle');
+    g.appendChild(lab);
+    });
+
+
+  // Build positions and detect same-spot overlaps to offset markers
+  const positionsAt = Array.from({length:nG}, ()=>({})); // [{ 'rank@i': [players...] }, ...]
+  PLAYERS.forEach(p=>{
+    const ranks = series[p].ranks;
+    ranks.forEach((r,i)=>{
+      const key = `${r}`;
+      if(!positionsAt[i][key]) positionsAt[i][key] = [];
+      positionsAt[i][key].push(p);
+    });
+  });
+
+  // Draw lines first (behind markers)
+  PLAYERS.forEach(p=>{
+    const ranks = series[p].ranks;
+    const color = series[p].color;
+    const path = document.createElementNS(svg.namespaceURI,'path');
+    let d = '';
+    ranks.forEach((r,i)=>{
+      const x = xFor(i), y = yFor(r);
+      d += (i===0 ? `M ${x},${y}` : ` L ${x},${y}`);
+    });
+    path.setAttribute('d', d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke', color);
+    path.setAttribute('stroke-width','2.5');
+    g.appendChild(path);
+  });
+
+  // Markers with initials (offset if multiple at same spot)
+
+  gws.forEach((gw,i)=>{
+    const buckets = positionsAt[i]; // { 'rank': [players...] }
+    Object.entries(buckets).forEach(([rankKey, playersHere])=>{
+      const r = parseInt(rankKey,10);
+      const y = yFor(r);
+      const count = playersHere.length;
+      const spread = Math.min(18, 10 + (count-1)*6); // cap overall spread
+      const offsets = playersHere.map((_,idx)=>{
+        if (count === 1) return 0;
+        const start = -spread/2, step = spread/(count-1 || 1);
+        return start + idx*step;
+      });
+
+      playersHere.forEach((p,idx)=>{
+        const x = xFor(i) + offsets[idx];
+        const color = series[p].color;
+
+        const circ = document.createElementNS(svg.namespaceURI,'circle');
+        circ.setAttribute('cx', x); circ.setAttribute('cy', y);
+        circ.setAttribute('r', rMarker);
+        circ.setAttribute('fill', color);
+        circ.setAttribute('stroke', '#0b0e1d');
+        circ.setAttribute('stroke-width', '3');
+        g.appendChild(circ);
+
+        const text = document.createElementNS(svg.namespaceURI,'text');
+        text.textContent = getInitials(p);
+        text.setAttribute('x', x); text.setAttribute('y', y+1);
+        text.setAttribute('class','rank-badge');
+        g.appendChild(text);
+      });
+    });
+  });
+
+
+}
+
+
   // Boot
 (function init(){
   document.getElementById('cpp-chip').textContent = `Cost per point: ${euro.format(COST_PER_POINT)}`;
@@ -400,6 +615,7 @@
 
   // render after the selector is set so the latest GW shows by default
   renderWeeks(weekTops);
+  renderRankChart();
 })();
 
 </script>
