@@ -112,6 +112,21 @@
 #weeks table tbody td:not(:first-child),
 #weeks table thead th:not(:first-child) {
   text-align: center;
+
+  table {
+  width: 100%;
+  table-layout: fixed;   /* distribute columns evenly */
+  word-wrap: break-word; /* wrap long content */
+  font-size: 0.9em;      /* optional: slightly smaller text */
+}
+
+td, th {
+  text-align: center; /* center by default */
+}
+tbody td:first-child, thead th:first-child {
+  text-align: left;   /* keep player names aligned left */
+}
+
 }
   </style>
 </head>
