@@ -107,63 +107,68 @@
   background: var(--accent) !important;
   color: #fff !important;
 }
-
+#summary-table tbody td:not(:first-child),
+#summary-table thead th:not(:first-child),
+#weeks table tbody td:not(:first-child),
+#weeks table thead th:not(:first-child) {
+  text-align: center;
+}
   </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <div class="logo">LF</div>
-    <div>
-      <h1>LIGA FUNDÃO</h1>
-      <div class="chips">
-        <span class="chip" id="cpp-chip"></span>
-      </div>
+<header>
+  <img src="assets/LF.png" alt="Liga Fundão crest" style="width:80px;height:auto;margin-right:12px;">
+  <div>
+    <h1>LIGA FUNDÃO</h1>
+    <div class="chips">
+      <span class="chip" id="cpp-chip"></span>
     </div>
-  </header>
+  </div>
+</header>
 
   <div class="grid">
     <!-- Summary -->
     <section class="panel">
-      <h2>Overall</h2>
+      <h2>Global</h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
           <tr>
-            <th data-key="player">Player</th>
-            <th class="right" data-key="totalScore">Total Score</th>
-            <th class="right" data-key="totalTransfers">Total Transfers (−)</th>
-            <th class="right" data-key="paid">Total Paid</th>
-            <th class="right" data-key="owed">Total Owed</th>
-            <th class="right" data-key="balance">Balance</th>
+            <th data-key="player">Jogador</th>
+            <th class="right" data-key="totalScore">Pontos*</th>
+            <th class="right" data-key="paid">Pago</th>
+            <th class="right" data-key="owed">Dívida</th>
+            <th class="right" data-key="balance">Saldo</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
       <div class="footer-note">
-        Balance = Owed − Paid. Owed is the sum of per-GW debts where each week’s debt is rounded to cents.
-        Transfers reduce Total Score only and never affect debts.
+        *Pontos nesta tabela já incluem a penalização das transferências.
+          Saldo = Dívida − Pago. 
+          A dívida é calculada com a diferença de pontos para o melhor classificado da jornada e penalizações das transferências.
       </div>
     </section>
 
     <!-- Per-Week Scoreboards -->
     <section class="panel">
       <h2 style="margin-bottom: 12px;">
-        Per-Gameweek Scoreboards
+        Tabelas por Jornada
         <select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
-          <option value="">All</option>
+          <option value="">Todas</option>
         </select>
       </h2>
       <div id="weeks"></div>
-      <div class="footer-note">Top score each week pays nothing; everyone else owes <span class="pill">(top − score) × cost_per_point</span>. Transfers are ignored when calculating debts.</div>
+      <div class="footer-note"> A melhor pontuação não paga nada; Todos os outros devem. <span class="pill">(Melhor Pontuação − (Pontuação − Transferências)) × Custo por Ponto</span>.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;">
-        <h2>Rank Evolution</h2>
+        <h2>Evolução das Classificações</h2>
         <div id="rank-chart-wrap" class="rank-wrap">
         <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
     </div>
-        <div class="footer-note small">Tie-breakers: fewer transfers, then name.
+        <div class="footer-note small">Desempates: menor número de transferências, ordem alfabética.
 
   </div>
 </div>
@@ -219,66 +224,72 @@ function distinctColors(n){
   return Array.from({length:n}, (_,i)=>`hsl(${Math.round((360/n)*i)}, 70%, 60%)`);
 }
 
+function compute() {
+  // Precompute per-week top NET score (score - transfers)
+  const weekTops = {};
+  for (const [gw, scores] of Object.entries(MATCHWEEKS)) {
+    let top = -Infinity;
+    for (const p of PLAYERS) {
+      const s = (scores && Number.isFinite(scores[p])) ? scores[p] : 0;
+      const t = safeTransfer(gw, p);
+      const net = s - t;
+      if (net > top) top = net;
+    }
+    weekTops[gw] = top === -Infinity ? 0 : top;
+  }
 
-  function compute() {
-    // Precompute per-week tops from ORIGINAL scores (transfers ignored)
-    const weekTops = {};
+  // Per-player aggregates
+  const rows = PLAYERS.map(p => {
+    let totalScoreNet = 0;
+    let totalTransfers = 0;
+    let totalOwed = 0;
+
     for (const [gw, scores] of Object.entries(MATCHWEEKS)) {
-      const vals = Object.values(scores ?? {});
-      weekTops[gw] = vals.length ? Math.max(...vals) : 0;
+      const s = (scores && Number.isFinite(scores[p])) ? scores[p] : 0;
+      const t = safeTransfer(gw, p);
+      const net = s - t;
+
+      totalScoreNet += net;
+      totalTransfers += t;
+
+      // Debt per week now uses NET scores
+      const diff = Math.max(0, (weekTops[gw] ?? 0) - net);
+      const weeklyDebt = round2(diff * COST_PER_POINT);
+      totalOwed = round2(totalOwed + weeklyDebt);
     }
 
-    // Per-player aggregates
-    const rows = PLAYERS.map(p => {
-      let totalScoreNet = 0;
-      let totalTransfers = 0;
-      let totalOwed = 0;
+    const paid = round2(MANUAL_PAYMENTS[p] ?? 0);
+    const balance = round2(totalOwed - paid);
 
-      for (const [gw, scores] of Object.entries(MATCHWEEKS)) {
-        const s = (scores && Number.isFinite(scores[p])) ? scores[p] : 0;
-        const t = safeTransfer(gw, p);
+    return { player: p, totalScore: totalScoreNet, totalTransfers, owed: totalOwed, paid, balance };
+  });
 
-        totalScoreNet += (s - t);
-        totalTransfers += t;
+  // League KPIs
+  const totalPaidAll = rows.reduce((a,r)=>a+r.paid,0);
+  const totalOwedAll = rows.reduce((a,r)=>a+r.owed,0);
+  const totalBalanceAll = round2(totalOwedAll - totalPaidAll);
 
-        // Debt per week uses ORIGINAL score only
-        const diff = Math.max(0, (weekTops[gw] ?? 0) - s);
-        const weeklyDebt = round2(diff * COST_PER_POINT);
-        totalOwed = round2(totalOwed + weeklyDebt);
-      }
-
-      const paid = round2(MANUAL_PAYMENTS[p] ?? 0);
-      const balance = round2(totalOwed - paid);
-
-      return { player: p, totalScore: totalScoreNet, totalTransfers, owed: totalOwed, paid, balance };
-    });
-
-    // League KPIs
-    const totalPaidAll = rows.reduce((a,r)=>a+r.paid,0);
-    const totalOwedAll = rows.reduce((a,r)=>a+r.owed,0);
-    const totalBalanceAll = round2(totalOwedAll - totalPaidAll);
-
-    return { rows, weekTops, totals: {
-      paid: round2(totalPaidAll),
-      owed: round2(totalOwedAll),
-      balance: totalBalanceAll,
-      gws: Object.keys(MATCHWEEKS).length
-    }};
-  }
+  return { rows, weekTops, totals: {
+    paid: round2(totalPaidAll),
+    owed: round2(totalOwedAll),
+    balance: totalBalanceAll,
+    gws: Object.keys(MATCHWEEKS).length
+  }};
+}
 
   function renderKPIs(kpis){
     const el = document.getElementById('league-kpis');
     el.innerHTML = `
       <div class="kpi">
-        <div class="label">Gameweeks</div>
+        <div class="label">Jornadas</div>
         <div class="value">${kpis.gws}</div>
       </div>
       <div class="kpi">
-        <div class="label">Total Owed (all players)</div>
+        <div class="label">Dívida Total</div>
         <div class="value money">${euro.format(kpis.owed)}</div>
       </div>
       <div class="kpi">
-        <div class="label">Total Paid (all players)</div>
+        <div class="label">Total Pago</div>
         <div class="value money">${euro.format(kpis.paid)}</div>
       </div>
     `;
@@ -293,7 +304,6 @@ function distinctColors(n){
       tr.innerHTML = `
         <td>${r.player}</td>
         <td class="right">${r.totalScore}</td>
-        <td class="right">${r.totalTransfers > 0 ? `-${r.totalTransfers}` : ''}</td>
         <td class="right money">${euro.format(r.paid)}</td>
         <td class="right money">${euro.format(r.owed)}</td>
         <td class="right money ${balClass}">${euro.format(r.balance)}</td>
@@ -301,86 +311,88 @@ function distinctColors(n){
       tbody.appendChild(tr);
     });
   }
+function renderWeeks(weekTops){
+  const wrapper = document.getElementById('weeks');
+  wrapper.innerHTML = "";
 
-  function renderWeeks(weekTops){
-    const wrapper = document.getElementById('weeks');
-    wrapper.innerHTML = "";
+  const gwSelector = document.getElementById('gw-selector');
+  const selectedGW = gwSelector?.value || "";
 
-    const gwSelector = document.getElementById('gw-selector');
-    const selectedGW = gwSelector?.value || "";
-
-    const weeks = Object.keys(MATCHWEEKS);
-    if (weeks.length === 0) {
-      wrapper.innerHTML = `<div class="muted small">No gameweeks yet. Add them in the data section of the file.</div>`;
-      return;
-    }
-
-    const toRender = selectedGW ? [selectedGW] : weeks;
-
-    toRender.forEach(gw => {
-      const scores = MATCHWEEKS[gw] || {};
-      const top = weekTops[gw] ?? 0;
-
-      const rows = PLAYERS.map(p => ({
-        player: p,
-        score: Number.isFinite(scores[p]) ? scores[p] : 0,
-        transfers: safeTransfer(gw, p)
-      })).sort((a, b) => b.score - a.score); // sort by ORIGINAL score
-
-      const table = document.createElement('table');
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>${gw}</th>
-            <th class="right">Score</th>
-            <th class="right">Transfers (−)</th>
-            <th class="right">Diff to Top</th>
-            <th class="right">Weekly Debt</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows.map(r => {
-            const diff = Math.max(0, top - r.score);               // original score only
-            const debt = round2(diff * COST_PER_POINT);            // original score only
-            const isTop = r.score === top;
-            const badge = isTop ? ` <span class="pill">Top</span>` : "";
-            const transfersCell = r.transfers > 0 ? `-${r.transfers}` : '0';
-            return `
-              <tr>
-                <td>${r.player}${badge}</td>
-                <td class="right">${r.score}</td>
-                <td class="right">${transfersCell}</td>
-                <td class="right">${isTop ? '—' : diff}</td>
-                <td class="right money ${isTop ? 'good' : ''}">${isTop ? '—' : euro.format(debt)}</td>
-              </tr>
-            `;
-          }).join("")}
-        </tbody>
-      `;
-
-      const panel = document.createElement('div');
-      panel.className = 'kpi';
-      panel.style.padding = 0;
-      panel.style.overflow = 'hidden';
-
-      const header = document.createElement('div');
-      header.style.display = 'flex';
-      header.style.justifyContent = 'space-between';
-      header.style.alignItems = 'center';
-      header.style.padding = '12px 14px';
-      header.style.borderBottom = '1px solid var(--border)';
-      header.innerHTML = `<div><strong>${gw}</strong> <span class="muted small">Top: ${top}</span></div>
-                          <div class="pill">Cost/pt: ${euro.format(COST_PER_POINT)}</div>`;
-      
-      const inner = document.createElement('div');
-      inner.style.padding = '6px 10px 12px';
-      inner.appendChild(table);
-
-      panel.appendChild(header);
-      panel.appendChild(inner);
-      wrapper.appendChild(panel);
-    });
+  const weeks = Object.keys(MATCHWEEKS);
+  if (weeks.length === 0) {
+    wrapper.innerHTML = `<div class="muted small">No gameweeks yet. Add them in the data section of the file.</div>`;
+    return;
   }
+
+  const toRender = selectedGW ? [selectedGW] : weeks;
+
+  toRender.forEach(gw => {
+    const scores = MATCHWEEKS[gw] || {};
+    const topNet = weekTops[gw] ?? 0;
+
+    const rows = PLAYERS.map(p => {
+      const score = Number.isFinite(scores[p]) ? scores[p] : 0;
+      const transfers = safeTransfer(gw, p);
+      const net = score - transfers;
+      return { player: p, score, transfers, net };
+    })
+    // Show by original score (unchanged), but debts & top use NET
+    .sort((a, b) => b.score - a.score);
+
+    const table = document.createElement('table');
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>${gw}</th>
+          <th class="right">Pontos</th>
+          <th class="right">Transferências</th>
+          <th class="right">Diferença</th>
+          <th class="right">Dívida</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => {
+          const diff = -Math.max(0, topNet - r.net);      // now NET
+          const debt = -round2(diff * COST_PER_POINT);    // now NET
+          const isTop = r.net === topNet;                // top by NET
+          const badge = isTop ? ` <span class="pill">Top</span>` : "";
+          const transfersCell = r.transfers > 0 ? `-${r.transfers}` : '0';
+          return `
+            <tr>
+              <td>${r.player}${badge}</td>
+              <td class="right">${r.score}</td>
+              <td class="right">${transfersCell}</td>
+              <td class="right">${isTop ? '—' : diff}</td>
+              <td class="right money ${isTop ? 'good' : ''}">${isTop ? '—' : euro.format(debt)}</td>
+            </tr>
+          `;
+        }).join("")}
+      </tbody>
+    `;
+
+    const panel = document.createElement('div');
+    panel.className = 'kpi';
+    panel.style.padding = 0;
+    panel.style.overflow = 'hidden';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '12px 14px';
+    header.style.borderBottom = '1px solid var(--border)';
+    header.innerHTML = `<div><strong>${gw}</strong> <span class="muted small">Melhor Pontuação: ${topNet}</span></div>
+                        <div class="pill">Custo/pt: ${euro.format(COST_PER_POINT)}</div>`;
+    
+    const inner = document.createElement('div');
+    inner.style.padding = '6px 10px 12px';
+    inner.appendChild(table);
+
+    panel.appendChild(header);
+    panel.appendChild(inner);
+    wrapper.appendChild(panel);
+  });
+}
 
   // Simple table sort on click (client-side)
   function enableSorting(dataRows){
@@ -600,7 +612,7 @@ const yFor = r => {
 
   // Boot
 (function init(){
-  document.getElementById('cpp-chip').textContent = `Cost per point: ${euro.format(COST_PER_POINT)}`;
+  document.getElementById('cpp-chip').textContent = `Custo por ponto: ${euro.format(COST_PER_POINT)}`;
   const {rows, weekTops, totals} = compute();
   renderKPIs(totals);
   enableSorting(rows);
@@ -613,7 +625,7 @@ const yFor = r => {
     );
 
     // (re)populate options
-    gwSelector.innerHTML = '<option value="">All</option>';
+    gwSelector.innerHTML = '<option value="">Todas</option>';
     gws.forEach(gw => {
       const opt = document.createElement('option');
       opt.value = gw;
