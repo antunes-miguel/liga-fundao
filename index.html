@@ -114,6 +114,53 @@
   text-align: center;
 }
 
+/* --- Responsive fixes --- */
+
+/* Prevent any horizontal overflow on small screens */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* Let the header wrap nicely on phones */
+header { flex-wrap: wrap; }
+header img { width: clamp(40px, 14vw, 80px); height: auto; }
+
+/* Make the rank chart fluid */
+#rank-chart { width: 100%; height: auto; display: block; }
+
+/* Make all tables shrink to fit instead of forcing sideways scroll */
+table {
+  width: 100%;
+  table-layout: fixed;         /* distribute width across columns */
+  border-spacing: 0 8px;       /* keep your row gaps, slightly tighter on mobile */
+}
+th, td {
+  word-break: break-word;
+  overflow-wrap: anywhere;     /* allow wrapping even in long tokens */
+}
+
+/* Center everything except first column (names) */
+#summary-table tbody td:not(:first-child),
+#summary-table thead th:not(:first-child),
+#weeks table tbody td:not(:first-child),
+#weeks table thead th:not(:first-child) {
+  text-align: center;
+}
+
+/* Mobile tuning */
+@media (max-width: 700px) {
+  body { padding: 12px; }
+  .panel { padding: 12px; }
+  thead th { font-size: 11px; padding: 6px; }
+  tbody td { padding: 8px 6px; }
+  .pill { font-size: 10px; padding: 3px 6px; }
+  .totals { grid-template-columns: 1fr; } /* stack KPIs */
+  .rank-wrap { aspect-ratio: 4 / 3; }     /* a bit taller on phones */
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+  h1 { font-size: 22px; }
+  table { border-spacing: 0 6px; }
+}
 
 
   </style>
