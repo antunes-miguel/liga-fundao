@@ -137,12 +137,16 @@ th, td {
   overflow-wrap: anywhere;     /* allow wrapping even in long tokens */
 }
 
-/* Center everything except first column (names) */
-#summary-table tbody td:not(:first-child),
-#summary-table thead th:not(:first-child),
-#weeks table tbody td:not(:first-child),
-#weeks table thead th:not(:first-child) {
-  text-align: center;
+/* Do NOT split player names; truncate with ellipsis if tight */
+#summary-table th:first-child,
+#summary-table td:first-child,
+#weeks table th:first-child,
+#weeks table td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 /* Mobile tuning */
