@@ -150,7 +150,7 @@
             <th data-key="player">Jogador</th>
             <th class="right" data-key="totalScore">Pontos*</th>
             <th class="right" data-key="paid">Pago</th>
-            <th class="right" data-key="owed">Dívida</th>
+            <th class="right" data-key="owed">Total</th>
             <th class="right" data-key="balance">Saldo</th>
           </tr>
         </thead>
@@ -158,8 +158,8 @@
       </table>
       <div class="footer-note">
         *Pontos nesta tabela já incluem a penalização das transferências.
-          Saldo = Dívida − Pago. 
-          A dívida é calculada com a diferença de pontos para o melhor classificado da jornada e penalizações das transferências.
+          Saldo = Total − Pago. 
+          O Total é calculada com a diferença de pontos para o melhor classificado da jornada e penalizações das transferências.
       </div>
     </section>
 
@@ -321,11 +321,11 @@ function compute() {
         <div class="value">${kpis.gws}</div>
       </div>
       <div class="kpi">
-        <div class="label">Dívida Total</div>
+        <div class="label">Total</div>
         <div class="value money">${euro.format(kpis.owed)}</div>
       </div>
       <div class="kpi">
-        <div class="label">Total Pago</div>
+        <div class="label">Pago</div>
         <div class="value money">${euro.format(kpis.paid)}</div>
       </div>
     `;
