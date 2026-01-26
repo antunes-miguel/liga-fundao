@@ -24,13 +24,28 @@
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; padding:24px;
-      background: radial-gradient(1200px 800px at 85% -10%, #223 0%, #0f1221 60%) no-repeat, var(--bg);
-      color:var(--ink);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    body {
+      margin: 0; 
+      padding: 24px;
+      
+      /* Layer 1: A dark tint (85% opacity) | Layer 2: Your mountain image */
+      background: linear-gradient(rgba(15, 18, 33, 0.85), rgba(15, 18, 33, 0.85)), 
+                  url('assets/GARDUNHA-41-1536x864.jpg'); 
+      
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* This keeps the mountain still while you scroll the scores */
+      
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
     .wrap{max-width:1100px;margin:0 auto}
+    .panel {
+  background: rgba(23, 26, 43, 0.8) !important; /* Semi-transparent */
+  backdrop-filter: blur(10px); /* Blurs the mountain behind the panel */
+  /* ... keep your other panel styles ... */
+}
     header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
     .logo{
       width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c9cff, #9d7cff);
