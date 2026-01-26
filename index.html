@@ -116,22 +116,50 @@
 
 /* --- GW Heatmap --- */
 #gw-heatmap {
-  overflow-x: auto;                /* Enable horizontal scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
   width: 100%;
-  padding-bottom: 12px;            /* Space for the scrollbar */
+  margin-top: 10px;
 }
-    
-#gw-heatmap svg { width: auto; height: auto; display: block; }
+
+/* The wrapper that holds Left (Fixed) and Right (Scrollable) */
+.hm-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+
+/* The fixed left column */
+.hm-left {
+  flex: 0 0 auto;
+  background: var(--panel2);
+  border-right: 1px solid var(--border);
+  z-index: 2;
+}
+
+/* The scrollable right area */
+.hm-right {
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure SVGs display correctly inside flex items */
+.hm-left svg, .hm-right svg { 
+  display: block; 
+}
+
+/* --- STYLING (Kept from your original code) --- */
 .hm-axis { fill: var(--muted); font-size: 12px; }
 .hm-score { fill: #fff; font-size: 12px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
 .hm-top { stroke: #fff; stroke-width: 2; }
 .hm-legend text { fill: var(--muted); font-size: 12px; }
-@media (max-width: 700px) {
-  .hm-axis { font-size: 9px; }
-  .hm-score { font-size: 9px; }
-}
 
+@media (max-width: 700px) {
+  .hm-axis { font-size: 10px; }
+  .hm-score { font-size: 10px; }
+}
   </style>
 </head>
 <body>
@@ -737,105 +765,108 @@ function renderHeatmap(){
   const { gws, data, vMin, vMax, topIdxPerGW } = buildHeatmapData();
   const rows = PLAYERS.length, cols = gws.length;
 
-  // SVG layout
-  const cellW = 70, cellH = 28;
-  const leftPad = 64;   // was 140
-  const topPad = 24;    // was 28
-  const rightPad = 12;  // was 16
-  const bottomPad = 24; // no legend, so smaller
-  const W = leftPad + cols * cellW + rightPad;
-  const H = topPad + rows * cellH + bottomPad;
-
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  // --- Configuration ---
+  const cellW = 70;
+  const cellH = 28;
+  const fixedW = 80; // Width of the fixed left column (Names)
+  const topPad = 24;
+  const bottomPad = 12; // Space at bottom
   
-  // --- ADD THIS LINE ---
-  svg.setAttribute('width', W);
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  // Height is shared by both SVGs
+  const totalH = topPad + rows * cellH + bottomPad;
+  
+  // Width of the scrollable part
+  const scrollW = cols * cellW + 24; // + padding right
 
-  // Col labels (GWs)
+  // 1. Create Container
+  const container = document.createElement('div');
+  container.className = 'hm-container';
+
+  // 2. Create Left Panel (Fixed Names)
+  const leftDiv = document.createElement('div');
+  leftDiv.className = 'hm-left';
+  const svgLeft = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgLeft.setAttribute('width', fixedW);
+  svgLeft.setAttribute('height', totalH);
+  
+  // Draw Player Names (Left SVG)
+  PLAYERS.forEach((p, r) => {
+    // Center vertically in the row
+    const y = topPad + r * cellH + cellH/2 + 1;
+    const text = document.createElementNS(svgLeft.namespaceURI, 'text');
+    text.setAttribute('x', fixedW - 12); // Padding from right border
+    text.setAttribute('y', y);
+    text.setAttribute('class', 'hm-axis');
+    text.setAttribute('text-anchor', 'end'); // Right align text
+    text.setAttribute('dominant-baseline', 'middle');
+    text.textContent = getInitials(p);
+    svgLeft.appendChild(text);
+  });
+  leftDiv.appendChild(svgLeft);
+
+  // 3. Create Right Panel (Scrollable Data)
+  const rightDiv = document.createElement('div');
+  rightDiv.className = 'hm-right';
+  const svgRight = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgRight.setAttribute('width', scrollW);
+  svgRight.setAttribute('height', totalH);
+
+  // Draw GW Axis (Right SVG)
   gws.forEach((gw, c) => {
-    const x = leftPad + c * cellW + cellW/2;
+    // X is just based on column index now (no leftPad offset needed)
+    const x = c * cellW + cellW/2; 
     const y = topPad - 8;
-    const text = document.createElementNS(svg.namespaceURI, 'text');
+    const text = document.createElementNS(svgRight.namespaceURI, 'text');
     text.setAttribute('x', x);
     text.setAttribute('y', y);
     text.setAttribute('class', 'hm-axis');
     text.setAttribute('text-anchor', 'middle');
-    text.textContent = gw;
-    svg.appendChild(text);
+    // Regex to show only number
+    text.textContent = gw.replace(/\D/g, ''); 
+    svgRight.appendChild(text);
   });
 
-// Row labels (Players)
-  PLAYERS.forEach((p, r) => {
-    const x = leftPad - 10;
-    const y = topPad + r * cellH + cellH/2 + 1;
-    const text = document.createElementNS(svg.namespaceURI, 'text');
-    text.setAttribute('x', x);
-    text.setAttribute('y', y);
-    text.setAttribute('class', 'hm-axis');
-    text.setAttribute('text-anchor', 'end');
-    text.textContent = getInitials(p);   // <-- use initials
-    svg.appendChild(text);
-  });
-
-  // Cells
+  // Draw Cells (Right SVG)
   for (let r = 0; r < rows; r++){
     for (let c = 0; c < cols; c++){
       const v = data[r][c];
-      const x = leftPad + c * cellW;
+      
+      const x = c * cellW; // Start at 0 relative to right SVG
       const y = topPad + r * cellH;
-      const rect = document.createElementNS(svg.namespaceURI, 'rect');
+      
+      // Rect
+      const rect = document.createElementNS(svgRight.namespaceURI, 'rect');
       rect.setAttribute('x', x);
       rect.setAttribute('y', y);
-      rect.setAttribute('width', cellW-2);
-      rect.setAttribute('height', cellH-2);
+      rect.setAttribute('width', cellW - 2); // gap
+      rect.setAttribute('height', cellH - 2); // gap
       rect.setAttribute('rx', 4);
       rect.setAttribute('fill', heatColor(v, vMin, vMax));
+      rect.setAttribute('opacity', '0.95');
       if (topIdxPerGW[gws[c]] === r) rect.setAttribute('class','hm-top');
-      rect.setAttribute('opacity','0.95');
-      rect.appendChild(document.createElementNS(svg.namespaceURI, 'title'))
-           .textContent = `${PLAYERS[r]} • ${gws[c]}: ${v}`;
-      svg.appendChild(rect);
+      
+      // Tooltip
+      const title = document.createElementNS(svgRight.namespaceURI, 'title');
+      title.textContent = `${PLAYERS[r]} • ${gws[c]}: ${v}`;
+      rect.appendChild(title);
+      svgRight.appendChild(rect);
 
-      // Score text (kept compact for readability)
-      const label = document.createElementNS(svg.namespaceURI, 'text');
-      label.setAttribute('x', x + (cellW-2)/2);
-      label.setAttribute('y', y + (cellH-2)/2 + 1);
+      // Score Text
+      const label = document.createElementNS(svgRight.namespaceURI, 'text');
+      label.setAttribute('x', x + (cellW - 2)/2);
+      label.setAttribute('y', y + (cellH - 2)/2 + 1);
       label.setAttribute('class', 'hm-score');
       label.textContent = v;
-      svg.appendChild(label);
+      svgRight.appendChild(label);
     }
   }
+  rightDiv.appendChild(svgRight);
 
-/*   // Legend
-  const lgX = leftPad, lgY = topPad + rows * cellH + 18, lgW = Math.max(160, Math.min(320, cols * cellW));
-  const steps = 40;
-  for (let i=0;i<steps;i++){
-    const t = i/(steps-1);
-    const v = vMin + t*(vMax - vMin);
-    const rr = document.createElementNS(svg.namespaceURI, 'rect');
-    rr.setAttribute('x', lgX + t*lgW);
-    rr.setAttribute('y', lgY);
-    rr.setAttribute('width', lgW/steps + 1);
-    rr.setAttribute('height', 10);
-    rr.setAttribute('fill', heatColor(v, vMin, vMax));
-    svg.appendChild(rr);
-  }
-  const tMin = document.createElementNS(svg.namespaceURI, 'text');
-  tMin.setAttribute('x', lgX); tMin.setAttribute('y', lgY + 24);
-  tMin.setAttribute('class','hm-legend');
-  tMin.textContent = vMin;
-  svg.appendChild(tMin);
-
-  const tMax = document.createElementNS(svg.namespaceURI, 'text');
-  tMax.setAttribute('x', lgX + lgW); tMax.setAttribute('y', lgY + 24);
-  tMax.setAttribute('text-anchor','end');
-  tMax.setAttribute('class','hm-legend');
-  tMax.textContent = vMax;
-  svg.appendChild(tMax);*/
-
-  root.appendChild(svg);
-} 
+  // Assemble
+  container.appendChild(leftDiv);
+  container.appendChild(rightDiv);
+  root.appendChild(container);
+}
 
 
   // Boot
