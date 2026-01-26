@@ -597,7 +597,7 @@ const yFor = r => {
     g.appendChild(tick);
 
     const lab = document.createElementNS(svg.namespaceURI,'text');
-    lab.textContent = gw;
+    lab.textContent = gw.replace(/\D/g, '');
     lab.setAttribute('x', x);
     lab.setAttribute('y', innerH + 22);   // was +20
     lab.setAttribute('class','rank-label');
