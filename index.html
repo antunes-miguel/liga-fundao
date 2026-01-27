@@ -66,11 +66,14 @@
         grid-template-columns: 1.2fr .8fr; /* Side-by-side only on desktop */
       } 
     }
-    .panel{
-      background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
-      border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding:18px;
-    }
+ .panel {
+  background: rgba(23, 26, 43, 0.8); 
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
     .panel h2{font-size:18px;margin:0 0 12px 0}
     .chips{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
     .chip{
@@ -608,11 +611,11 @@ function renderRankChart(){
   const svg = document.getElementById('rank-chart');
   if(!svg) return;
   const { gws, series } = buildCumulativeSeries();
-  const W = 1000, H = 600;   // viewBox size
-  const rMarker = 18; // circle radius
-  const xPad = rMarker + 8;
-  const yPad = rMarker + 6;
-  const margin = { left: 72, right: 28, top: 16, bottom: 64 };
+  const W = 1000, H = 600;
+  const rMarker = 18; 
+  const xPad = rMarker + 10; // Slightly more horizontal breathing room
+  const yPad = rMarker + 20; // Increase this to prevent top/bottom cutoff
+  const margin = { left: 50, right: 30, top: 20, bottom: 60 };
   const innerW = W - margin.left - margin.right;
   const innerH = H - margin.top - margin.bottom;
 
