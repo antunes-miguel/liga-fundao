@@ -139,6 +139,26 @@
   text-align: center;
 }
 
+#summary-table, #weeks table {
+  display: block;
+  overflow-x: auto; /* Allows the table to slide left/right inside the panel */
+  white-space: nowrap; /* Prevents text from wrapping awkwardly */
+}
+
+    @media (max-width: 600px) {
+  .rank-wrap {
+    aspect-ratio: 1 / 1; /* Make it square on mobile so lines aren't flat */
+  }
+  
+  body {
+    padding: 12px; /* Give more room to content on small screens */
+  }
+  
+  h1 {
+    font-size: 22px; /* Smaller title for mobile */
+  }
+}
+
 /* --- GW Heatmap --- */
 #gw-heatmap {
   width: 100%;
