@@ -278,105 +278,35 @@
 <script>
   // ========= EDIT YOUR DATA BELOW (mirrors your Python script) =========
 
-  const PLAYERS = ["Diogo Lopes", "Bernardo Saraiva", "Rui Bimba", "Miguel Antunes", "Diogo Amarelo", "Joao Leitao"];
+  const PLAYERS = ["Diogo Lopes", "Bernardo Saraiva", "Rui Bimba", "Miguel Antunes", "Diogo Amarelo", "Joao Leitao", "Antonio Moreira", "Tiago Monteiro", "Joao Pires"];
 
   // One entry per GW. Keys can be "GW1", "GW2", etc. Scores must be per-player.
   const MATCHWEEKS = {
-    "GW1": {"Diogo Lopes": 70, "Bernardo Saraiva": 50, "Rui Bimba": 50, "Miguel Antunes": 49, "Diogo Amarelo": 46, "Joao Leitao": 39},
-    "GW2": {"Diogo Lopes": 59, "Bernardo Saraiva": 50, "Rui Bimba": 32, "Miguel Antunes": 33, "Diogo Amarelo": 52, "Joao Leitao": 43},
-    "GW3": {"Diogo Lopes": 59, "Bernardo Saraiva": 47, "Rui Bimba": 72, "Miguel Antunes": 53, "Diogo Amarelo": 37, "Joao Leitao": 46},
-    "GW4": {"Diogo Lopes": 43, "Bernardo Saraiva": 50, "Rui Bimba": 66, "Miguel Antunes": 45, "Diogo Amarelo": 69, "Joao Leitao": 45},
-    "GW5": {"Diogo Lopes": 41, "Bernardo Saraiva": 35, "Rui Bimba": 55, "Miguel Antunes": 49, "Diogo Amarelo": 26, "Joao Leitao": 40},
-    "GW6": {"Diogo Lopes": 37, "Bernardo Saraiva": 28, "Rui Bimba": 36, "Miguel Antunes": 70, "Diogo Amarelo": 40, "Joao Leitao": 20},
-    "GW7": {"Diogo Lopes": 88, "Bernardo Saraiva": 69, "Rui Bimba": 71, "Miguel Antunes": 74, "Diogo Amarelo": 50, "Joao Leitao": 55},
-    "GW8": {"Diogo Lopes": 64, "Bernardo Saraiva": 61, "Rui Bimba": 64, "Miguel Antunes": 85, "Diogo Amarelo": 48, "Joao Leitao": 38},
-    "GW9": {"Diogo Lopes": 55, "Bernardo Saraiva": 40, "Rui Bimba": 44, "Miguel Antunes": 41, "Diogo Amarelo": 33, "Joao Leitao": 30},
-    "GW10": {"Diogo Lopes": 74, "Bernardo Saraiva": 75, "Rui Bimba": 76, "Miguel Antunes": 82, "Diogo Amarelo": 68, "Joao Leitao": 60},
-    "GW11": {"Diogo Lopes": 37, "Bernardo Saraiva": 31, "Rui Bimba": 38, "Miguel Antunes": 40, "Diogo Amarelo": 57, "Joao Leitao": 34},
-    "GW12": {"Diogo Lopes": 46, "Bernardo Saraiva": 28, "Rui Bimba": 35, "Miguel Antunes": 45, "Diogo Amarelo": 40, "Joao Leitao": 36},
-    "GW13": {"Diogo Lopes": 48, "Bernardo Saraiva": 29, "Rui Bimba": 41, "Miguel Antunes": 48, "Diogo Amarelo": 50, "Joao Leitao": 53},
-    "GW14": {"Diogo Lopes": 77, "Bernardo Saraiva": 69, "Rui Bimba": 60, "Miguel Antunes": 64, "Diogo Amarelo": 74, "Joao Leitao": 67},
-    "GW15": {"Diogo Lopes": 55, "Bernardo Saraiva": 46, "Rui Bimba": 77, "Miguel Antunes": 55, "Diogo Amarelo": 51, "Joao Leitao": 60},
-    "GW16": {"Diogo Lopes": 75, "Bernardo Saraiva": 45, "Rui Bimba": 105, "Miguel Antunes": 72, "Diogo Amarelo": 74, "Joao Leitao": 61},
-    "GW17": {"Diogo Lopes": 94, "Bernardo Saraiva": 82, "Rui Bimba": 65, "Miguel Antunes": 87, "Diogo Amarelo": 78, "Joao Leitao": 79},
-    "GW18": {"Diogo Lopes": 37, "Bernardo Saraiva": 45, "Rui Bimba": 36, "Miguel Antunes": 38, "Diogo Amarelo": 48, "Joao Leitao": 49},
-    "GW19": {"Diogo Lopes": 34, "Bernardo Saraiva": 41, "Rui Bimba": 46, "Miguel Antunes": 45, "Diogo Amarelo": 46, "Joao Leitao": 37},
-    "GW20": {"Diogo Lopes": 35, "Bernardo Saraiva": 56, "Rui Bimba": 50, "Miguel Antunes": 39, "Diogo Amarelo": 44, "Joao Leitao": 40},
-    "GW21": {"Diogo Lopes": 48, "Bernardo Saraiva": 52, "Rui Bimba": 57, "Miguel Antunes": 50, "Diogo Amarelo": 75, "Joao Leitao": 45},
-    "GW22": {"Diogo Lopes": 26, "Bernardo Saraiva": 45, "Rui Bimba": 42, "Miguel Antunes": 39, "Diogo Amarelo": 43, "Joao Leitao": 37},
-    "GW23": {"Diogo Lopes": 38, "Bernardo Saraiva": 43, "Rui Bimba": 48, "Miguel Antunes": 32, "Diogo Amarelo": 36, "Joao Leitao": 39},
-    "GW24": {"Diogo Lopes": 59, "Bernardo Saraiva": 50, "Rui Bimba": 54, "Miguel Antunes": 91, "Diogo Amarelo": 60, "Joao Leitao": 62},
-    "GW25": {"Diogo Lopes": 72, "Bernardo Saraiva": 61, "Rui Bimba": 78, "Miguel Antunes": 69, "Diogo Amarelo": 64, "Joao Leitao": 67},
-    "GW26": {"Diogo Lopes": 76, "Bernardo Saraiva": 68, "Rui Bimba": 63, "Miguel Antunes": 59, "Diogo Amarelo": 85, "Joao Leitao": 68},
-    "GW27": {"Diogo Lopes": 72, "Bernardo Saraiva": 41, "Rui Bimba": 52, "Miguel Antunes": 44, "Diogo Amarelo": 40, "Joao Leitao": 37},
-    "GW28": {"Diogo Lopes": 59, "Bernardo Saraiva": 60, "Rui Bimba": 59, "Miguel Antunes": 83, "Diogo Amarelo": 60, "Joao Leitao": 69},
-    "GW29": {"Diogo Lopes": 44, "Bernardo Saraiva": 75, "Rui Bimba": 54, "Miguel Antunes": 53, "Diogo Amarelo": 72, "Joao Leitao": 46},
-    "GW30": {"Diogo Lopes": 39, "Bernardo Saraiva": 40, "Rui Bimba": 42, "Miguel Antunes": 64, "Diogo Amarelo": 64, "Joao Leitao": 43},
-    "GW31": {"Diogo Lopes": 49, "Bernardo Saraiva": 67, "Rui Bimba": 57, "Miguel Antunes": 60, "Diogo Amarelo": 39, "Joao Leitao": 18},
-    "GW32": {"Diogo Lopes": 59, "Bernardo Saraiva": 66, "Rui Bimba": 59, "Miguel Antunes": 57, "Diogo Amarelo": 80, "Joao Leitao": 34},
-    "GW33": {"Diogo Lopes": 70, "Bernardo Saraiva": 89, "Rui Bimba": 103, "Miguel Antunes": 113, "Diogo Amarelo": 102, "Joao Leitao": 69},
-    "GW34": {"Diogo Lopes": 45, "Bernardo Saraiva": 71, "Rui Bimba": 71, "Miguel Antunes": 60, "Diogo Amarelo": 56, "Joao Leitao": 47},
-    "GW35": {"Diogo Lopes": 59, "Bernardo Saraiva": 42, "Rui Bimba": 59, "Miguel Antunes": 55, "Diogo Amarelo": 58, "Joao Leitao": 60},
-    "GW36": {"Diogo Lopes": 106, "Bernardo Saraiva": 70, "Rui Bimba": 80, "Miguel Antunes": 73, "Diogo Amarelo": 85, "Joao Leitao": 43},
-    "GW37": {"Diogo Lopes": 65, "Bernardo Saraiva": 59, "Rui Bimba": 61, "Miguel Antunes": 62, "Diogo Amarelo": 48, "Joao Leitao": 98},
-    "GW38": {"Diogo Lopes": 39, "Bernardo Saraiva": 72, "Rui Bimba": 68, "Miguel Antunes": 53, "Diogo Amarelo": 41, "Joao Leitao": 73},
+    "GW1": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0, "Antonio Moreira": 0, "Tiago Monteiro": 0, "Joao Pires": 0}
     // "GW3": {...}
   };
 
   // NEW: Transfers per GW per player (points to deduct). Missing = 0.
   const TRANSFERS = {
-    "GW1": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW2": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 12, "Joao Leitao": 0},
-    "GW3": {"Diogo Lopes": 0, "Bernardo Saraiva": 8, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
-    "GW4": {"Diogo Lopes": 0, "Bernardo Saraiva": 8, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
-    "GW5": {"Diogo Lopes": 4, "Bernardo Saraiva": 4, "Rui Bimba": 8, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW6": {"Diogo Lopes": 0, "Bernardo Saraiva": 4, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 8, "Joao Leitao": 0},
-    "GW7": {"Diogo Lopes": 0, "Bernardo Saraiva": 8, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW8": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 4},
-    "GW9": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW10": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW11": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW12": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW13": {"Diogo Lopes": 0, "Bernardo Saraiva": 12, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW14": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 8, "Joao Leitao": 0},
-    "GW15": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW16": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW17": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
-    "GW18": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW19": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 4},
-    "GW20": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW21": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
-    "GW22": {"Diogo Lopes": 0, "Bernardo Saraiva": 8, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW23": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW24": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW25": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
-    "GW26": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW27": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW28": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW29": {"Diogo Lopes": 0, "Bernardo Saraiva": 4, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW30": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW31": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW32": {"Diogo Lopes": 0, "Bernardo Saraiva": 4, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW33": {"Diogo Lopes": 0, "Bernardo Saraiva": 12, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 12, "Joao Leitao": 0},
-    "GW34": {"Diogo Lopes": 0, "Bernardo Saraiva": 12, "Rui Bimba": 16, "Miguel Antunes": 0, "Diogo Amarelo": 12, "Joao Leitao": 0},
-    "GW35": {"Diogo Lopes": 0, "Bernardo Saraiva": 4, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW36": {"Diogo Lopes": 0, "Bernardo Saraiva": 4, "Rui Bimba": 4, "Miguel Antunes": 0, "Diogo Amarelo": 8, "Joao Leitao": 0},
-    "GW37": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0},
-    "GW38": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "Joao Leitao": 0},
+    "GW1": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "Joao Leitao": 0, "Antonio Moreira": 0, "Tiago Monteiro": 0, "Joao Pires": 0,},
     // "GW3": {...}
   };
 
   // Cost per point (EUR)
-  const COST_PER_POINT = 0.05;
+  const COST_PER_POINT = 0.1;
 
   // Manual payments (EUR) made so far by each player (optional)
   const MANUAL_PAYMENTS = {
-    "Diogo Lopes": 25.15,
-    "Diogo Amarelo": 27.40,
-    "Bernardo Saraiva": 33.10,
-    "Miguel Antunes": 19.75,
-    "Rui Bimba": 22.45,
-    "Joao Leitao": 38.90,
+    "Diogo Lopes": 0,
+    "Diogo Amarelo": 0,
+    "Bernardo Saraiva": 0,
+    "Miguel Antunes": 0,
+    "Rui Bimba": 0,
+    "Joao Leitao": 0,
+    "Antonio Moreira": 0,
+    "Tiago Monteiro": 0,
+    "Joao Pires": 0,
+    {
   };
 
   // ========= END OF DATA SECTION =========
