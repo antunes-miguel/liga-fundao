@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Liga Fundão</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#0f1221;
@@ -21,6 +22,10 @@
       --chip:#2a2f55;
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius:14px;
+      --gold:#f4c95d;
+      --silver:#c7cbe0;
+      --bronze:#d68c5a;
+      --display: "Space Grotesk", Inter, system-ui, sans-serif;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -41,18 +46,29 @@
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
     .wrap{max-width:1100px;margin:0 auto}
+    ::selection{background:var(--accent); color:#0b0e1d}
     .panel {
   background: rgba(23, 26, 43, 0.8) !important; /* Semi-transparent */
   backdrop-filter: blur(10px); /* Blurs the mountain behind the panel */
   /* ... keep your other panel styles ... */
 }
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    .logo{
-      width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#7c9cff, #9d7cff);
-      box-shadow:var(--shadow);
-      display:grid;place-items:center;font-weight:800;color:white;letter-spacing:.5px;
+    header{
+      display:flex;align-items:center;gap:16px;
+      padding-bottom:18px;margin-bottom:22px;
+      position:relative;
     }
-    h1{font-size:28px;margin:0}
+    header::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0; height:3px;
+      background:linear-gradient(90deg, var(--accent), #9d7cff 40%, transparent 75%);
+      border-radius:3px;
+    }
+    header img{flex:0 0 auto}
+    h1{
+      font-family:var(--display);
+      font-size:clamp(22px, 5vw, 30px);
+      margin:0; letter-spacing:.01em;
+    }
     .subtitle{color:var(--muted);margin-top:4px}
     .grid {
       display: flex;
@@ -74,7 +90,7 @@
   box-shadow: var(--shadow);
   padding: 18px;
 }
-    .panel h2{font-size:18px;margin:0 0 12px 0}
+    .panel h2{font-family:var(--display); font-weight:600; font-size:17px;margin:0 0 12px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
     .chips{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
     .chip{
       background:var(--chip); border:1px solid var(--border); color:var(--muted);
@@ -107,13 +123,22 @@
     .kpi{
       background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:12px; padding:14px;
     }
-    .kpi .label{font-size:12px; color:var(--muted)}
-    .kpi .value{font-size:20px; font-weight:700; margin-top:6px}
+    .kpi .label{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+    .kpi .value{font-family:var(--display); font-size:clamp(16px,4vw,20px); font-weight:700; margin-top:6px; font-variant-numeric:tabular-nums}
     .small{font-size:12px}
     .footer-note{margin-top:10px;color:var(--muted);font-size:12px}
     .pill{
       display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; background:#28305e; color:#b8c2ff; border:1px solid var(--border)
     }
+    .rank-medal{
+      display:inline-grid; place-items:center; width:22px; height:22px; margin-right:10px;
+      border-radius:50%; font-family:var(--display); font-size:11px; font-weight:700;
+      background:var(--panel2); color:var(--muted); border:1px solid var(--border);
+      vertical-align:middle;
+    }
+    .rank-medal--gold{background:linear-gradient(135deg,var(--gold),#c9962f); color:#3a2a00; border-color:transparent}
+    .rank-medal--silver{background:linear-gradient(135deg,var(--silver),#8b91b8); color:#1c1f38; border-color:transparent}
+    .rank-medal--bronze{background:linear-gradient(135deg,var(--bronze),#a15b32); color:#2c1204; border-color:transparent}
     .rank-wrap{width:100%;height:auto;aspect-ratio: 5 / 2; background:rgba(255,255,255,.02); border:1px solid var(--border); border-radius:12px}
     .rank-axis{stroke:#3a3f6b; stroke-width:1}
     .rank-grid{stroke:#2a2f55; stroke-width:.8; opacity:.65}
@@ -135,6 +160,15 @@
   background: var(--accent) !important;
   color: #fff !important;
 }
+
+.mobile-sort{
+  display:none;
+  font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px;
+  border:1px solid var(--border); background:var(--panel2); color:var(--ink); cursor:pointer;
+}
+@media (max-width: 640px){
+  .mobile-sort{ display:inline-block; }
+}
 #summary-table tbody td:not(:first-child),
 #summary-table thead th:not(:first-child),
 #weeks table tbody td:not(:first-child),
@@ -152,14 +186,62 @@
   .rank-wrap {
     aspect-ratio: 1 / 1; /* Make it square on mobile so lines aren't flat */
   }
-  
+
   body {
     padding: 12px; /* Give more room to content on small screens */
   }
-  
-  h1 {
-    font-size: 22px; /* Smaller title for mobile */
+
+  .panel { padding: 14px; border-radius: 12px; }
+  .totals { gap: 8px; }
+  .kpi { padding: 10px; }
+  body { background-attachment: scroll; } /* fixed backgrounds are unreliable/janky on mobile browsers */
+}
+
+/* --- Card layout for tables on narrow screens --- */
+@media (max-width: 640px) {
+  #summary-table, #weeks table {
+    display: block;
+    overflow-x: visible;
+    white-space: normal;
+    border-spacing: 0;
   }
+  #summary-table thead, #weeks table thead { display: none; }
+  #summary-table tbody, #weeks table tbody { display: block; }
+  #summary-table tbody tr, #weeks table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 14px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    background: rgba(255,255,255,.03);
+  }
+  #summary-table tbody td, #weeks table tbody td {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 3px 0 !important;
+    background: transparent !important;
+    display: flex; justify-content: space-between; align-items: baseline;
+    text-align: right !important;
+  }
+  #summary-table tbody td:first-child, #weeks table tbody td:first-child {
+    grid-column: 1 / -1;
+    font-family: var(--display); font-size: 15px; color: #fff;
+    display: block; text-align: left !important;
+    padding-bottom: 8px !important; margin-bottom: 4px;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  #summary-table tbody td::before, #weeks table tbody td::before {
+    content: attr(data-label);
+    color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+  }
+}
+
+/* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
+.hm-right{
+  -webkit-mask-image: linear-gradient(90deg, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 94%, transparent 100%);
 }
 
 /* --- GW Heatmap --- */
@@ -213,7 +295,7 @@
 <body>
 <div class="wrap">
 <header>
-  <img src="assets/LF.png" alt="Liga Fundão crest" style="width:80px;height:auto;margin-right:12px;">
+  <img src="assets/LF.png" alt="Liga Fundão crest" style="width:clamp(48px,12vw,80px);height:auto;margin-right:4px;">
   <div>
     <h1>LIGA FUNDÃO</h1>
     <div class="chips">
@@ -225,7 +307,17 @@
   <div class="grid">
     <!-- Summary -->
     <section class="panel">
-      <h2>Global</h2>
+      <h2>Global
+        <select id="mobile-sort" class="mobile-sort">
+          <option value="totalScore:desc">Ordenar: Pontos ↓</option>
+          <option value="totalScore:asc">Ordenar: Pontos ↑</option>
+          <option value="balance:desc">Ordenar: Saldo ↓</option>
+          <option value="balance:asc">Ordenar: Saldo ↑</option>
+          <option value="owed:desc">Ordenar: Total ↓</option>
+          <option value="paid:desc">Ordenar: Pago ↓</option>
+          <option value="player:asc">Ordenar: Jogador A–Z</option>
+        </select>
+      </h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
@@ -261,16 +353,16 @@
     <section class="panel" style="grid-column:1 / -1;">
         <h2>Evolução das Classificações</h2>
         <div id="rank-chart-wrap" class="rank-wrap">
-        <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
-    </div>
-        <div class="footer-note small">Desempates: menor número de transferências, ordem alfabética.
+          <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="footer-note small">Desempates: menor número de transferências, ordem alfabética.</div>
+    </section>
 
-          <section class="panel" style="grid-column:1 / -1;">
-          <h2>Performance Semanal<span class="pill">Pontos - Transferências</span></h2>
-            <div id="gw-heatmap"></div>
-              <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada.</div>
-            </section>
-
+    <section class="panel" style="grid-column:1 / -1;">
+      <h2>Performance Semanal<span class="pill">Pontos − Transferências</span></h2>
+      <div id="gw-heatmap"></div>
+      <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada.</div>
+    </section>
 
   </div>
 </div>
@@ -376,6 +468,14 @@ function compute() {
     return { player: p, totalScore: totalScoreNet, totalTransfers, owed: totalOwed, paid, balance };
   });
 
+  // Standings rank (points desc, fewer transfers, then alphabetical) — independent of table sort
+  const ranked = rows.slice().sort((a,b)=>{
+    if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
+    if (a.totalTransfers !== b.totalTransfers) return a.totalTransfers - b.totalTransfers;
+    return a.player.localeCompare(b.player);
+  });
+  ranked.forEach((r,i)=>{ r.rank = i+1; });
+
   // League KPIs
   const totalPaidAll = rows.reduce((a,r)=>a+r.paid,0);
   const totalOwedAll = rows.reduce((a,r)=>a+r.owed,0);
@@ -412,13 +512,17 @@ function compute() {
     tbody.innerHTML = "";
     rows.forEach(r=>{
       const balClass = r.balance <= 0 ? 'good' : 'bad'; // <= 0 means settled or ahead
+      const medal = {1:'gold', 2:'silver', 3:'bronze'}[r.rank];
+      const rankBadge = medal
+        ? `<span class="rank-medal rank-medal--${medal}">${r.rank}</span>`
+        : `<span class="rank-medal">${r.rank}</span>`;
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${r.player}</td>
-        <td class="right">${r.totalScore}</td>
-        <td class="right money">${euro.format(r.paid)}</td>
-        <td class="right money">${euro.format(r.owed)}</td>
-        <td class="right money ${balClass}">${euro.format(r.balance)}</td>
+        <td>${rankBadge}${r.player}</td>
+        <td class="right" data-label="Pontos">${r.totalScore}</td>
+        <td class="right money" data-label="Pago">${euro.format(r.paid)}</td>
+        <td class="right money" data-label="Total">${euro.format(r.owed)}</td>
+        <td class="right money ${balClass}" data-label="Saldo">${euro.format(r.balance)}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -472,10 +576,10 @@ function renderWeeks(weekTops){
           return `
             <tr>
               <td>${r.player}${badge}</td>
-              <td class="right">${r.score}</td>
-              <td class="right">${transfersCell}</td>
-              <td class="right">${isTop ? '—' : diff}</td>
-              <td class="right money ${isTop ? 'good' : ''}">${isTop ? '—' : euro.format(debt)}</td>
+              <td class="right" data-label="Pontos">${r.score}</td>
+              <td class="right" data-label="Transferências">${transfersCell}</td>
+              <td class="right" data-label="Diferença">${isTop ? '—' : diff}</td>
+              <td class="right money ${isTop ? 'good' : ''}" data-label="Dívida">${isTop ? '—' : euro.format(debt)}</td>
             </tr>
           `;
         }).join("")}
@@ -509,6 +613,7 @@ function renderWeeks(weekTops){
   // Simple table sort on click (client-side)
   function enableSorting(dataRows){
     const headers = document.querySelectorAll('#summary-table thead th');
+    const mobileSort = document.getElementById('mobile-sort');
     let current = {key:'balance', dir:'asc'};
 
     function renderSorted(){
@@ -522,15 +627,28 @@ function renderWeeks(weekTops){
       renderSummary(rows);
     }
 
+    function setSort(key, dir){
+      current.key = key;
+      current.dir = dir;
+      renderSorted();
+      if (mobileSort) mobileSort.value = `${key}:${dir}`;
+    }
+
     headers.forEach(th=>{
       th.addEventListener('click', ()=>{
         const key = th.getAttribute('data-key');
         if(!key) return;
-        current.dir = (current.key === key && current.dir === 'asc') ? 'desc' : 'asc';
-        current.key = key;
-        renderSorted();
+        const dir = (current.key === key && current.dir === 'asc') ? 'desc' : 'asc';
+        setSort(key, dir);
       });
     });
+
+    if (mobileSort){
+      mobileSort.addEventListener('change', ()=>{
+        const [key, dir] = mobileSort.value.split(':');
+        setSort(key, dir);
+      });
+    }
 
     // Initial sort by Total Score (descending)
     current = {key:'totalScore', dir:'desc'};
@@ -778,10 +896,11 @@ function renderHeatmap(){
   const { gws, data, vMin, vMax, topIdxPerGW } = buildHeatmapData();
   const rows = PLAYERS.length, cols = gws.length;
 
-  // --- Configuration ---
-  const cellW = 70;
-  const cellH = 28;
-  const fixedW = 80; // Width of the fixed left column (Names)
+  // --- Configuration (smaller cells on narrow screens) ---
+  const isNarrow = window.innerWidth <= 600;
+  const cellW = isNarrow ? 52 : 70;
+  const cellH = isNarrow ? 26 : 28;
+  const fixedW = isNarrow ? 56 : 80; // Width of the fixed left column (Names)
   const topPad = 24;
   const bottomPad = 12; // Space at bottom
   
@@ -914,7 +1033,14 @@ function renderHeatmap(){
   // render after the selector is set so the latest GW shows by default
   renderWeeks(weekTops);
   renderRankChart();
-  renderHeatmap();  
+  renderHeatmap();
+
+  // Re-render the heatmap (cell sizing depends on viewport width) on resize/rotate
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(renderHeatmap, 200);
+  });
 })();
 
 </script>
