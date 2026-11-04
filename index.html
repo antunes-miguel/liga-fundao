@@ -388,10 +388,10 @@
 <script>
   // ========= EDIT YOUR DATA BELOW (mirrors your Python script) =========
 
-  const PLAYERS = ["Diogo Lopes", "Bernardo Saraiva", "Rui Bimba", "Miguel Antunes", "Diogo Amarelo", "João Leitão", "António Moreira", "Tiago Monteiro", "João Pires"];
+  let PLAYERS = ["Diogo Lopes", "Bernardo Saraiva", "Rui Bimba", "Miguel Antunes", "Diogo Amarelo", "João Leitão", "António Moreira", "Tiago Monteiro", "João Pires"];
 
   // One entry per GW. Keys can be "GW1", "GW2", etc. Scores must be per-player.
-  const MATCHWEEKS = {
+  let MATCHWEEKS = {
     "GW1": {"Diogo Lopes": 51, "Bernardo Saraiva": 57, "Rui Bimba": 38, "Miguel Antunes": 49, "Diogo Amarelo": 40, "João Leitão": 36, "António Moreira": 51, "Tiago Monteiro": 47, "João Pires": 39},
     "GW2": {"Diogo Lopes": 99, "Bernardo Saraiva": 70, "Rui Bimba": 101, "Miguel Antunes": 125, "Diogo Amarelo": 108, "João Leitão": 99, "António Moreira": 96, "Tiago Monteiro": 69, "João Pires": 98},
     "GW3": {"Diogo Lopes": 62, "Bernardo Saraiva": 58, "Rui Bimba": 53, "Miguel Antunes": 49, "Diogo Amarelo": 46, "João Leitão": 50, "António Moreira": 56, "Tiago Monteiro": 59, "João Pires": 53},
@@ -405,7 +405,7 @@
   };
 
   // NEW: Transfers per GW per player (points to deduct). Missing = 0.
-  const TRANSFERS = {
+  let TRANSFERS = {
     "GW1": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 0, "João Leitão": 0, "António Moreira": 0, "Tiago Monteiro": 0, "João Pires": 0,},
     "GW2": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "João Leitão": 0, "António Moreira": 0, "Tiago Monteiro": 0, "João Pires": 0,},
     "GW3": {"Diogo Lopes": 0, "Bernardo Saraiva": 0, "Rui Bimba": 0, "Miguel Antunes": 0, "Diogo Amarelo": 4, "João Leitão": 0, "António Moreira": 0, "Tiago Monteiro": 0, "João Pires": 0,},
@@ -437,8 +437,13 @@
   // The chips available to each player
   const CHIPS = ["Wildcard", "Bench Boost", "Triple Captain", "Free Hit"];
 
-  // Chips played so far: the GW each player used each chip. Missing = not used yet.
-  const CHIPS_USED = {
+  // Each chip can be played this many times a season (one per half)
+  const CHIPS_PER_TYPE = 2;
+
+  // Chips played so far: the GW (or list of GWs) each player used each chip. Missing = not used yet.
+  // NOTE: when data/fpl.json loads, PLAYERS, MATCHWEEKS, TRANSFERS and CHIPS_USED come from it
+  // (updated automatically from the FPL API). The values here are only a fallback.
+  let CHIPS_USED = {
     "Diogo Lopes": {"Wildcard": "GW3", "Bench Boost": "GW2", "Triple Captain": "GW7"},
     "Bernardo Saraiva": {"Wildcard": "GW2", "Free Hit": "GW9"},
     "Rui Bimba": {"Wildcard": "GW6"},
@@ -466,9 +471,15 @@
     return `<span class="rank-medal${medal ? ` rank-medal--${medal}` : ''}">${rank}</span>`;
   }
 
+  // GWs in which a player used a chip (always an array)
+  function chipGWs(p, c){
+    const v = CHIPS_USED[p]?.[c];
+    return v == null ? [] : [].concat(v);
+  }
+
   // Chips a player used in a given GW
   function chipsPlayed(gw, p){
-    return CHIPS.filter(c => CHIPS_USED[p]?.[c] === gw);
+    return CHIPS.filter(c => chipGWs(p, c).includes(gw));
   }
 
 // --- Helpers for rank chart ---
@@ -591,15 +602,16 @@ function compute() {
       </tr>
     `;
     table.tBodies[0].innerHTML = rows.slice().sort((a,b)=>a.rank-b.rank).map(r => {
-      const used = CHIPS_USED[r.player] ?? {};
-      const count = CHIPS.filter(c => used[c]).length;
+      const count = CHIPS.reduce((n, c) => n + chipGWs(r.player, c).length, 0);
       return `
         <tr>
           <td>${rankBadge(r.rank)}${r.player}</td>
-          <td class="chip-count-cell" data-label="Usados"><span class="chip-count">${count}/${CHIPS.length}</span></td>
-          ${CHIPS.map(c => `
-            <td data-label="${c}">${used[c] ? `<span class="chip-used">${used[c]}</span>` : '<span class="muted">—</span>'}</td>
-          `).join("")}
+          <td class="chip-count-cell" data-label="Usados"><span class="chip-count">${count}/${CHIPS.length * CHIPS_PER_TYPE}</span></td>
+          ${CHIPS.map(c => {
+            const gws = chipGWs(r.player, c);
+            return `
+            <td data-label="${c}">${gws.length ? gws.map(gw => `<span class="chip-used">${gw}</span>`).join(' ') : '<span class="muted">—</span>'}</td>
+          `;}).join("")}
         </tr>
       `;
     }).join("");
@@ -1080,8 +1092,39 @@ function renderHeatmap(){
 }
 
 
+// Load data/fpl.json (written by the GitHub Action). Falls back to the inline data
+// above if it's missing, e.g. when the page is opened straight from disk.
+async function loadFplData(){
+  try {
+    const res = await fetch('data/fpl.json', {cache: 'no-store'});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const d = await res.json();
+    PLAYERS = d.players.map(p => p.name);
+    MATCHWEEKS = d.matchweeks;
+    TRANSFERS = d.transfers;
+    CHIPS_USED = d.chips_used;
+    return d;
+  } catch (err) {
+    console.warn('Could not load data/fpl.json, using inline data:', err);
+    return null;
+  }
+}
+
   // Boot
-(function init(){
+(async function init(){
+  const fpl = await loadFplData();
+  const chipsEl = document.querySelector('header .chips');
+  if (fpl?.updated_at) {
+    const when = new Date(fpl.updated_at).toLocaleString('pt-PT', {dateStyle:'short', timeStyle:'short'});
+    chipsEl.insertAdjacentHTML('beforeend', `<span class="chip">Atualizado: ${when} (GW${fpl.last_gw})</span>`);
+  }
+  // Payments are keyed by name, so flag any that don't match a player
+  const unknown = Object.keys(MANUAL_PAYMENTS).filter(n => !PLAYERS.includes(n));
+  if (unknown.length) {
+    console.warn('MANUAL_PAYMENTS names not in the league:', unknown, 'Players:', PLAYERS);
+    chipsEl.insertAdjacentHTML('beforeend', `<span class="chip" style="color:var(--bad)">Pagamentos sem jogador: ${unknown.join(', ')}</span>`);
+  }
+
   document.getElementById('cpp-chip').textContent = `Custo por ponto: ${euro.format(COST_PER_POINT)}`;
   const {rows, weekTops, totals} = compute();
   renderKPIs(totals);
