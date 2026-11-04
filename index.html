@@ -3,28 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liga Fundão</title>
+  <title>Fantasy Fundão</title>
+  <link rel="icon" type="image/png" href="assets/icon-180.png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta name="theme-color" content="#3d0e1e">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0f1221;
-      --panel:#171a2b;
-      --panel2:#1f2340;
-      --ink:#e9ecff;
-      --muted:#a7afd9;
-      --accent:#7c9cff;
-      --good:#11c27f;
-      --bad:#ff6379;
-      --border: #2a2f55;
-      --chip:#2a2f55;
+      /* Fantasy Fundão brand (from the Instagram artwork) */
+      --brand:#3d0e1e;        /* main maroon */
+      --stripe:#511726;       /* background stripes */
+      --stripe2:#5d1a2b;
+      --band:#8b2d3b;         /* bright red band */
+      --bg:var(--brand);
+      --panel:#2e0b17;
+      --panel2:#4a1324;
+      --ink:#fff5f6;
+      --muted:#d9a7b0;
+      --accent:#ef7484;
+      --good:#43d68f;
+      --bad:#ff8593;
+      --border:#64202f;
+      --chip:#4a1324;
+      --line-muted:#8c5562;   /* non-highlighted lines in the standings chart */
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius:14px;
       --gold:#f4c95d;
       --silver:#c7cbe0;
       --bronze:#d68c5a;
-      --display: "Space Grotesk", Inter, system-ui, sans-serif;
+      --display: Montserrat, Inter, system-ui, sans-serif;
     }
     *{box-sizing:border-box}
     html,body{min-height:100%}
@@ -32,42 +41,42 @@
       margin: 0; 
       padding: 24px;
       
-      /* Layer 1: A dark tint (85% opacity) | Layer 2: Your mountain image */
-      background: linear-gradient(rgba(15, 18, 33, 0.85), rgba(15, 18, 33, 0.85)), 
-                  url('assets/GARDUNHA-41-1536x864.jpg'); 
-      
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed; /* This keeps the mountain still while you scroll the scores */
-      
+      background: var(--brand);
+
       color: var(--ink);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
+    /* Diagonal stripes like the Instagram posts; fixed so they don't stretch on long pages */
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background:
+        linear-gradient(115deg,
+          transparent 0 8%, var(--stripe) 8% 19%, transparent 19% 58%,
+          var(--stripe) 58% 66%, transparent 66% 84%, var(--stripe2) 84% 92%, transparent 92%);
+    }
     .wrap{max-width:1100px;margin:0 auto}
-    ::selection{background:var(--accent); color:#0b0e1d}
+    ::selection{background:#fff; color:var(--brand)}
     .panel {
-  background: rgba(23, 26, 43, 0.8) !important; /* Semi-transparent */
+  background: rgba(46, 11, 23, 0.86) !important; /* Semi-transparent */
   backdrop-filter: blur(10px); /* Blurs the mountain behind the panel */
   /* ... keep your other panel styles ... */
 }
     header{
-      display:flex;align-items:center;gap:16px;
-      padding-bottom:18px;margin-bottom:22px;
-      position:relative;
+      display:flex; align-items:center; justify-content:center; gap:clamp(14px, 3vw, 24px);
+      padding:clamp(18px, 4vw, 30px) clamp(16px, 5vw, 48px); margin-bottom:16px;
+      border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow);
+      background:
+        linear-gradient(110deg, var(--band) 0 9%, transparent 9% 84%, var(--stripe2) 84% 92%, var(--band) 92%),
+        var(--brand);
     }
-    header::after{
-      content:"";
-      position:absolute; left:0; right:0; bottom:0; height:3px;
-      background:linear-gradient(90deg, var(--accent), #9d7cff 40%, transparent 75%);
-      border-radius:3px;
-    }
-    header img{flex:0 0 auto}
+    .crest{flex:0 0 auto; width:clamp(54px, 13vw, 84px); height:auto; display:block}
     h1{
-      font-family:var(--display);
-      font-size:clamp(22px, 5vw, 30px);
-      margin:0; letter-spacing:.01em;
+      font-family:var(--display); font-weight:800; text-transform:uppercase;
+      font-size:clamp(26px, 7vw, 42px); line-height:1; letter-spacing:.005em;
+      margin:0; color:#fff;
     }
+    h1 span{display:block}
+    .info-chips{justify-content:center; margin:0 0 14px}
     .subtitle{color:var(--muted);margin-top:4px}
     .grid {
       display: flex;
@@ -82,15 +91,16 @@
       } 
     }
  .panel {
-  background: rgba(23, 26, 43, 0.8); 
+  background: rgba(46, 11, 23, 0.86); 
   backdrop-filter: blur(10px);
   border: 1px solid var(--border); 
   border-radius: var(--radius); 
   box-shadow: var(--shadow);
   padding: 18px;
 }
-    .panel h2{font-family:var(--display); font-weight:600; font-size:17px;margin:0 0 12px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .panel h2{font-family:var(--display); font-weight:800; font-size:16px; text-transform:uppercase; letter-spacing:.02em;margin:0 0 12px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
     .chips{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
+    .panel h2 .pill, .panel h2 .hint-mobile{text-transform:none; letter-spacing:0}
     .chip{
       background:var(--chip); border:1px solid var(--border); color:var(--muted);
       padding:6px 10px; border-radius:999px; font-size:12px
@@ -127,7 +137,7 @@
     .small{font-size:12px}
     .footer-note{margin-top:10px;color:var(--muted);font-size:12px}
     .pill{
-      display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; background:#28305e; color:#b8c2ff; border:1px solid var(--border)
+      display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; background:var(--stripe2); color:#ffd9de; border:1px solid var(--border)
     }
     .rank-medal{
       display:inline-grid; place-items:center; width:22px; height:22px; margin-right:10px;
@@ -143,12 +153,12 @@
     .rk-plot{flex:1 1 auto; min-width:0; overflow-x:auto; -webkit-overflow-scrolling:touch}
     .rk-plot svg{display:block}
     .rk-plot.scrolled{-webkit-mask-image:linear-gradient(90deg, transparent 0, #000 28px); mask-image:linear-gradient(90deg, transparent 0, #000 28px)}
-    .rank-grid{stroke:#2a2f55; stroke-width:1; opacity:.6}
+    .rank-grid{stroke:var(--border); stroke-width:1; opacity:.7}
     .rank-label{fill:var(--muted); font-size:12px; font-variant-numeric:tabular-nums}
-    .rk-line{fill:none; stroke:#5a6199; stroke-width:1.5; opacity:.75; stroke-linejoin:round; stroke-linecap:round}
+    .rk-line{fill:none; stroke:var(--line-muted); stroke-width:1.5; opacity:.75; stroke-linejoin:round; stroke-linecap:round}
     .rk-line.on{stroke-width:3; opacity:1}
-    .rk-end{fill:#5a6199}
-    .rk-dot{stroke:#1a1d30; stroke-width:2}
+    .rk-end{fill:var(--line-muted)}
+    .rk-dot{stroke:var(--panel); stroke-width:2}
     .rk-hit{fill:transparent; cursor:pointer}
     .rk-labels{flex:0 0 auto; position:relative; border-left:1px solid var(--border); background:rgba(255,255,255,.02)}
     .rk-label{position:absolute; left:0; right:0; display:flex; align-items:center; gap:8px; padding:0 10px;
@@ -158,23 +168,23 @@
     .rk-label:focus-visible{outline:2px solid var(--accent); outline-offset:-2px; border-radius:6px}
     .rk-label.on{color:var(--ink); font-weight:700}
     .rk-pos{min-width:16px; text-align:right; font-family:var(--display); font-variant-numeric:tabular-nums}
-    .rk-sw{flex:0 0 auto; width:10px; height:10px; border-radius:50%; border:2px solid #4b5185; box-sizing:border-box}
+    .rk-sw{flex:0 0 auto; width:10px; height:10px; border-radius:50%; border:2px solid var(--line-muted); box-sizing:border-box}
     .rk-label.on .rk-sw{border:none}
     .rk-name{overflow:hidden; text-overflow:ellipsis}
     .rk-tip{position:absolute; display:none; z-index:5; pointer-events:none; white-space:nowrap;
-      transform:translate(-50%, calc(-100% - 12px)); background:#0b0e1d; color:var(--ink);
+      transform:translate(-50%, calc(-100% - 12px)); background:#1f0710; color:var(--ink);
       border:1px solid var(--border); border-radius:8px; padding:7px 10px; font-size:12px; line-height:1.45; box-shadow:var(--shadow)}
     .rk-tip.below{transform:translate(-50%, 12px)}
 
     /* --- Sticky section menu --- */
     .topnav{position:sticky; top:0; z-index:20; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
-      margin:-8px -24px 16px; padding:10px 24px; background:rgba(15,18,33,.85);
+      margin:0 0 16px; padding:8px; border:1px solid var(--border); border-radius:999px; background:rgba(46,11,23,.9);
       -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--border)}
     .topnav::-webkit-scrollbar{display:none}
-    .topnav a{flex:0 0 auto; color:var(--muted); text-decoration:none; font-size:13px; font-weight:600;
+    .topnav a{flex:0 0 auto; color:var(--muted); text-decoration:none; font-family:var(--display); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
       padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--panel2)}
     .topnav a:hover{color:var(--ink)}
-    .topnav a.active{color:#0b0e1d; background:var(--accent); border-color:var(--accent)}
+    .topnav a.active{color:var(--brand); background:#fff; border-color:#fff}
     section.panel{scroll-margin-top:64px}
     html{scroll-behavior:smooth}
 
@@ -197,8 +207,8 @@
 }
 
 #gw-selector:hover {
-  background: var(--accent) !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: var(--brand) !important;
 }
 
 #summary-table tbody td:not(:first-child),
@@ -213,22 +223,22 @@
 #chips-table thead th { cursor: default; }
 .chip-used{
   display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600;
-  background:rgba(124,156,255,.2); color:var(--ink); border:1px solid var(--accent);
+  background:rgba(239,116,132,.18); color:var(--ink); border:1px solid var(--accent);
   font-variant-numeric:tabular-nums;
 }
 .chip-count{font-family:var(--display); font-weight:700; font-variant-numeric:tabular-nums}
 
-#summary-table, #weeks table {
-  display: block;
-  overflow-x: auto; /* Allows the table to slide left/right inside the panel */
-  white-space: nowrap; /* Prevents text from wrapping awkwardly */
-}
+#summary-table { white-space: nowrap; }
+#weeks table td:first-child { white-space: normal; }
+#weeks table td:not(:first-child) { white-space: nowrap; }
+#weeks table .c-detail { display: none; }
+#weeks table .hit-inline { display: block; font-size: 11px; font-weight: 600; color: var(--bad); }
 
     @media (max-width: 600px) {
   body {
     padding: 12px; /* Give more room to content on small screens */
   }
-  .topnav { margin: -4px -12px 12px; padding: 8px 12px; gap: 4px; }
+  .topnav { margin: 0 -12px 12px; padding: 8px 12px; gap: 4px; border-radius: 0; border-width: 1px 0; }
   .topnav a { padding: 6px 10px; font-size: 12px; }
 
   .panel { padding: 14px; border-radius: 12px; }
@@ -361,14 +371,12 @@
 <body>
 <div class="wrap">
 <header>
-  <img src="assets/LF.png" alt="Liga Fundão crest" style="width:clamp(48px,12vw,80px);height:auto;margin-right:4px;">
-  <div>
-    <h1>LIGA FUNDÃO</h1>
-    <div class="chips">
-      <span class="chip" id="cpp-chip"></span>
-    </div>
-  </div>
+  <img class="crest" src="assets/crest.png" alt="Emblema do Fantasy Fundão" width="312" height="374">
+  <h1><span>Fantasy</span><span>Fundão</span></h1>
 </header>
+<div class="chips info-chips">
+  <span class="chip" id="cpp-chip"></span>
+</div>
 
   <nav class="topnav" aria-label="Secções">
     <a href="#global">Global</a>
@@ -861,7 +869,7 @@ function buildCumulativeSeries(){
 // ----- Standings chart -----
 // Everyone is a grey line; up to 3 highlighted players get a colour. Names sit at
 // the end of each line (current position), so there's no legend to decode.
-const HL_COLORS = ['#3987e5', '#d95926', '#199e70']; // checked for contrast + colour-blind safety on the dark panel
+const HL_COLORS = ['#3987e5', '#c98500', '#199e70']; // blue, gold, green: checked for contrast + colour-blind safety on the maroon panel
 const HL_MAX = HL_COLORS.length;
 const HL_KEY = 'lf-rank-highlight';
 let highlight = null; // { player: colour slot }, insertion order = order picked
@@ -1206,7 +1214,7 @@ async function loadFplData(){
   // Boot
 (async function init(){
   const fpl = await loadFplData();
-  const chipsEl = document.querySelector('header .chips');
+  const chipsEl = document.querySelector('.info-chips');
   if (fpl?.updated_at) {
     const when = new Date(fpl.updated_at).toLocaleString('pt-PT', {dateStyle:'short', timeStyle:'short'});
     chipsEl.insertAdjacentHTML('beforeend', `<span class="chip">Atualizado: ${when} (GW${fpl.last_gw})</span>`);
