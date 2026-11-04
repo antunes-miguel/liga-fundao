@@ -28,7 +28,8 @@ jobs:
 
       - name: Commit if changed
         run: |
-          if git diff --quiet -- data/; then
+          # git status (not git diff) so a brand-new data/fpl.json is picked up too
+          if [ -z "$(git status --porcelain -- data/)" ]; then
             echo "Nothing to commit."
             exit 0
           fi
