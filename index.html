@@ -314,20 +314,18 @@
   </div>
 </header>
 
+  <nav class="topnav" aria-label="Secções">
+    <a href="#global">Global</a>
+    <a href="#jornada">Jornada</a>
+    <a href="#chips">Chips</a>
+    <a href="#evolucao">Evolução</a>
+    <a href="#semanal">Semanal</a>
+  </nav>
+
   <div class="grid">
     <!-- Summary -->
-    <section class="panel">
-      <h2>Global
-        <select id="mobile-sort" class="mobile-sort">
-          <option value="totalScore:desc">Ordenar: Pontos ↓</option>
-          <option value="totalScore:asc">Ordenar: Pontos ↑</option>
-          <option value="balance:desc">Ordenar: Saldo ↓</option>
-          <option value="balance:asc">Ordenar: Saldo ↑</option>
-          <option value="owed:desc">Ordenar: Total ↓</option>
-          <option value="paid:desc">Ordenar: Pago ↓</option>
-          <option value="player:asc">Ordenar: Jogador A–Z</option>
-        </select>
-      </h2>
+    <section class="panel" id="global">
+      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span></h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
@@ -349,7 +347,7 @@
     </section>
 
     <!-- Per-Week Scoreboards -->
-    <section class="panel">
+    <section class="panel" id="jornada">
       <h2 style="margin-bottom: 12px;">
         Tabelas por Jornada
         <select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
@@ -360,7 +358,7 @@
       <div class="footer-note"> A melhor pontuação não paga nada; Todos os outros devem. <span class="pill">(Melhor Pontuação − (Pontuação − Transferências)) × Custo por Ponto</span>.</div>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="chips">
       <h2>Chips</h2>
       <table id="chips-table">
         <thead></thead>
@@ -368,15 +366,14 @@
       </table>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="evolucao">
         <h2>Evolução das Classificações</h2>
-        <div id="rank-chart-wrap" class="rank-wrap">
-          <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
-        </div>
-        <div class="footer-note small">Desempates: menor número de transferências, ordem alfabética.</div>
+        <div id="rank-chart-wrap" class="rank-wrap"></div>
+        <div class="footer-note small">Toca num nome para o destacar (até 3). Toca num ponto para ver a posição e os pontos dessa jornada.
+          Desempates: menor número de transferências, ordem alfabética.</div>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="semanal">
       <h2>Performance Semanal<span class="pill">Pontos − Transferências</span></h2>
       <div id="gw-heatmap"></div>
       <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada.</div>
