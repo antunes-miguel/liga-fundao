@@ -1,0 +1,341 @@
+{
+  "league": {
+    "id": 144341,
+    "name": "Liga Fundão"
+  },
+  "last_gw": 9,
+  "players": [
+    {
+      "entry": 779777,
+      "name": "Diogo Lopes",
+      "fpl_name": "Diogo Lopes",
+      "team": "Mr Smurf"
+    },
+    {
+      "entry": 2700318,
+      "name": "Bernardo Saraiva",
+      "fpl_name": "Bernardo Saraiva",
+      "team": "BESA FC 6230"
+    },
+    {
+      "entry": 750098,
+      "name": "Miguel Antunes",
+      "fpl_name": "Miguel Antunes",
+      "team": "Konatasaray"
+    },
+    {
+      "entry": 2869875,
+      "name": "Diogo Amarelo",
+      "fpl_name": "Diogo Amarelo",
+      "team": "Yellow FC"
+    },
+    {
+      "entry": 3154219,
+      "name": "Antonio Moreira",
+      "fpl_name": "Antonio Moreira",
+      "team": "antoneli"
+    },
+    {
+      "entry": 5581304,
+      "name": "João Pires",
+      "fpl_name": "João Pires",
+      "team": "João's Team"
+    },
+    {
+      "entry": 2866910,
+      "name": "Joao Leitão",
+      "fpl_name": "Joao Leitão",
+      "team": "Skillz FC"
+    },
+    {
+      "entry": 73516,
+      "name": "Rui Bimba",
+      "fpl_name": "Rui Bimba",
+      "team": "stonehenge SC"
+    },
+    {
+      "entry": 5585572,
+      "name": "Tiago Monteiro",
+      "fpl_name": "Tiago Monteiro",
+      "team": "Eze Come Eze Go"
+    }
+  ],
+  "matchweeks": {
+    "GW1": {
+      "Diogo Lopes": 51,
+      "Bernardo Saraiva": 57,
+      "Miguel Antunes": 49,
+      "Diogo Amarelo": 40,
+      "Antonio Moreira": 51,
+      "João Pires": 39,
+      "Joao Leitão": 36,
+      "Rui Bimba": 38,
+      "Tiago Monteiro": 47
+    },
+    "GW2": {
+      "Diogo Lopes": 99,
+      "Bernardo Saraiva": 70,
+      "Miguel Antunes": 125,
+      "Diogo Amarelo": 108,
+      "Antonio Moreira": 96,
+      "João Pires": 98,
+      "Joao Leitão": 99,
+      "Rui Bimba": 101,
+      "Tiago Monteiro": 69
+    },
+    "GW3": {
+      "Diogo Lopes": 62,
+      "Bernardo Saraiva": 58,
+      "Miguel Antunes": 49,
+      "Diogo Amarelo": 46,
+      "Antonio Moreira": 56,
+      "João Pires": 53,
+      "Joao Leitão": 50,
+      "Rui Bimba": 53,
+      "Tiago Monteiro": 59
+    },
+    "GW4": {
+      "Diogo Lopes": 89,
+      "Bernardo Saraiva": 87,
+      "Miguel Antunes": 79,
+      "Diogo Amarelo": 53,
+      "Antonio Moreira": 82,
+      "João Pires": 64,
+      "Joao Leitão": 64,
+      "Rui Bimba": 73,
+      "Tiago Monteiro": 69
+    },
+    "GW5": {
+      "Diogo Lopes": 39,
+      "Bernardo Saraiva": 62,
+      "Miguel Antunes": 45,
+      "Diogo Amarelo": 36,
+      "Antonio Moreira": 48,
+      "João Pires": 47,
+      "Joao Leitão": 49,
+      "Rui Bimba": 45,
+      "Tiago Monteiro": 31
+    },
+    "GW6": {
+      "Diogo Lopes": 73,
+      "Bernardo Saraiva": 78,
+      "Miguel Antunes": 70,
+      "Diogo Amarelo": 53,
+      "Antonio Moreira": 42,
+      "João Pires": 51,
+      "Joao Leitão": 58,
+      "Rui Bimba": 37,
+      "Tiago Monteiro": 53
+    },
+    "GW7": {
+      "Diogo Lopes": 92,
+      "Bernardo Saraiva": 56,
+      "Miguel Antunes": 65,
+      "Diogo Amarelo": 99,
+      "Antonio Moreira": 89,
+      "João Pires": 73,
+      "Joao Leitão": 55,
+      "Rui Bimba": 59,
+      "Tiago Monteiro": 47
+    },
+    "GW8": {
+      "Diogo Lopes": 64,
+      "Bernardo Saraiva": 67,
+      "Miguel Antunes": 53,
+      "Diogo Amarelo": 60,
+      "Antonio Moreira": 51,
+      "João Pires": 41,
+      "Joao Leitão": 62,
+      "Rui Bimba": 57,
+      "Tiago Monteiro": 46
+    },
+    "GW9": {
+      "Diogo Lopes": 49,
+      "Bernardo Saraiva": 81,
+      "Miguel Antunes": 71,
+      "Diogo Amarelo": 77,
+      "Antonio Moreira": 41,
+      "João Pires": 84,
+      "Joao Leitão": 66,
+      "Rui Bimba": 46,
+      "Tiago Monteiro": 21
+    }
+  },
+  "transfers": {
+    "GW1": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 0,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW2": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 4,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW3": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 4,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW4": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 4,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 0,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW5": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 0,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW6": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 0,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW7": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 4,
+      "Antonio Moreira": 8,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW8": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 0,
+      "Antonio Moreira": 0,
+      "João Pires": 0,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 8
+    },
+    "GW9": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Amarelo": 4,
+      "Antonio Moreira": 0,
+      "João Pires": 4,
+      "Joao Leitão": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    }
+  },
+  "chips_used": {
+    "Diogo Lopes": {
+      "Bench Boost": [
+        "GW2"
+      ],
+      "Wildcard": [
+        "GW3"
+      ],
+      "Triple Captain": [
+        "GW7"
+      ]
+    },
+    "Bernardo Saraiva": {
+      "Wildcard": [
+        "GW2"
+      ],
+      "Free Hit": [
+        "GW9"
+      ]
+    },
+    "Miguel Antunes": {
+      "Triple Captain": [
+        "GW3"
+      ],
+      "Wildcard": [
+        "GW4"
+      ]
+    },
+    "Diogo Amarelo": {
+      "Bench Boost": [
+        "GW2"
+      ],
+      "Wildcard": [
+        "GW5"
+      ],
+      "Triple Captain": [
+        "GW7"
+      ]
+    },
+    "Antonio Moreira": {
+      "Bench Boost": [
+        "GW1"
+      ],
+      "Free Hit": [
+        "GW3"
+      ],
+      "Wildcard": [
+        "GW6"
+      ],
+      "Triple Captain": [
+        "GW7"
+      ]
+    },
+    "João Pires": {
+      "Triple Captain": [
+        "GW3"
+      ],
+      "Free Hit": [
+        "GW4"
+      ],
+      "Wildcard": [
+        "GW5"
+      ],
+      "Bench Boost": [
+        "GW9"
+      ]
+    },
+    "Joao Leitão": {},
+    "Rui Bimba": {
+      "Wildcard": [
+        "GW6"
+      ]
+    },
+    "Tiago Monteiro": {}
+  },
+  "updated_at": "2026-11-04T18:57:15+00:00"
+}
