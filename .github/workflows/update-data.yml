@@ -1,0 +1,39 @@
+name: Update FPL data
+
+on:
+  schedule:
+    # Every 6 hours (UTC). Gameweeks are only written once FPL marks them final.
+    - cron: "17 */6 * * *"
+  workflow_dispatch: # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch league data
+        run: python scripts/fetch_fpl.py
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Update FPL data"
+          git push
