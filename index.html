@@ -78,7 +78,7 @@
     @media(min-width:900px){ 
       .grid {
         display: grid;
-        grid-template-columns: 1.2fr .8fr; /* Side-by-side only on desktop */
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); /* Side-by-side only on desktop */
       } 
     }
  .panel {
@@ -138,11 +138,52 @@
     .rank-medal--gold{background:linear-gradient(135deg,var(--gold),#c9962f); color:#3a2a00; border-color:transparent}
     .rank-medal--silver{background:linear-gradient(135deg,var(--silver),#8b91b8); color:#1c1f38; border-color:transparent}
     .rank-medal--bronze{background:linear-gradient(135deg,var(--bronze),#a15b32); color:#2c1204; border-color:transparent}
-    .rank-wrap{width:100%;height:auto;aspect-ratio: 5 / 2; background:rgba(255,255,255,.02); border:1px solid var(--border); border-radius:12px}
-    .rank-axis{stroke:#3a3f6b; stroke-width:1}
-    .rank-grid{stroke:#2a2f55; stroke-width:.8; opacity:.65}
-    .rank-label{fill:var(--muted); font-size:14px}
-    .rank-badge{font-size:14px; font-weight:600; fill:#fff; dominant-baseline:middle; text-anchor:middle; pointer-events:none}
+    /* --- Standings chart --- */
+    .rank-wrap{position:relative; display:flex; background:rgba(255,255,255,.02); border:1px solid var(--border); border-radius:12px; overflow:hidden}
+    .rk-plot{flex:1 1 auto; min-width:0; overflow-x:auto; -webkit-overflow-scrolling:touch}
+    .rk-plot svg{display:block}
+    .rk-plot.scrolled{-webkit-mask-image:linear-gradient(90deg, transparent 0, #000 28px); mask-image:linear-gradient(90deg, transparent 0, #000 28px)}
+    .rank-grid{stroke:#2a2f55; stroke-width:1; opacity:.6}
+    .rank-label{fill:var(--muted); font-size:12px; font-variant-numeric:tabular-nums}
+    .rk-line{fill:none; stroke:#5a6199; stroke-width:1.5; opacity:.75; stroke-linejoin:round; stroke-linecap:round}
+    .rk-line.on{stroke-width:3; opacity:1}
+    .rk-end{fill:#5a6199}
+    .rk-dot{stroke:#1a1d30; stroke-width:2}
+    .rk-hit{fill:transparent; cursor:pointer}
+    .rk-labels{flex:0 0 auto; position:relative; border-left:1px solid var(--border); background:rgba(255,255,255,.02)}
+    .rk-label{position:absolute; left:0; right:0; display:flex; align-items:center; gap:8px; padding:0 10px;
+      background:none; border:0; color:var(--muted); font:500 13px Inter, system-ui, sans-serif; cursor:pointer;
+      text-align:left; white-space:nowrap; overflow:hidden}
+    .rk-label:hover{color:var(--ink)}
+    .rk-label:focus-visible{outline:2px solid var(--accent); outline-offset:-2px; border-radius:6px}
+    .rk-label.on{color:var(--ink); font-weight:700}
+    .rk-pos{min-width:16px; text-align:right; font-family:var(--display); font-variant-numeric:tabular-nums}
+    .rk-sw{flex:0 0 auto; width:10px; height:10px; border-radius:50%; border:2px solid #4b5185; box-sizing:border-box}
+    .rk-label.on .rk-sw{border:none}
+    .rk-name{overflow:hidden; text-overflow:ellipsis}
+    .rk-tip{position:absolute; display:none; z-index:5; pointer-events:none; white-space:nowrap;
+      transform:translate(-50%, calc(-100% - 12px)); background:#0b0e1d; color:var(--ink);
+      border:1px solid var(--border); border-radius:8px; padding:7px 10px; font-size:12px; line-height:1.45; box-shadow:var(--shadow)}
+    .rk-tip.below{transform:translate(-50%, 12px)}
+
+    /* --- Sticky section menu --- */
+    .topnav{position:sticky; top:0; z-index:20; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
+      margin:-8px -24px 16px; padding:10px 24px; background:rgba(15,18,33,.85);
+      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--border)}
+    .topnav::-webkit-scrollbar{display:none}
+    .topnav a{flex:0 0 auto; color:var(--muted); text-decoration:none; font-size:13px; font-weight:600;
+      padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--panel2)}
+    .topnav a:hover{color:var(--ink)}
+    .topnav a.active{color:#0b0e1d; background:var(--accent); border-color:var(--accent)}
+    section.panel{scroll-margin-top:64px}
+    html{scroll-behavior:smooth}
+
+    /* --- Names, movement, short labels --- */
+    .name-short, .sh, .hit-inline, .hint-mobile{display:none}
+    .move{display:inline-block; margin-left:6px; font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; vertical-align:middle}
+    .move.up{color:var(--good)}
+    .move.down{color:var(--bad)}
+    .move.same{color:var(--muted); font-weight:500}
     #gw-selector {
   font-size: 15px !important;
   font-weight: 600 !important;
@@ -160,14 +201,6 @@
   color: #fff !important;
 }
 
-.mobile-sort{
-  display:none;
-  font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px;
-  border:1px solid var(--border); background:var(--panel2); color:var(--ink); cursor:pointer;
-}
-@media (max-width: 640px){
-  .mobile-sort{ display:inline-block; }
-}
 #summary-table tbody td:not(:first-child),
 #summary-table thead th:not(:first-child),
 #weeks table tbody td:not(:first-child),
@@ -192,13 +225,11 @@
 }
 
     @media (max-width: 600px) {
-  .rank-wrap {
-    aspect-ratio: 1 / 1; /* Make it square on mobile so lines aren't flat */
-  }
-
   body {
     padding: 12px; /* Give more room to content on small screens */
   }
+  .topnav { margin: -4px -12px 12px; padding: 8px 12px; gap: 4px; }
+  .topnav a { padding: 6px 10px; font-size: 12px; }
 
   .panel { padding: 14px; border-radius: 12px; }
   .totals { gap: 8px; }
@@ -206,46 +237,71 @@
   body { background-attachment: scroll; } /* fixed backgrounds are unreliable/janky on mobile browsers */
 }
 
-/* --- Card layout for tables on narrow screens --- */
+/* --- Compact tables on phones: one row per player --- */
 @media (max-width: 640px) {
+  .name-full, .lg, .c-detail, .c-count { display: none; }
+  .name-short, .sh { display: inline; }
+  .hint-mobile { display: inline; font-family: Inter, system-ui, sans-serif; font-weight: 400; }
+
   #summary-table, #weeks table, #chips-table {
-    display: block;
-    overflow-x: visible;
-    white-space: normal;
-    border-spacing: 0;
+    display: block; overflow: visible; white-space: normal; border-spacing: 0;
   }
-  #summary-table thead, #weeks table thead, #chips-table thead { display: none; }
-  #summary-table tbody, #weeks table tbody, #chips-table tbody { display: block; }
+  #summary-table thead, #summary-table tbody,
+  #weeks table thead, #weeks table tbody,
+  #chips-table thead, #chips-table tbody { display: block; }
+
+  #summary-table tr, #weeks table tr, #chips-table tr {
+    display: grid; align-items: center; column-gap: 10px;
+  }
+  #summary-table tr { grid-template-columns: 1fr 48px 78px; }
+  #weeks table tr { grid-template-columns: 1fr 44px 66px; }
+  #chips-table tr { grid-template-columns: 1fr repeat(4, 42px); column-gap: 6px; }
+
+  #summary-table thead tr, #weeks table thead tr, #chips-table thead tr { padding: 0 12px; }
+  #summary-table thead th, #weeks table thead th, #chips-table thead th {
+    padding: 2px 0 6px; font-size: 10px;
+  }
+  #summary-table thead th:not(:first-child),
+  #weeks table thead th:not(:first-child) { text-align: right; }
+
   #summary-table tbody tr, #weeks table tbody tr, #chips-table tbody tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px 14px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
-    background: rgba(255,255,255,.03);
+    padding: 9px 12px; margin-bottom: 6px;
+    border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03);
   }
   #summary-table tbody td, #weeks table tbody td, #chips-table tbody td {
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 3px 0 !important;
-    background: transparent !important;
-    display: flex; justify-content: space-between; align-items: baseline;
-    text-align: right !important;
+    border: none !important; border-radius: 0 !important; padding: 0 !important;
+    background: transparent !important; font-variant-numeric: tabular-nums;
   }
-  #chips-table tbody td.chip-count-cell { grid-column: 1 / -1; }
-  #summary-table tbody td:first-child, #weeks table tbody td:first-child, #chips-table tbody td:first-child {
-    grid-column: 1 / -1;
-    font-family: var(--display); font-size: 15px; color: #fff;
-    display: block; text-align: left !important;
-    padding-bottom: 8px !important; margin-bottom: 4px;
-    border-bottom: 1px solid var(--border) !important;
+  #summary-table tbody td:not(:first-child),
+  #weeks table tbody td:not(:first-child) { text-align: right; }
+  #summary-table tbody td:first-child, #chips-table tbody td:first-child {
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  #summary-table tbody td::before, #weeks table tbody td::before, #chips-table tbody td::before {
-    content: attr(data-label);
-    color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+  .rank-medal { width: 20px; height: 20px; margin-right: 8px; font-size: 10px; }
+
+  /* Global: tap a row to show Pago / Total underneath */
+  #summary-table tbody tr { cursor: pointer; }
+  #summary-table td.c-name { grid-row: 1; grid-column: 1; }
+  #summary-table td.c-pts { grid-row: 1; grid-column: 2; }
+  #summary-table td.c-bal { grid-row: 1; grid-column: 3; }
+  #summary-table tbody tr.open td.c-detail {
+    display: flex; justify-content: space-between; grid-column: 1 / -1;
+    margin-top: 6px; font-size: 13px; color: var(--muted);
   }
+  #summary-table tbody tr.open td.c-detail + td.c-detail { margin-top: 2px; }
+  #summary-table tbody tr.open td.c-detail::before {
+    content: attr(data-label); font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
+  }
+
+  /* Weekly: transfer cost shown under the points */
+  .hit-inline { display: block; font-size: 11px; font-weight: 600; color: var(--bad); }
+  #weeks table tbody td:first-child .pill, #weeks table tbody td:first-child .chip-used {
+    font-size: 10px; padding: 2px 6px; margin-left: 2px;
+  }
+
+  /* Chips: grid of GW numbers */
+  #chips-table thead th:not(:first-child), #chips-table tbody td:not(:first-child) { text-align: center; }
+  #chips-table .chip-used { padding: 2px 7px; font-size: 11px; margin: 1px 0; }
 }
 
 /* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
@@ -314,28 +370,26 @@
   </div>
 </header>
 
+  <nav class="topnav" aria-label="Secções">
+    <a href="#global">Global</a>
+    <a href="#jornada">Jornada</a>
+    <a href="#chips">Chips</a>
+    <a href="#evolucao">Evolução</a>
+    <a href="#semanal">Semanal</a>
+  </nav>
+
   <div class="grid">
     <!-- Summary -->
-    <section class="panel">
-      <h2>Global
-        <select id="mobile-sort" class="mobile-sort">
-          <option value="totalScore:desc">Ordenar: Pontos ↓</option>
-          <option value="totalScore:asc">Ordenar: Pontos ↑</option>
-          <option value="balance:desc">Ordenar: Saldo ↓</option>
-          <option value="balance:asc">Ordenar: Saldo ↑</option>
-          <option value="owed:desc">Ordenar: Total ↓</option>
-          <option value="paid:desc">Ordenar: Pago ↓</option>
-          <option value="player:asc">Ordenar: Jogador A–Z</option>
-        </select>
-      </h2>
+    <section class="panel" id="global">
+      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span></h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
           <tr>
             <th data-key="player">Jogador</th>
             <th class="right" data-key="totalScore">Pontos*</th>
-            <th class="right" data-key="paid">Pago</th>
-            <th class="right" data-key="owed">Total</th>
+            <th class="right c-detail" data-key="paid">Pago</th>
+            <th class="right c-detail" data-key="owed">Total</th>
             <th class="right" data-key="balance">Saldo</th>
           </tr>
         </thead>
@@ -349,7 +403,7 @@
     </section>
 
     <!-- Per-Week Scoreboards -->
-    <section class="panel">
+    <section class="panel" id="jornada">
       <h2 style="margin-bottom: 12px;">
         Tabelas por Jornada
         <select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
@@ -360,7 +414,7 @@
       <div class="footer-note"> A melhor pontuação não paga nada; Todos os outros devem. <span class="pill">(Melhor Pontuação − (Pontuação − Transferências)) × Custo por Ponto</span>.</div>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="chips">
       <h2>Chips</h2>
       <table id="chips-table">
         <thead></thead>
@@ -368,15 +422,14 @@
       </table>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="evolucao">
         <h2>Evolução das Classificações</h2>
-        <div id="rank-chart-wrap" class="rank-wrap">
-          <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
-        </div>
-        <div class="footer-note small">Desempates: menor número de transferências, ordem alfabética.</div>
+        <div id="rank-chart-wrap" class="rank-wrap"></div>
+        <div class="footer-note small">Toca num nome para o destacar (até 3). Toca num ponto para ver a posição e os pontos dessa jornada.
+          Desempates: menor número de transferências, ordem alfabética.</div>
     </section>
 
-    <section class="panel" style="grid-column:1 / -1;">
+    <section class="panel" style="grid-column:1 / -1;" id="semanal">
       <h2>Performance Semanal<span class="pill">Pontos − Transferências</span></h2>
       <div id="gw-heatmap"></div>
       <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada.</div>
@@ -483,16 +536,38 @@
   }
 
 // --- Helpers for rank chart ---
-const getInitials = name =>
-  name.split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
-
 function sortGWsNumeric(keys){
   return keys.slice().sort((a,b)=>parseInt(a.replace(/\D/g,'')) - parseInt(b.replace(/\D/g,'')));
 }
 
-function distinctColors(n){
-  // evenly spaced hues; no custom colors set elsewhere
-  return Array.from({length:n}, (_,i)=>`hsl(${Math.round((360/n)*i)}, 70%, 60%)`);
+// "Diogo L." when two players share a first name, otherwise just the first name
+function shortName(p){
+  const parts = p.split(' ');
+  const first = parts[0];
+  const shared = PLAYERS.filter(q => q.split(' ')[0] === first).length > 1;
+  return shared && parts.length > 1 ? `${first} ${parts[parts.length - 1][0]}.` : first;
+}
+
+// Full name on wide screens, short name on phones (toggled in CSS)
+function nameHTML(p){
+  return `<span class="name-full">${p}</span><span class="name-short">${shortName(p)}</span>`;
+}
+
+// Standings history (ranks + cumulative points per GW), filled in init()
+let HIST = { gws: [], series: {} };
+
+// Places gained (+) or lost (-) in the standings in a given GW
+function rankMove(p, gw){
+  const i = HIST.gws.indexOf(gw);
+  if (i < 1) return 0;
+  const r = HIST.series[p].ranks;
+  return r[i - 1] - r[i];
+}
+
+function moveHTML(d){
+  if (d > 0) return `<span class="move up" title="Subiu ${d}">▲${d}</span>`;
+  if (d < 0) return `<span class="move down" title="Desceu ${-d}">▼${-d}</span>`;
+  return `<span class="move same" title="Manteve">=</span>`;
 }
 
 function compute() {
@@ -577,19 +652,24 @@ function compute() {
   function renderSummary(rows){
     const tbody = document.querySelector('#summary-table tbody');
     tbody.innerHTML = "";
+    const lastGW = HIST.gws[HIST.gws.length - 1];
     rows.forEach(r=>{
       const balClass = r.balance <= 0 ? 'good' : 'bad'; // <= 0 means settled or ahead
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${rankBadge(r.rank)}${r.player}</td>
-        <td class="right" data-label="Pontos">${r.totalScore}</td>
-        <td class="right money" data-label="Pago">${euro.format(r.paid)}</td>
-        <td class="right money" data-label="Total">${euro.format(r.owed)}</td>
-        <td class="right money ${balClass}" data-label="Saldo">${euro.format(r.balance)}</td>
+        <td class="c-name">${rankBadge(r.rank)}${nameHTML(r.player)}${moveHTML(rankMove(r.player, lastGW))}</td>
+        <td class="right c-pts" data-label="Pontos">${r.totalScore}</td>
+        <td class="right money c-detail" data-label="Pago">${euro.format(r.paid)}</td>
+        <td class="right money c-detail" data-label="Total">${euro.format(r.owed)}</td>
+        <td class="right money c-bal ${balClass}" data-label="Saldo">${euro.format(r.balance)}</td>
       `;
+      // On phones, Pago/Total are hidden until the row is tapped
+      tr.addEventListener('click', () => tr.classList.toggle('open'));
       tbody.appendChild(tr);
     });
   }
+
+  const CHIP_SHORT = {"Wildcard": "WC", "Bench Boost": "BB", "Triple Captain": "TC", "Free Hit": "FH"};
 
   // Shown in standings order, independent of how the Global table is sorted
   function renderChips(rows){
@@ -597,20 +677,20 @@ function compute() {
     table.tHead.innerHTML = `
       <tr>
         <th>Jogador</th>
-        <th>Usados</th>
-        ${CHIPS.map(c => `<th>${c}</th>`).join("")}
+        <th class="c-count">Usados</th>
+        ${CHIPS.map(c => `<th><span class="lg">${c}</span><span class="sh">${CHIP_SHORT[c] ?? c}</span></th>`).join("")}
       </tr>
     `;
     table.tBodies[0].innerHTML = rows.slice().sort((a,b)=>a.rank-b.rank).map(r => {
       const count = CHIPS.reduce((n, c) => n + chipGWs(r.player, c).length, 0);
       return `
         <tr>
-          <td>${rankBadge(r.rank)}${r.player}</td>
-          <td class="chip-count-cell" data-label="Usados"><span class="chip-count">${count}/${CHIPS.length * CHIPS_PER_TYPE}</span></td>
+          <td>${rankBadge(r.rank)}${nameHTML(r.player)}</td>
+          <td class="chip-count-cell c-count" data-label="Usados"><span class="chip-count">${count}/${CHIPS.length * CHIPS_PER_TYPE}</span></td>
           ${CHIPS.map(c => {
             const gws = chipGWs(r.player, c);
             return `
-            <td data-label="${c}">${gws.length ? gws.map(gw => `<span class="chip-used">${gw}</span>`).join(' ') : '<span class="muted">—</span>'}</td>
+            <td data-label="${c}">${gws.length ? gws.map(gw => `<span class="chip-used"><span class="lg">GW</span>${gw.replace(/\D/g, '')}</span>`).join(' ') : '<span class="muted">—</span>'}</td>
           `;}).join("")}
         </tr>
       `;
@@ -651,8 +731,8 @@ function renderWeeks(weekTops){
         <tr>
           <th>${gw}</th>
           <th class="right">Pontos</th>
-          <th class="right">Transferências</th>
-          <th class="right">Diferença</th>
+          <th class="right c-detail">Transferências</th>
+          <th class="right c-detail">Diferença</th>
           <th class="right">Dívida</th>
         </tr>
       </thead>
@@ -666,10 +746,10 @@ function renderWeeks(weekTops){
           const transfersCell = r.transfers > 0 ? `-${r.transfers}` : '0';
           return `
             <tr>
-              <td>${r.player}${badge}</td>
-              <td class="right" data-label="Pontos">${r.score}</td>
-              <td class="right" data-label="Transferências">${transfersCell}</td>
-              <td class="right" data-label="Diferença">${isTop ? '—' : diff}</td>
+              <td>${nameHTML(r.player)}${moveHTML(rankMove(r.player, gw))}${badge}</td>
+              <td class="right" data-label="Pontos">${r.score}${r.transfers > 0 ? `<span class="hit-inline">−${r.transfers}</span>` : ''}</td>
+              <td class="right c-detail" data-label="Transferências">${transfersCell}</td>
+              <td class="right c-detail" data-label="Diferença">${isTop ? '—' : diff}</td>
               <td class="right money ${isTop ? 'good' : ''}" data-label="Dívida">${isTop ? '—' : euro.format(debt)}</td>
             </tr>
           `;
@@ -748,9 +828,8 @@ function renderWeeks(weekTops){
 
 function buildCumulativeSeries(){
   const gws = sortGWsNumeric(Object.keys(MATCHWEEKS));
-  const series = {}; // per player: {color, points:[...], transfers:[...], ranks:[...]}
-  const colors = distinctColors(PLAYERS.length);
-  PLAYERS.forEach((p,i)=>{ series[p] = { color: colors[i], points:[], transfers:[], ranks:[] }; });
+  const series = {}; // per player: {points:[...], transfers:[...], ranks:[...]}
+  PLAYERS.forEach(p=>{ series[p] = { points:[], transfers:[], ranks:[] }; });
 
   let cumPts = Object.fromEntries(PLAYERS.map(p=>[p,0]));
   let cumTrf = Object.fromEntries(PLAYERS.map(p=>[p,0]));
@@ -779,157 +858,171 @@ function buildCumulativeSeries(){
   return { gws: sortGWsNumeric(Object.keys(MATCHWEEKS)), series };
 }
 
-function renderRankChart(){
-  const svg = document.getElementById('rank-chart');
-  if(!svg) return;
-  const { gws, series } = buildCumulativeSeries();
-  const W = 1000, H = 600;
-  const rMarker = 18; 
-  const xPad = rMarker + 10; // Slightly more horizontal breathing room
-  const yPad = rMarker + 20; // Increase this to prevent top/bottom cutoff
-  const margin = { left: 50, right: 30, top: 20, bottom: 60 };
-  const innerW = W - margin.left - margin.right;
-  const innerH = H - margin.top - margin.bottom;
+// ----- Standings chart -----
+// Everyone is a grey line; up to 3 highlighted players get a colour. Names sit at
+// the end of each line (current position), so there's no legend to decode.
+const HL_COLORS = ['#3987e5', '#d95926', '#199e70']; // checked for contrast + colour-blind safety on the dark panel
+const HL_MAX = HL_COLORS.length;
+const HL_KEY = 'lf-rank-highlight';
+let highlight = null; // { player: colour slot }, insertion order = order picked
 
-  // Clear
-  while(svg.firstChild) svg.removeChild(svg.firstChild);
-
-  // Root group
-  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.setAttribute('transform', `translate(${margin.left},${margin.top})`);
-  svg.appendChild(g);
-
-  const nG = gws.length;
-  if (nG === 0) {
-    const txt = document.createElementNS(svg.namespaceURI,'text');
-    txt.textContent = 'Add gameweeks to see rank evolution';
-    txt.setAttribute('x', W/2); txt.setAttribute('y', H/2);
-    txt.setAttribute('text-anchor','middle'); txt.setAttribute('fill','var(--muted)');
-    svg.appendChild(txt);
-    return;
-  }
-
-  // Scales
- 
-  const maxRank = PLAYERS.length;
-  const xFor = i => {
-  if (nG <= 1) return innerW / 2; // single-GW fallback
-  const span = innerW - 2 * xPad;
-  return xPad + i * (span / (nG - 1));
-};
-const yFor = r => {
-  if (maxRank <= 1) return innerH / 2;
-  const span = innerH - 2 * yPad;
-  return yPad + (r - 1) * (span / (maxRank - 1));
-};
-
-  // Grid + axes
-  // horizontal lines for ranks
-  for(let r=1; r<=maxRank; r++){
-    const y = yFor(r);
-    const line = document.createElementNS(svg.namespaceURI,'line');
-    line.setAttribute('x1', 0); line.setAttribute('y1', y);
-    line.setAttribute('x2', innerW); line.setAttribute('y2', y);
-    line.setAttribute('class','rank-grid');
-    g.appendChild(line);
-
-    const lab = document.createElementNS(svg.namespaceURI,'text');
-    lab.textContent = `#${r}`;
-    lab.setAttribute('x', -8); lab.setAttribute('y', y+4);
-    lab.setAttribute('class','rank-label'); lab.setAttribute('text-anchor','end');
-    g.appendChild(lab);
-  }
-
-    // x labels (GWs)
-    // x labels (GWs)
-    gws.forEach((gw,i)=>{
-    const x = xFor(i);
-
-    const tick = document.createElementNS(svg.namespaceURI,'line');
-    tick.setAttribute('x1', x);
-    tick.setAttribute('y1', innerH);
-    tick.setAttribute('x2', x);
-    tick.setAttribute('y2', innerH + 6);
-    tick.setAttribute('class','rank-axis');
-    g.appendChild(tick);
-
-    const lab = document.createElementNS(svg.namespaceURI,'text');
-    lab.textContent = gw.replace(/\D/g, '');
-    lab.setAttribute('x', x);
-    lab.setAttribute('y', innerH + 22);   // was +20
-    lab.setAttribute('class','rank-label');
-    lab.setAttribute('text-anchor','middle');
-    g.appendChild(lab);
-    });
-
-
-  // Build positions and detect same-spot overlaps to offset markers
-  const positionsAt = Array.from({length:nG}, ()=>({})); // [{ 'rank@i': [players...] }, ...]
-  PLAYERS.forEach(p=>{
-    const ranks = series[p].ranks;
-    ranks.forEach((r,i)=>{
-      const key = `${r}`;
-      if(!positionsAt[i][key]) positionsAt[i][key] = [];
-      positionsAt[i][key].push(p);
-    });
-  });
-
-  // Draw lines first (behind markers)
-  PLAYERS.forEach(p=>{
-    const ranks = series[p].ranks;
-    const color = series[p].color;
-    const path = document.createElementNS(svg.namespaceURI,'path');
-    let d = '';
-    ranks.forEach((r,i)=>{
-      const x = xFor(i), y = yFor(r);
-      d += (i===0 ? `M ${x},${y}` : ` L ${x},${y}`);
-    });
-    path.setAttribute('d', d);
-    path.setAttribute('fill','none');
-    path.setAttribute('stroke', color);
-    path.setAttribute('stroke-width','2.5');
-    g.appendChild(path);
-  });
-
-  // Markers with initials (offset if multiple at same spot)
-
-  gws.forEach((gw,i)=>{
-    const buckets = positionsAt[i]; // { 'rank': [players...] }
-    Object.entries(buckets).forEach(([rankKey, playersHere])=>{
-      const r = parseInt(rankKey,10);
-      const y = yFor(r);
-      const count = playersHere.length;
-      const spread = Math.min(18, 10 + (count-1)*6); // cap overall spread
-      const offsets = playersHere.map((_,idx)=>{
-        if (count === 1) return 0;
-        const start = -spread/2, step = spread/(count-1 || 1);
-        return start + idx*step;
-      });
-
-      playersHere.forEach((p,idx)=>{
-        const x = xFor(i) + offsets[idx];
-        const color = series[p].color;
-
-        const circ = document.createElementNS(svg.namespaceURI,'circle');
-        circ.setAttribute('cx', x); circ.setAttribute('cy', y);
-        circ.setAttribute('r', rMarker);
-        circ.setAttribute('fill', color);
-        circ.setAttribute('stroke', '#0b0e1d');
-        circ.setAttribute('stroke-width', '3');
-        g.appendChild(circ);
-
-        const text = document.createElementNS(svg.namespaceURI,'text');
-        text.textContent = getInitials(p);
-        text.setAttribute('x', x); text.setAttribute('y', y+1);
-        text.setAttribute('class','rank-badge');
-        g.appendChild(text);
-      });
-    });
-  });
-
-
+function saveHighlight(){
+  try { localStorage.setItem(HL_KEY, JSON.stringify(highlight)); } catch (_) {}
 }
 
+function loadHighlight(){
+  if (highlight) return highlight;
+  try {
+    const saved = JSON.parse(localStorage.getItem(HL_KEY) || 'null');
+    if (saved && typeof saved === 'object') {
+      highlight = Object.fromEntries(
+        Object.entries(saved).filter(([p, slot]) => PLAYERS.includes(p) && HL_COLORS[slot])
+      );
+    }
+  } catch (_) {}
+  if (!highlight) {
+    // First visit: highlight the current top 3
+    const last = HIST.gws.length - 1;
+    highlight = {};
+    PLAYERS.slice()
+      .sort((a, b) => HIST.series[a].ranks[last] - HIST.series[b].ranks[last])
+      .slice(0, HL_MAX)
+      .forEach((p, i) => { highlight[p] = i; });
+  }
+  return highlight;
+}
+
+function toggleHighlight(p){
+  if (p in highlight) {
+    delete highlight[p];
+  } else {
+    if (Object.keys(highlight).length >= HL_MAX) delete highlight[Object.keys(highlight)[0]]; // drop the oldest pick
+    const used = new Set(Object.values(highlight));
+    highlight[p] = [...HL_COLORS.keys()].find(i => !used.has(i));
+  }
+  saveHighlight();
+}
+
+function renderRankChart(){
+  const root = document.getElementById('rank-chart-wrap');
+  if (!root) return;
+  root.innerHTML = '';
+
+  const { gws, series } = HIST;
+  const nG = gws.length, n = PLAYERS.length;
+  if (!nG) {
+    root.innerHTML = '<div class="muted small" style="padding:16px">Ainda não há jornadas.</div>';
+    return;
+  }
+  const hl = loadHighlight();
+
+  // Real pixel sizes (no scaling), so text and markers stay readable on phones
+  const narrow = window.innerWidth <= 600;
+  const rowH = narrow ? 34 : 40;
+  const labelW = narrow ? 134 : 190;
+  const padX = 16, padTop = 6, axisH = 28;
+  const H = padTop + n * rowH + axisH;
+  const avail = Math.max(120, root.clientWidth - labelW - 2);
+  const minCol = narrow ? 30 : 44; // below this the chart scrolls sideways instead of squashing
+  const colW = nG > 1 ? Math.max(minCol, (avail - 2 * padX) / (nG - 1)) : 0;
+  const plotW = Math.max(avail, 2 * padX + colW * (nG - 1));
+  const x = i => nG > 1 ? padX + i * colW : plotW / 2;
+  const y = r => padTop + (r - 0.5) * rowH;
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    parent.appendChild(e);
+    return e;
+  };
+
+  const plot = document.createElement('div');
+  plot.className = 'rk-plot';
+  const svg = el('svg', { width: plotW, height: H, role: 'img',
+    'aria-label': 'Evolução das posições na classificação por jornada' }, plot);
+
+  // Row guides + GW axis
+  for (let r = 1; r <= n; r++) el('line', { x1: 0, x2: plotW, y1: y(r), y2: y(r), class: 'rank-grid' }, svg);
+  gws.forEach((gw, i) => {
+    const t = el('text', { x: x(i), y: padTop + n * rowH + 18, class: 'rank-label', 'text-anchor': 'middle' }, svg);
+    t.textContent = gw.replace(/\D/g, '');
+  });
+
+  const pathFor = p => series[p].ranks.map((r, i) => `${i ? 'L' : 'M'}${x(i)},${y(r)}`).join(' ');
+  const others = PLAYERS.filter(p => !(p in hl));
+  const picked = PLAYERS.filter(p => p in hl);
+
+  // Context lines first, highlighted ones on top
+  others.forEach(p => {
+    el('path', { d: pathFor(p), class: 'rk-line' }, svg);
+    el('circle', { cx: x(nG - 1), cy: y(series[p].ranks[nG - 1]), r: 3, class: 'rk-end' }, svg);
+  });
+  picked.forEach(p => {
+    const color = HL_COLORS[hl[p]];
+    el('path', { d: pathFor(p), class: 'rk-line on', stroke: color }, svg);
+    series[p].ranks.forEach((r, i) => el('circle', { cx: x(i), cy: y(r), r: 4.5, fill: color, class: 'rk-dot' }, svg));
+  });
+
+  // Invisible, finger-sized hit targets for the tooltip (highlighted players win overlaps)
+  const hits = el('g', {}, svg);
+  [...others, ...picked].forEach(p => {
+    series[p].ranks.forEach((r, i) => {
+      el('circle', { cx: x(i), cy: y(r), r: Math.min(14, Math.max(8, colW / 2)), class: 'rk-hit',
+        'data-p': p, 'data-i': i }, hits);
+    });
+  });
+
+  // Names at each line's end, in current standings order. Tap to highlight.
+  const labels = document.createElement('div');
+  labels.className = 'rk-labels';
+  labels.style.width = `${labelW}px`;
+  labels.style.height = `${H}px`;
+  PLAYERS.forEach(p => {
+    const r = series[p].ranks[nG - 1];
+    const on = p in hl;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `rk-label${on ? ' on' : ''}`;
+    b.style.top = `${y(r) - rowH / 2}px`;
+    b.style.height = `${rowH}px`;
+    b.setAttribute('aria-pressed', on);
+    b.innerHTML = `<span class="rk-pos">${r}</span>`
+      + `<span class="rk-sw" style="${on ? `background:${HL_COLORS[hl[p]]}` : ''}"></span>`
+      + `<span class="rk-name">${nameHTML(p)}</span>`;
+    b.addEventListener('click', () => { toggleHighlight(p); renderRankChart(); });
+    labels.appendChild(b);
+  });
+
+  // Tooltip
+  const tip = document.createElement('div');
+  tip.className = 'rk-tip';
+  const showTip = target => {
+    const p = target.dataset.p, i = +target.dataset.i;
+    const s = series[p];
+    const move = i > 0 ? s.ranks[i - 1] - s.ranks[i] : 0;
+    tip.innerHTML = `<strong>${p}</strong><br>${gws[i]}: ${s.ranks[i]}.º lugar ${i > 0 ? moveHTML(move) : ''}<br>`
+      + `<span class="muted">${s.points[i]} pts no total</span>`;
+    const c = target.getBoundingClientRect(), box = root.getBoundingClientRect();
+    const cx = c.left + c.width / 2 - box.left;
+    tip.style.display = 'block';
+    const half = tip.offsetWidth / 2;
+    tip.style.left = `${Math.min(Math.max(cx, half + 4), box.width - half - 4)}px`;
+    tip.style.top = `${c.top - box.top + c.height / 2}px`;
+    tip.classList.toggle('below', c.top - box.top < 70); // no room above: show it under the point
+  };
+  const hideTip = () => { tip.style.display = 'none'; };
+  hits.addEventListener('pointerover', e => { if (e.target.dataset.p) showTip(e.target); });
+  hits.addEventListener('click', e => { if (e.target.dataset.p) showTip(e.target); });
+  svg.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hideTip(); });
+  const edge = () => plot.classList.toggle('scrolled', plot.scrollLeft > 2);
+  plot.addEventListener('scroll', () => { hideTip(); edge(); }, { passive: true });
+  svg.addEventListener('click', e => { if (!e.target.dataset.p) hideTip(); });
+
+  root.append(plot, labels, tip);
+  plot.scrollLeft = plot.scrollWidth; // latest GWs in view when it scrolls
+  edge();
+}
 
 // ----- Heatmap data builder (NET scores) -----
 function buildHeatmapData(){
@@ -991,7 +1084,7 @@ function renderHeatmap(){
   const isNarrow = window.innerWidth <= 600;
   const cellW = isNarrow ? 52 : 70;
   const cellH = isNarrow ? 26 : 28;
-  const fixedW = isNarrow ? 56 : 80; // Width of the fixed left column (Names)
+  const fixedW = isNarrow ? 76 : 96; // Width of the fixed left column (Names)
   const topPad = 24;
   const bottomPad = 12; // Space at bottom
   
@@ -1022,7 +1115,7 @@ function renderHeatmap(){
     text.setAttribute('class', 'hm-axis');
     text.setAttribute('text-anchor', 'end'); // Right align text
     text.setAttribute('dominant-baseline', 'middle');
-    text.textContent = getInitials(p);
+    text.textContent = shortName(p);
     svgLeft.appendChild(text);
   });
   leftDiv.appendChild(svgLeft);
@@ -1126,6 +1219,7 @@ async function loadFplData(){
   }
 
   document.getElementById('cpp-chip').textContent = `Custo por ponto: ${euro.format(COST_PER_POINT)}`;
+  HIST = buildCumulativeSeries();
   const {rows, weekTops, totals} = compute();
   renderKPIs(totals);
   enableSorting(rows);
@@ -1158,12 +1252,27 @@ async function loadFplData(){
   renderRankChart();
   renderHeatmap();
 
-  // Re-render the heatmap (cell sizing depends on viewport width) on resize/rotate
-  let resizeTimer;
+  // Re-render the charts (their sizing depends on viewport width) on resize/rotate.
+  // Only when the width changes: mobile browsers fire resize while scrolling.
+  let resizeTimer, lastW = window.innerWidth;
   window.addEventListener('resize', () => {
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(renderHeatmap, 200);
+    resizeTimer = setTimeout(() => { renderRankChart(); renderHeatmap(); }, 200);
   });
+
+  // Highlight the menu link of the section on screen
+  const links = [...document.querySelectorAll('.topnav a')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${e.target.id}`));
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    links.forEach(a => { const sec = document.querySelector(a.getAttribute('href')); if (sec) io.observe(sec); });
+  }
 })();
 
 </script>
