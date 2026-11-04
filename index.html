@@ -171,9 +171,19 @@
 #summary-table tbody td:not(:first-child),
 #summary-table thead th:not(:first-child),
 #weeks table tbody td:not(:first-child),
-#weeks table thead th:not(:first-child) {
+#weeks table thead th:not(:first-child),
+#chips-table tbody td:not(:first-child),
+#chips-table thead th:not(:first-child) {
   text-align: center;
 }
+
+#chips-table thead th { cursor: default; }
+.chip-used{
+  display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600;
+  background:rgba(124,156,255,.2); color:var(--ink); border:1px solid var(--accent);
+  font-variant-numeric:tabular-nums;
+}
+.chip-count{font-family:var(--display); font-weight:700; font-variant-numeric:tabular-nums}
 
 #summary-table, #weeks table {
   display: block;
@@ -198,15 +208,15 @@
 
 /* --- Card layout for tables on narrow screens --- */
 @media (max-width: 640px) {
-  #summary-table, #weeks table {
+  #summary-table, #weeks table, #chips-table {
     display: block;
     overflow-x: visible;
     white-space: normal;
     border-spacing: 0;
   }
-  #summary-table thead, #weeks table thead { display: none; }
-  #summary-table tbody, #weeks table tbody { display: block; }
-  #summary-table tbody tr, #weeks table tbody tr {
+  #summary-table thead, #weeks table thead, #chips-table thead { display: none; }
+  #summary-table tbody, #weeks table tbody, #chips-table tbody { display: block; }
+  #summary-table tbody tr, #weeks table tbody tr, #chips-table tbody tr {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3px 14px;
@@ -216,7 +226,7 @@
     border-radius: 12px !important;
     background: rgba(255,255,255,.03);
   }
-  #summary-table tbody td, #weeks table tbody td {
+  #summary-table tbody td, #weeks table tbody td, #chips-table tbody td {
     border: none !important;
     border-radius: 0 !important;
     padding: 3px 0 !important;
@@ -224,14 +234,15 @@
     display: flex; justify-content: space-between; align-items: baseline;
     text-align: right !important;
   }
-  #summary-table tbody td:first-child, #weeks table tbody td:first-child {
+  #chips-table tbody td.chip-count-cell { grid-column: 1 / -1; }
+  #summary-table tbody td:first-child, #weeks table tbody td:first-child, #chips-table tbody td:first-child {
     grid-column: 1 / -1;
     font-family: var(--display); font-size: 15px; color: #fff;
     display: block; text-align: left !important;
     padding-bottom: 8px !important; margin-bottom: 4px;
     border-bottom: 1px solid var(--border) !important;
   }
-  #summary-table tbody td::before, #weeks table tbody td::before {
+  #summary-table tbody td::before, #weeks table tbody td::before, #chips-table tbody td::before {
     content: attr(data-label);
     color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
   }
@@ -350,6 +361,14 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;">
+      <h2>Chips</h2>
+      <table id="chips-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="panel" style="grid-column:1 / -1;">
         <h2>Evolução das Classificações</h2>
         <div id="rank-chart-wrap" class="rank-wrap">
           <svg id="rank-chart" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet"></svg>
@@ -415,6 +434,22 @@
     "João Pires": 0,
   };
 
+  // The chips available to each player
+  const CHIPS = ["Wildcard", "Bench Boost", "Triple Captain", "Free Hit"];
+
+  // Chips played so far: the GW each player used each chip. Missing = not used yet.
+  const CHIPS_USED = {
+    "Diogo Lopes": {"Wildcard": "GW3", "Bench Boost": "GW2", "Triple Captain": "GW7"},
+    "Bernardo Saraiva": {"Wildcard": "GW2", "Free Hit": "GW9"},
+    "Rui Bimba": {"Wildcard": "GW6"},
+    "Miguel Antunes": {"Wildcard": "GW4", "Triple Captain": "GW3"},
+    "Diogo Amarelo": {"Wildcard": "GW5", "Bench Boost": "GW2", "Triple Captain": "GW7"},
+    "João Leitão": {},
+    "António Moreira": {"Wildcard": "GW6", "Bench Boost": "GW1", "Triple Captain": "GW7", "Free Hit": "GW3"},
+    "Tiago Monteiro": {},
+    "João Pires": {"Wildcard": "GW5", "Bench Boost": "GW9", "Triple Captain": "GW3", "Free Hit": "GW4"},
+  };
+
   // ========= END OF DATA SECTION =========
 
   // Helpers
@@ -424,6 +459,16 @@
   function safeTransfer(gw, p){
     const t = TRANSFERS?.[gw]?.[p];
     return Number.isFinite(t) ? t : 0;
+  }
+
+  function rankBadge(rank){
+    const medal = {1:'gold', 2:'silver', 3:'bronze'}[rank];
+    return `<span class="rank-medal${medal ? ` rank-medal--${medal}` : ''}">${rank}</span>`;
+  }
+
+  // Chips a player used in a given GW
+  function chipsPlayed(gw, p){
+    return CHIPS.filter(c => CHIPS_USED[p]?.[c] === gw);
   }
 
 // --- Helpers for rank chart ---
@@ -523,13 +568,9 @@ function compute() {
     tbody.innerHTML = "";
     rows.forEach(r=>{
       const balClass = r.balance <= 0 ? 'good' : 'bad'; // <= 0 means settled or ahead
-      const medal = {1:'gold', 2:'silver', 3:'bronze'}[r.rank];
-      const rankBadge = medal
-        ? `<span class="rank-medal rank-medal--${medal}">${r.rank}</span>`
-        : `<span class="rank-medal">${r.rank}</span>`;
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${rankBadge}${r.player}</td>
+        <td>${rankBadge(r.rank)}${r.player}</td>
         <td class="right" data-label="Pontos">${r.totalScore}</td>
         <td class="right money" data-label="Pago">${euro.format(r.paid)}</td>
         <td class="right money" data-label="Total">${euro.format(r.owed)}</td>
@@ -538,6 +579,32 @@ function compute() {
       tbody.appendChild(tr);
     });
   }
+
+  // Shown in standings order, independent of how the Global table is sorted
+  function renderChips(rows){
+    const table = document.getElementById('chips-table');
+    table.tHead.innerHTML = `
+      <tr>
+        <th>Jogador</th>
+        <th>Usados</th>
+        ${CHIPS.map(c => `<th>${c}</th>`).join("")}
+      </tr>
+    `;
+    table.tBodies[0].innerHTML = rows.slice().sort((a,b)=>a.rank-b.rank).map(r => {
+      const used = CHIPS_USED[r.player] ?? {};
+      const count = CHIPS.filter(c => used[c]).length;
+      return `
+        <tr>
+          <td>${rankBadge(r.rank)}${r.player}</td>
+          <td class="chip-count-cell" data-label="Usados"><span class="chip-count">${count}/${CHIPS.length}</span></td>
+          ${CHIPS.map(c => `
+            <td data-label="${c}">${used[c] ? `<span class="chip-used">${used[c]}</span>` : '<span class="muted">—</span>'}</td>
+          `).join("")}
+        </tr>
+      `;
+    }).join("");
+  }
+
 function renderWeeks(weekTops){
   const wrapper = document.getElementById('weeks');
   wrapper.innerHTML = "";
@@ -582,7 +649,8 @@ function renderWeeks(weekTops){
           const diff = -Math.max(0, topNet - r.net);      // now NET
           const debt = -round2(diff * COST_PER_POINT);    // now NET
           const isTop = r.net === topNet;                // top by NET
-          const badge = isTop ? ` <span class="pill">Top</span>` : "";
+          const badge = (isTop ? ` <span class="pill">Top</span>` : "")
+            + chipsPlayed(gw, r.player).map(c => ` <span class="chip-used">${c}</span>`).join("");
           const transfersCell = r.transfers > 0 ? `-${r.transfers}` : '0';
           return `
             <tr>
@@ -1018,6 +1086,7 @@ function renderHeatmap(){
   const {rows, weekTops, totals} = compute();
   renderKPIs(totals);
   enableSorting(rows);
+  renderChips(rows);
 
   const gwSelector = document.getElementById('gw-selector');
   if (gwSelector) {
