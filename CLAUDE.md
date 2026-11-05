@@ -11,7 +11,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
 - `scripts/notify.py`: builds and sends the "GWn fechada" push notification when a new gameweek is final. `data/notified.json` remembers the last gameweek announced (generated; first run only records it and sends nothing).
 - `.github/workflows/update-data.yml`: runs hourly and on manual dispatch: fetch data, send the notification, commit `data/` if it changed. "Run workflow" with `test_notification` ticked only sends a test push.
-- `manifest.webmanifest` + `sw.js`: installable app (PWA). The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
+- `manifest.webmanifest` + `sw.js`: installable app (PWA). The app's name is "Fantasy Fundão" everywhere (manifest `name` and `short_name`, `apple-mobile-web-app-title`, page title, OneSignal site name). iOS puts it in "from <name>" under every notification and keeps the name saved when the icon was added, so a rename only reaches phones that re-add the icon. The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
 - `assets/crest.png` (white, transparent), `assets/icon-180.png` (favicon, iPhone home screen), `assets/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (app icons). `LF.png` and `GARDUNHA-*.jpg` are old and unused.
 
 ## Data flow
