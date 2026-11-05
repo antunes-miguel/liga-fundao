@@ -10,7 +10,8 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - `data/names.json`: maps an FPL name or entry id to the name shown on the page (e.g. `"Antonio Moreira": "António Moreira"`).
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
 - `.github/workflows/update-data.yml`: runs the script every 6 hours and on manual dispatch, commits `data/` if it changed.
-- `assets/crest.png` (white, transparent), `assets/icon-180.png` (favicon). `LF.png` and `GARDUNHA-*.jpg` are old and unused.
+- `manifest.webmanifest` + `sw.js`: installable app (PWA). The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
+- `assets/crest.png` (white, transparent), `assets/icon-180.png` (favicon, iPhone home screen), `assets/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (app icons). `LF.png` and `GARDUNHA-*.jpg` are old and unused.
 
 ## Data flow
 
@@ -36,6 +37,8 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - Fonts: Montserrat 800 uppercase for the wordmark, headings and menu (`--display`); Inter for body text.
 - Phones matter most. At ≤640px, tables become compact one-row-per-player grids, with short names via `nameHTML()` / `shortName()` ("Diogo L.").
   Each table panel has a "Tabela completa" button (phones only) that adds `.full-view` to the panel: the full desktop table, scrolling sideways, first column sticky. The compact phone CSS is scoped to `.panel:not(.full-view)`, so new compact rules must be too. The choice is saved per panel in `localStorage` (`lf-full-view`).
+- Installed on iPhone the page runs under the status bar (`black-translucent`, `viewport-fit=cover`): body padding and the sticky menu use `env(safe-area-inset-*)`. Keep that when changing top-level layout.
+- When the installed app comes back on screen, it reloads if `data/fpl.json` has a newer `updated_at` (checked at most every 5 minutes).
 - Standings chart: grey lines plus up to 3 highlighted players. The colours in `HL_COLORS` (blue, gold, green) were checked for contrast and colour blindness on the maroon panel; re-check if you change them. The highlight is saved in `localStorage` (`lf-rank-highlight`).
 
 ## Working on it

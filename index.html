@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Fantasy Fundão</title>
   <link rel="icon" type="image/png" href="assets/icon-180.png">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
   <meta name="theme-color" content="#3d0e1e">
+  <!-- Installable app (Add to Home Screen / Install app) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Fundão">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
@@ -55,6 +61,17 @@
           var(--stripe) 58% 66%, transparent 66% 84%, var(--stripe2) 84% 92%, transparent 92%);
     }
     .wrap{max-width:1100px;margin:0 auto}
+    /* Installed app on iPhone: keep content clear of the status bar, notch and home bar */
+    body{
+      padding-top:calc(24px + env(safe-area-inset-top));
+      padding-left:max(24px, env(safe-area-inset-left));
+      padding-right:max(24px, env(safe-area-inset-right));
+      padding-bottom:calc(24px + env(safe-area-inset-bottom));
+    }
+    body::after{
+      content:""; position:fixed; top:0; left:0; right:0; z-index:30;
+      height:env(safe-area-inset-top); background:var(--brand);
+    }
     ::selection{background:#fff; color:var(--brand)}
     .panel {
   background: rgba(46, 11, 23, 0.86) !important; /* Semi-transparent */
@@ -177,7 +194,7 @@
     .rk-tip.below{transform:translate(-50%, 12px)}
 
     /* --- Sticky section menu --- */
-    .topnav{position:sticky; top:0; z-index:20; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
+    .topnav{position:sticky; top:env(safe-area-inset-top); z-index:20; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
       margin:0 0 16px; padding:8px; border:1px solid var(--border); border-radius:999px; background:rgba(46,11,23,.9);
       -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--border)}
     .topnav::-webkit-scrollbar{display:none}
@@ -243,7 +260,9 @@
 
     @media (max-width: 600px) {
   body {
-    padding: 12px; /* Give more room to content on small screens */
+    /* Give more room to content on small screens */
+    padding: calc(12px + env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+             calc(12px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
   }
   .topnav { margin: 0 -12px 12px; padding: 8px 12px; gap: 4px; border-radius: 0; border-width: 1px 0; }
   .topnav a { padding: 6px 10px; font-size: 12px; }
@@ -1515,6 +1534,25 @@ async function loadFplData(){
       fullViews = on ? [...new Set([...fullViews, panel.id])] : fullViews.filter(id => id !== panel.id);
       try { localStorage.setItem(VIEW_KEY, JSON.stringify(fullViews)); } catch (_) {}
     });
+  });
+
+  // Installable app: offline support (only on http/https, not when opened from disk)
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker not registered:', err));
+  }
+
+  // Phones keep installed apps open in the background: when the app comes back
+  // to the screen, reload if a newer data/fpl.json (new GW or new site version) is out.
+  let lastCheck = Date.now();
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState !== 'visible' || !fpl?.updated_at) return;
+    if (Date.now() - lastCheck < 5 * 60 * 1000) return; // at most every 5 minutes
+    lastCheck = Date.now();
+    try {
+      const res = await fetch('data/fpl.json', {cache: 'no-store'});
+      const latest = await res.json();
+      if (latest.updated_at && latest.updated_at !== fpl.updated_at) location.reload();
+    } catch (_) { /* offline: keep showing what we have */ }
   });
 
   // Highlight the menu link of the section on screen
