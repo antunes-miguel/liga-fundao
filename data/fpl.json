@@ -262,6 +262,107 @@
       "Tiago Monteiro": 0
     }
   },
+  "bench": {
+    "GW1": {
+      "Diogo Lopes": 13,
+      "Bernardo Saraiva": 11,
+      "Miguel Antunes": 7,
+      "Diogo Amarelo": 14,
+      "António Moreira": 0,
+      "João Pires": 1,
+      "João Leitão": 19,
+      "Rui Bimba": 7,
+      "Tiago Monteiro": 10
+    },
+    "GW2": {
+      "Diogo Lopes": 0,
+      "Bernardo Saraiva": 7,
+      "Miguel Antunes": 25,
+      "Diogo Amarelo": 0,
+      "António Moreira": 16,
+      "João Pires": 6,
+      "João Leitão": 9,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 2
+    },
+    "GW3": {
+      "Diogo Lopes": 6,
+      "Bernardo Saraiva": 14,
+      "Miguel Antunes": 10,
+      "Diogo Amarelo": 13,
+      "António Moreira": 4,
+      "João Pires": 11,
+      "João Leitão": 12,
+      "Rui Bimba": 9,
+      "Tiago Monteiro": 6
+    },
+    "GW4": {
+      "Diogo Lopes": 2,
+      "Bernardo Saraiva": 11,
+      "Miguel Antunes": 6,
+      "Diogo Amarelo": 12,
+      "António Moreira": 9,
+      "João Pires": 3,
+      "João Leitão": 1,
+      "Rui Bimba": 9,
+      "Tiago Monteiro": 16
+    },
+    "GW5": {
+      "Diogo Lopes": 3,
+      "Bernardo Saraiva": 15,
+      "Miguel Antunes": 8,
+      "Diogo Amarelo": 14,
+      "António Moreira": 19,
+      "João Pires": 14,
+      "João Leitão": 0,
+      "Rui Bimba": 11,
+      "Tiago Monteiro": 12
+    },
+    "GW6": {
+      "Diogo Lopes": 3,
+      "Bernardo Saraiva": 7,
+      "Miguel Antunes": 8,
+      "Diogo Amarelo": 9,
+      "António Moreira": 20,
+      "João Pires": 10,
+      "João Leitão": 0,
+      "Rui Bimba": 14,
+      "Tiago Monteiro": 20
+    },
+    "GW7": {
+      "Diogo Lopes": 1,
+      "Bernardo Saraiva": 14,
+      "Miguel Antunes": 8,
+      "Diogo Amarelo": 9,
+      "António Moreira": 3,
+      "João Pires": 11,
+      "João Leitão": 5,
+      "Rui Bimba": 12,
+      "Tiago Monteiro": 10
+    },
+    "GW8": {
+      "Diogo Lopes": 1,
+      "Bernardo Saraiva": 3,
+      "Miguel Antunes": 5,
+      "Diogo Amarelo": 4,
+      "António Moreira": 11,
+      "João Pires": 6,
+      "João Leitão": 0,
+      "Rui Bimba": 6,
+      "Tiago Monteiro": 2
+    },
+    "GW9": {
+      "Diogo Lopes": 15,
+      "Bernardo Saraiva": 12,
+      "Miguel Antunes": 17,
+      "Diogo Amarelo": 24,
+      "António Moreira": 9,
+      "João Pires": 0,
+      "João Leitão": 4,
+      "Rui Bimba": 16,
+      "Tiago Monteiro": 14
+    }
+  },
   "chips_used": {
     "Diogo Lopes": {
       "Bench Boost": [
@@ -337,5 +438,5 @@
     },
     "Tiago Monteiro": {}
   },
-  "updated_at": "2026-11-04T18:59:33+00:00"
+  "updated_at": "2026-11-05T10:06:39+00:00"
 }

@@ -75,7 +75,7 @@ def main():
 
     league, entries = league_entries()
 
-    players, matchweeks, transfers, chips_used = [], {}, {}, {}
+    players, matchweeks, transfers, bench, chips_used = [], {}, {}, {}, {}
     for e in entries:
         entry_id = e["entry"]
         name = overrides.get(str(entry_id)) or overrides.get(e["player_name"]) or e["player_name"]
@@ -93,6 +93,7 @@ def main():
             key = f"GW{gw['event']}"
             matchweeks.setdefault(key, {})[name] = gw["points"]
             transfers.setdefault(key, {})[name] = gw["event_transfers_cost"]
+            bench.setdefault(key, {})[name] = gw["points_on_bench"]
 
         used = {}
         for chip in history["chips"]:
@@ -109,6 +110,7 @@ def main():
         "players": players,
         "matchweeks": order(matchweeks),
         "transfers": order(transfers),
+        "bench": order(bench),
         "chips_used": chips_used,
     }
 
