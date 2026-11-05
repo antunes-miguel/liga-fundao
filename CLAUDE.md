@@ -11,7 +11,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
 - `scripts/notify.py`: builds and sends the "GWn fechada" push notification when a new gameweek is final. `data/notified.json` remembers the last gameweek announced (generated; first run only records it and sends nothing).
 - `.github/workflows/update-data.yml`: runs hourly and on manual dispatch: fetch data, send the notification, commit `data/` if it changed. "Run workflow" with `test_notification` ticked only sends a test push.
-- `manifest.webmanifest` + `sw.js`: installable app (PWA). The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
+- `manifest.webmanifest` + `sw.js`: installable app (PWA). The app's name is "Fantasy Fundão" everywhere (manifest `name` and `short_name`, `apple-mobile-web-app-title`, page title, OneSignal site name). iOS puts it in "from <name>" under every notification and keeps the name saved when the icon was added, so a rename only reaches phones that re-add the icon. The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
 - `assets/crest.png` (white, transparent), `assets/icon-180.png` (favicon, iPhone home screen), `assets/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (app icons). `LF.png` and `GARDUNHA-*.jpg` are old and unused.
 
 ## Data flow
@@ -25,7 +25,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 ## Push notifications
 
 - OneSignal (free plan). Public app id in `ONESIGNAL_APP_ID` in `index.html` (empty = feature off, button hidden); the secret `ONESIGNAL_API_KEY` is a GitHub Actions secret. `notify.py` reads the app id from `index.html`.
-- One notification per closed gameweek, same for everyone, **no money info**: 🏆 winner (net points), 👑 leader / new leader, 🎯 best captain (points earned with the multiplier), 🪑 most points left on the bench (Bench Boost weeks excluded), 📈 biggest climb (only if ≥2 places, or 1 place shared by at most 2). Preview with `python scripts/notify.py --gw 9`.
+- One notification per closed gameweek, same for everyone, **no money info**: 🏆 winner (net points), 👑 leader / new leader, 🎯 best captain (points earned with the multiplier), 🪑 most points left on the bench (Bench Boost weeks excluded), 📈 biggest climb (only if ≥2 places, or 1 place shared by at most 2). Preview with `python scripts/notify.py --gw 9`; add `--send` (or run the workflow with `preview_gw` = 9) to really send that message, marked "(teste)", without touching `data/notified.json`.
 - With notifications on, **OneSignal registers `sw.js`** (our worker `importScripts` the OneSignal worker). The page must not register `sw.js` itself then, or the two registrations replace each other and push stops working.
 - The button only shows where push works: Android and desktop browsers, and the installed app on iPhone (iOS 16.4+), never in a Safari tab.
 - OneSignal dashboard: integration type **Custom Code** (we call `OneSignal.init` ourselves; the dashboard path fields don't apply), Site URL = the origin only (`https://<owner>.github.io`, no repo path). `serviceWorkerPath` is resolved against the origin and must have no leading slash (e.g. `liga-fundao/sw.js`); the scope is the repo folder.

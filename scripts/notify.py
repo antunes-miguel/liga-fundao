@@ -6,7 +6,8 @@ Runs in GitHub Actions right after scripts/fetch_fpl.py (see
 
     python scripts/notify.py              # normal run (used by the workflow)
     python scripts/notify.py --dry-run    # print what would be sent, change nothing
-    python scripts/notify.py --gw 9       # preview the message for GW9 (never sends)
+    python scripts/notify.py --gw 9       # preview the message for GW9 (prints only)
+    python scripts/notify.py --gw 9 --send  # really send GW9's message, marked "(teste)"; state untouched
     python scripts/notify.py --test       # send a test push (does not touch the state)
 
 How it decides:
@@ -276,7 +277,8 @@ def deliver(title, body):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true", help="print the message, send nothing, keep the state")
-    ap.add_argument("--gw", type=int, help="preview the message for this gameweek (never sends)")
+    ap.add_argument("--gw", type=int, help="preview the message for this gameweek (prints only, unless --send)")
+    ap.add_argument("--send", action="store_true", help="with --gw: send that message as a test (title gets '(teste)')")
     ap.add_argument("--test", action="store_true", help="send a test notification")
     args = ap.parse_args()
 
@@ -289,9 +291,19 @@ def main():
             sys.exit("Test notification was not delivered (see the message above).")
         return
 
+    if args.send and not args.gw:
+        sys.exit("--send needs --gw N")
     if args.gw:
-        title, body = build_message(data, f"GW{args.gw}")
-        print(f"{title}\n{body}")
+        key = f"GW{args.gw}"
+        if key not in data["matchweeks"]:
+            sys.exit(f"{key} is not in data/fpl.json (available: {', '.join(sorted(data['matchweeks'], key=gw_num))}).")
+        title, body = build_message(data, key)
+        if not args.send:
+            print(f"{title}\n{body}")
+            return
+        if not deliver(f"{title} (teste)", body):  # same text as the real one, marked as a test
+            diagnose()
+            sys.exit("The preview was not delivered (see the message above).")
         return
 
     state = load_state()
