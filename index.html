@@ -220,8 +220,13 @@
   text-align: center;
 }
 
-#chips-table thead th, #bench-table thead th { cursor: default; }
-#bench-table tbody td:not(:first-child), #bench-table thead th:not(:first-child) { text-align: right; }
+#chips-table thead th, #bench-table thead th, #captain-table thead th { cursor: default; }
+#bench-table tbody td:not(:first-child), #bench-table thead th:not(:first-child),
+#captain-table tbody td:not(:first-child), #captain-table thead th:not(:first-child) { text-align: right; }
+#captain-table .bench-total { font-family: var(--display); font-weight: 800; font-size: 16px; }
+.cap-cell { white-space: nowrap; }
+.cap-name { color: var(--muted); margin-right: 8px; }
+.cap-pts { font-weight: 700; font-variant-numeric: tabular-nums; }
 #bench-table .bench-total { font-family: var(--display); font-weight: 800; font-size: 16px; }
 .chip-used{
   display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600;
@@ -251,87 +256,150 @@
 
 /* --- Compact tables on phones: one row per player --- */
 @media (max-width: 640px) {
-  .name-full, .lg, .c-detail, .c-count { display: none; }
-  .name-short, .sh { display: inline; }
-  .hint-mobile { display: inline; font-family: Inter, system-ui, sans-serif; font-weight: 400; }
+  .panel:not(.full-view) .name-full,
+  .panel:not(.full-view) .lg,
+  .panel:not(.full-view) .c-detail,
+  .panel:not(.full-view) .c-count { display: none; }
+  .panel:not(.full-view) .name-short,
+  .panel:not(.full-view) .sh { display: inline; }
+  .panel:not(.full-view) .hint-mobile { display: inline; font-family: Inter, system-ui, sans-serif; font-weight: 400; }
 
-  #summary-table, #weeks table, #chips-table {
+  .panel:not(.full-view) #summary-table,
+  .panel:not(.full-view) #weeks table,
+  .panel:not(.full-view) #chips-table {
     display: block; overflow: visible; white-space: normal; border-spacing: 0;
   }
-  #summary-table thead, #summary-table tbody,
-  #weeks table thead, #weeks table tbody,
-  #chips-table thead, #chips-table tbody { display: block; }
+  .panel:not(.full-view) #summary-table thead,
+  .panel:not(.full-view) #summary-table tbody,
+  .panel:not(.full-view) #weeks table thead,
+  .panel:not(.full-view) #weeks table tbody,
+  .panel:not(.full-view) #chips-table thead,
+  .panel:not(.full-view) #chips-table tbody { display: block; }
 
-  #summary-table tr, #weeks table tr, #chips-table tr {
+  .panel:not(.full-view) #summary-table tr,
+  .panel:not(.full-view) #weeks table tr,
+  .panel:not(.full-view) #chips-table tr {
     display: grid; align-items: center; column-gap: 10px;
   }
-  #summary-table tr { grid-template-columns: 1fr 48px 78px; }
-  #weeks table tr { grid-template-columns: 1fr 44px 66px; }
-  #chips-table tr { grid-template-columns: 1fr repeat(4, 42px); column-gap: 6px; }
+  .panel:not(.full-view) #summary-table tr { grid-template-columns: 1fr 48px 78px; }
+  .panel:not(.full-view) #weeks table tr { grid-template-columns: 1fr 44px 66px; }
+  .panel:not(.full-view) #chips-table tr { grid-template-columns: 1fr repeat(4, 42px); column-gap: 6px; }
 
-  #summary-table thead tr, #weeks table thead tr, #chips-table thead tr { padding: 0 12px; }
-  #summary-table thead th, #weeks table thead th, #chips-table thead th {
+  .panel:not(.full-view) #summary-table thead tr,
+  .panel:not(.full-view) #weeks table thead tr,
+  .panel:not(.full-view) #chips-table thead tr { padding: 0 12px; }
+  .panel:not(.full-view) #summary-table thead th,
+  .panel:not(.full-view) #weeks table thead th,
+  .panel:not(.full-view) #chips-table thead th {
     padding: 2px 0 6px; font-size: 10px;
   }
-  #summary-table thead th:not(:first-child),
-  #weeks table thead th:not(:first-child) { text-align: right; }
+  .panel:not(.full-view) #summary-table thead th:not(:first-child),
+  .panel:not(.full-view) #weeks table thead th:not(:first-child) { text-align: right; }
 
-  #summary-table tbody tr, #weeks table tbody tr, #chips-table tbody tr {
+  .panel:not(.full-view) #summary-table tbody tr,
+  .panel:not(.full-view) #weeks table tbody tr,
+  .panel:not(.full-view) #chips-table tbody tr {
     padding: 9px 12px; margin-bottom: 6px;
     border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03);
   }
-  #summary-table tbody td, #weeks table tbody td, #chips-table tbody td {
+  .panel:not(.full-view) #summary-table tbody td,
+  .panel:not(.full-view) #weeks table tbody td,
+  .panel:not(.full-view) #chips-table tbody td {
     border: none !important; border-radius: 0 !important; padding: 0 !important;
     background: transparent !important; font-variant-numeric: tabular-nums;
   }
-  #summary-table tbody td:not(:first-child),
-  #weeks table tbody td:not(:first-child) { text-align: right; }
-  #summary-table tbody td:first-child, #chips-table tbody td:first-child {
+  .panel:not(.full-view) #summary-table tbody td:not(:first-child),
+  .panel:not(.full-view) #weeks table tbody td:not(:first-child) { text-align: right; }
+  .panel:not(.full-view) #summary-table tbody td:first-child,
+  .panel:not(.full-view) #chips-table tbody td:first-child {
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .rank-medal { width: 20px; height: 20px; margin-right: 8px; font-size: 10px; }
+  .panel:not(.full-view) .rank-medal { width: 20px; height: 20px; margin-right: 8px; font-size: 10px; }
 
   /* Global: tap a row to show Pago / Total underneath */
-  #summary-table tbody tr { cursor: pointer; }
-  #summary-table td.c-name { grid-row: 1; grid-column: 1; }
-  #summary-table td.c-pts { grid-row: 1; grid-column: 2; }
-  #summary-table td.c-bal { grid-row: 1; grid-column: 3; }
-  #summary-table tbody tr.open td.c-detail {
+  .panel:not(.full-view) #summary-table tbody tr { cursor: pointer; }
+  .panel:not(.full-view) #summary-table td.c-name { grid-row: 1; grid-column: 1; }
+  .panel:not(.full-view) #summary-table td.c-pts { grid-row: 1; grid-column: 2; }
+  .panel:not(.full-view) #summary-table td.c-bal { grid-row: 1; grid-column: 3; }
+  .panel:not(.full-view) #summary-table tbody tr.open td.c-detail {
     display: flex; justify-content: space-between; grid-column: 1 / -1;
     margin-top: 6px; font-size: 13px; color: var(--muted);
   }
-  #summary-table tbody tr.open td.c-detail + td.c-detail { margin-top: 2px; }
-  #summary-table tbody tr.open td.c-detail::before {
+  .panel:not(.full-view) #summary-table tbody tr.open td.c-detail + td.c-detail { margin-top: 2px; }
+  .panel:not(.full-view) #summary-table tbody tr.open td.c-detail::before {
     content: attr(data-label); font-size: 11px; text-transform: uppercase; letter-spacing: .04em;
   }
 
   /* Weekly: transfer cost shown under the points */
-  .hit-inline { display: block; font-size: 11px; font-weight: 600; color: var(--bad); }
-  #weeks table tbody td:first-child .pill, #weeks table tbody td:first-child .chip-used {
+  .panel:not(.full-view) .hit-inline { display: block; font-size: 11px; font-weight: 600; color: var(--bad); }
+  .panel:not(.full-view) #weeks table tbody td:first-child .pill,
+  .panel:not(.full-view) #weeks table tbody td:first-child .chip-used {
     font-size: 10px; padding: 2px 6px; margin-left: 2px;
   }
 
   /* Chips: grid of GW numbers */
-  #chips-table thead th:not(:first-child), #chips-table tbody td:not(:first-child) { text-align: center; }
-  #chips-table .chip-used { padding: 2px 7px; font-size: 11px; margin: 1px 0; }
+  .panel:not(.full-view) #chips-table thead th:not(:first-child),
+  .panel:not(.full-view) #chips-table tbody td:not(:first-child) { text-align: center; }
+  .panel:not(.full-view) #chips-table .chip-used { padding: 2px 7px; font-size: 11px; margin: 1px 0; }
 }
 
-/* Banco de Ouro on phones: name | last GW | total */
+/* Banco de Ouro / Capitães on phones: name | last GW | total */
 @media (max-width: 640px) {
-  #bench-table, #bench-table thead, #bench-table tbody { display: block; border-spacing: 0; }
-  #bench-table tr { display: grid; grid-template-columns: 1fr 44px 56px; align-items: center; column-gap: 10px; }
-  #bench-table thead tr { padding: 0 12px; }
-  #bench-table thead th { padding: 2px 0 6px; font-size: 10px; }
-  #bench-table tbody tr {
+  .panel:not(.full-view) #bench-table,
+  .panel:not(.full-view) #bench-table thead,
+  .panel:not(.full-view) #bench-table tbody,
+  .panel:not(.full-view) #captain-table,
+  .panel:not(.full-view) #captain-table thead,
+  .panel:not(.full-view) #captain-table tbody { display: block; border-spacing: 0; }
+  .panel:not(.full-view) #bench-table tr,
+  .panel:not(.full-view) #captain-table tr { display: grid; align-items: center; column-gap: 10px; }
+  .panel:not(.full-view) #bench-table tr { grid-template-columns: 1fr 44px 56px; }
+  .panel:not(.full-view) #captain-table tr { grid-template-columns: 1fr auto 52px; }
+  .panel:not(.full-view) #bench-table thead tr,
+  .panel:not(.full-view) #captain-table thead tr { padding: 0 12px; }
+  .panel:not(.full-view) #bench-table thead th,
+  .panel:not(.full-view) #captain-table thead th { padding: 2px 0 6px; font-size: 10px; }
+  .panel:not(.full-view) #bench-table tbody tr,
+  .panel:not(.full-view) #captain-table tbody tr {
     padding: 9px 12px; margin-bottom: 6px;
     border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03);
   }
-  #bench-table tbody td {
+  .panel:not(.full-view) #bench-table tbody td,
+  .panel:not(.full-view) #captain-table tbody td {
     border: none !important; border-radius: 0 !important; padding: 0 !important;
     background: transparent !important; font-variant-numeric: tabular-nums;
   }
-  #bench-table tbody td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #bench-table .chip-used { padding: 2px 7px; font-size: 11px; }
+  .panel:not(.full-view) #bench-table tbody td:first-child,
+  .panel:not(.full-view) #captain-table tbody td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .panel:not(.full-view) #bench-table .chip-used,
+  .panel:not(.full-view) #captain-table .chip-used { padding: 2px 6px; font-size: 10px; }
+  .panel:not(.full-view) .cap-name { font-size: 12px; margin-right: 6px; }
+}
+
+/* "Tabela completa" toggle (phones only): the desktop table, scrolling sideways, names pinned left */
+.view-toggle { display: none; }
+@media (max-width: 640px) {
+  .view-toggle {
+    display: inline-block; margin-left: auto; cursor: pointer;
+    font: 700 11px var(--display); text-transform: uppercase; letter-spacing: .03em;
+    color: var(--ink); background: var(--panel2); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 10px;
+  }
+  .full-view .view-toggle { background: #fff; color: var(--brand); border-color: #fff; }
+  .full-view table {
+    display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    white-space: nowrap; border-spacing: 0 6px;
+  }
+  .full-view th, .full-view td { padding: 9px 10px; font-size: 13px; }
+  .full-view tbody td:first-child, .full-view thead th:first-child {
+    position: sticky; left: 0; z-index: 1; background: var(--panel);
+  }
+  .full-view thead th:first-child { background: var(--panel); }
+  .full-view .name-full { display: none; }
+  .full-view .name-short { display: inline; }
+  .full-view #weeks table .c-detail { display: table-cell; }
+  .full-view #weeks table .hit-inline { display: none; }
+  .full-view #weeks table td:first-child { white-space: nowrap; }
 }
 
 /* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
@@ -403,6 +471,7 @@
     <a href="#jornada">Jornada</a>
     <a href="#chips">Chips</a>
     <a href="#banco">Banco de Ouro</a>
+    <a href="#capitaes">Capitães</a>
     <a href="#evolucao">Evolução</a>
     <a href="#semanal">Semanal</a>
   </nav>
@@ -410,7 +479,7 @@
   <div class="grid">
     <!-- Summary -->
     <section class="panel" id="global">
-      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span></h2>
+      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
@@ -437,14 +506,14 @@
         Tabelas por Jornada
         <select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
           <option value="">Todas</option>
-        </select>
+        </select> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button>
       </h2>
       <div id="weeks"></div>
       <div class="footer-note"> A melhor pontuação não paga nada; Todos os outros devem. <span class="pill">(Melhor Pontuação − (Pontuação − Transferências)) × Custo por Ponto</span>.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="chips">
-      <h2>Chips</h2>
+      <h2>Chips <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
       <table id="chips-table">
         <thead></thead>
         <tbody></tbody>
@@ -452,13 +521,24 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="banco" hidden>
-      <h2>Banco de Ouro <span class="pill">Pontos deixados no banco</span></h2>
+      <h2>Banco de Ouro <span class="pill">Pontos deixados no banco</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
       <table id="bench-table">
         <thead></thead>
         <tbody></tbody>
       </table>
       <div class="footer-note small">Acumulado da época. Jornadas com Bench Boost ativo não contam (os pontos do banco foram para a equipa).
         Setas: posições ganhas ou perdidas nesta jornada.</div>
+    </section>
+
+    <section class="panel" style="grid-column:1 / -1;" id="capitaes" hidden>
+      <h2>Capitães <span class="pill">Eficiência da braçadeira</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
+      <table id="captain-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+      <div class="footer-note small">Eficiência = pontos do capitão ÷ pontos do melhor jogador do teu onze, somados na época (100% = escolheste sempre o melhor).
+        Acertos: jornadas em que o capitão foi a melhor escolha. Perdidos: pontos que a braçadeira deixou de ganhar (×2 no Triple Captain).
+        Se o capitão não jogou, conta o vice-capitão.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="evolucao">
@@ -531,6 +611,10 @@
 
   // Points left on the bench per GW per player (only from data/fpl.json; no inline fallback)
   let BENCH = null;
+
+  // Captain picks per GW per player (only from data/fpl.json):
+  // {c: armband player, pts: their points, mult: 2 or 3, best: best player in the XI, best_pts}
+  let CAPTAINS = null;
 
   // Each chip can be played this many times a season (one per half)
   const CHIPS_PER_TYPE = 2;
@@ -784,6 +868,62 @@ function renderBench(){
         <td class="right" data-label="${last}">${lastCell}</td>
         <td class="right c-detail" data-label="Pior jornada">${r.worst ? `${r.worst.pts} <span class="muted small">(${r.worst.gw})</span>` : '—'}</td>
         <td class="right bench-total" data-label="Total">${r.total}</td>
+      </tr>`;
+  }).join('');
+}
+
+// Captains: how close each armband pick was to the best player in that manager's own XI
+function captainStandings(gws){
+  return PLAYERS.map(p => {
+    let pts = 0, best = 0, hits = 0, lost = 0, counted = 0;
+    gws.forEach(gw => {
+      const c = CAPTAINS?.[gw]?.[p];
+      if (!c) return;
+      counted++;
+      pts += c.pts;
+      best += c.best_pts;
+      if (c.c && c.pts >= c.best_pts) hits++;
+      lost += (c.best_pts - c.pts) * (Math.max(c.mult, 2) - 1); // extra points the armband missed
+    });
+    return { player: p, eff: best > 0 ? pts / best : null, hits, lost, counted };
+  })
+  .sort((a, b) => (b.eff ?? -1) - (a.eff ?? -1) || a.lost - b.lost || a.player.localeCompare(b.player))
+  .map((r, i) => ({ ...r, rank: i + 1 }));
+}
+
+function renderCaptains(){
+  const section = document.getElementById('capitaes');
+  const gws = HIST.gws;
+  if (!CAPTAINS || !gws.length) { section.hidden = true; return; }
+  section.hidden = false;
+
+  const last = gws[gws.length - 1];
+  const now = captainStandings(gws);
+  const before = Object.fromEntries(captainStandings(gws.slice(0, -1)).map(r => [r.player, r.rank]));
+
+  const table = document.getElementById('captain-table');
+  table.tHead.innerHTML = `
+    <tr>
+      <th>Jogador</th>
+      <th class="right">Capitão ${last}</th>
+      <th class="right c-detail">Acertos</th>
+      <th class="right c-detail">Perdidos</th>
+      <th class="right">Eficiência</th>
+    </tr>`;
+  table.tBodies[0].innerHTML = now.map(r => {
+    const c = CAPTAINS[last]?.[r.player];
+    const capCell = c?.c
+      ? `<span class="cap-name">${c.c}${c.mult === 3 ? ' <span class="chip-used">TC</span>' : ''}</span><span class="cap-pts">${c.pts * c.mult}</span>`
+      : '—';
+    const title = c ? `Melhor opção: ${c.best} (${c.best_pts})` : '';
+    const move = gws.length > 1 ? moveHTML(before[r.player] - r.rank) : '';
+    return `
+      <tr>
+        <td>${rankBadge(r.rank)}${nameHTML(r.player)}${move}</td>
+        <td class="right cap-cell" data-label="Capitão ${last}" title="${title}">${capCell}</td>
+        <td class="right c-detail" data-label="Acertos">${r.hits}/${r.counted}</td>
+        <td class="right c-detail" data-label="Perdidos">${r.lost}</td>
+        <td class="right bench-total" data-label="Eficiência">${r.eff == null ? '—' : `${Math.round(r.eff * 100)}%`}</td>
       </tr>`;
   }).join('');
 }
@@ -1288,6 +1428,7 @@ async function loadFplData(){
     TRANSFERS = d.transfers;
     CHIPS_USED = d.chips_used;
     BENCH = d.bench ?? null;
+    CAPTAINS = d.captains ?? null;
     return d;
   } catch (err) {
     console.warn('Could not load data/fpl.json, using inline data:', err);
@@ -1317,6 +1458,7 @@ async function loadFplData(){
   enableSorting(rows);
   renderChips(rows);
   renderBench();
+  renderCaptains();
 
   const gwSelector = document.getElementById('gw-selector');
   if (gwSelector) {
@@ -1353,6 +1495,26 @@ async function loadFplData(){
     lastW = window.innerWidth;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { renderRankChart(); renderHeatmap(); }, 200);
+  });
+
+  // "Tabela completa" buttons (phones): switch a section between compact and full table
+  const VIEW_KEY = 'lf-full-view';
+  let fullViews = [];
+  try { fullViews = JSON.parse(localStorage.getItem(VIEW_KEY) || '[]'); } catch (_) {}
+  document.querySelectorAll('.view-toggle').forEach(btn => {
+    const panel = btn.closest('.panel');
+    const set = on => {
+      panel.classList.toggle('full-view', on);
+      btn.setAttribute('aria-pressed', on);
+      btn.textContent = on ? 'Vista compacta' : 'Tabela completa';
+    };
+    set(fullViews.includes(panel.id));
+    btn.addEventListener('click', () => {
+      const on = !panel.classList.contains('full-view');
+      set(on);
+      fullViews = on ? [...new Set([...fullViews, panel.id])] : fullViews.filter(id => id !== panel.id);
+      try { localStorage.setItem(VIEW_KEY, JSON.stringify(fullViews)); } catch (_) {}
+    });
   });
 
   // Highlight the menu link of the section on screen
