@@ -10,6 +10,10 @@ on:
         description: "Only send a test push notification (changes nothing else)"
         type: boolean
         default: false
+      preview_gw:
+        description: "Only send the real notification for this gameweek number as a preview, marked (teste), e.g. 9 (changes nothing else)"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -34,20 +38,27 @@ jobs:
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
         run: python scripts/notify.py --test
 
+      - name: Send gameweek preview
+        if: ${{ inputs.preview_gw && !inputs.test_notification }}
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+          PREVIEW_GW: ${{ inputs.preview_gw }}
+        run: python scripts/notify.py --gw "$PREVIEW_GW" --send
+
       - name: Fetch league data
-        if: ${{ !inputs.test_notification }}
+        if: ${{ !inputs.test_notification && !inputs.preview_gw }}
         run: python scripts/fetch_fpl.py
 
       # A failed notification must never stop the data from being saved
       - name: Gameweek notification
-        if: ${{ !inputs.test_notification }}
+        if: ${{ !inputs.test_notification && !inputs.preview_gw }}
         continue-on-error: true
         env:
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
         run: python scripts/notify.py
 
       - name: Commit if changed
-        if: ${{ !inputs.test_notification }}
+        if: ${{ !inputs.test_notification && !inputs.preview_gw }}
         run: |
           # git status (not git diff) so brand-new files in data/ are picked up too
           if [ -z "$(git status --porcelain -- data/)" ]; then
