@@ -39,6 +39,10 @@ INDEX_FILE = ROOT / "index.html"
 
 DEFAULT_SITE_URL = "https://antunes-miguel.github.io/liga-fundao/"
 API_URL = "https://api.onesignal.com/notifications"  # create-message docs: Authorization "Key <app api key>"
+# Everyone who ever subscribed. OneSignal's docs still show a "Subscribed Users" segment, but new apps don't have
+# one (sending to it reaches nobody); they have "Total Subscriptions", "Active Subscriptions" (recent visitors only), ...
+# `python scripts/notify.py --test` prints the app's real audiences when a test reaches nobody.
+AUDIENCE = "Total Subscriptions"
 
 
 # ---------- message ----------
@@ -189,7 +193,7 @@ def send_push(title, body, url):
     payload = {
         "app_id": app_id,
         "target_channel": "push",
-        "included_segments": ["Subscribed Users"],
+        "included_segments": [AUDIENCE],
         "headings": {"en": title},
         "contents": {"en": body},
         "url": url,
