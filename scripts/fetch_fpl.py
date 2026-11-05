@@ -57,6 +57,21 @@ def load_name_overrides():
     return json.loads(NAMES_FILE.read_text(encoding="utf-8"))
 
 
+def captain_pick(picks, live_pts, names):
+    """Who actually got the armband (FPL moves it to the vice if the captain
+    doesn't play) and the best option in the starting XI that week."""
+    xi = [p for p in picks if p["position"] <= 11]
+    armband = next((p for p in picks if p["multiplier"] > 1), None)
+    best = max(xi, key=lambda p: live_pts.get(p["element"], 0))
+    return {
+        "c": names.get(armband["element"]) if armband else None,
+        "pts": live_pts.get(armband["element"], 0) if armband else 0,
+        "mult": armband["multiplier"] if armband else 1,
+        "best": names.get(best["element"]),
+        "best_pts": live_pts.get(best["element"], 0),
+    }
+
+
 def league_entries():
     entries, page = [], 1
     while True:
@@ -70,12 +85,25 @@ def league_entries():
 def main():
     overrides = load_name_overrides()
 
-    events = get("bootstrap-static/")["events"]
+    boot = get("bootstrap-static/")
+    events = boot["events"]
     done = {e["id"] for e in events if e["finished"] and e["data_checked"]}
+    player_names = {e["id"]: e["web_name"] for e in boot["elements"]}
+
+    # Finished GWs never change, so reuse captain data we already have
+    old_captains = {}
+    if OUT_FILE.exists():
+        old_captains = json.loads(OUT_FILE.read_text(encoding="utf-8")).get("captains", {})
+    live_cache = {}
+
+    def live_points(gw):
+        if gw not in live_cache:
+            live_cache[gw] = {e["id"]: e["stats"]["total_points"] for e in get(f"event/{gw}/live/")["elements"]}
+        return live_cache[gw]
 
     league, entries = league_entries()
 
-    players, matchweeks, transfers, bench, chips_used = [], {}, {}, {}, {}
+    players, matchweeks, transfers, bench, captains, chips_used = [], {}, {}, {}, {}, {}
     for e in entries:
         entry_id = e["entry"]
         name = overrides.get(str(entry_id)) or overrides.get(e["player_name"]) or e["player_name"]
@@ -94,6 +122,11 @@ def main():
             matchweeks.setdefault(key, {})[name] = gw["points"]
             transfers.setdefault(key, {})[name] = gw["event_transfers_cost"]
             bench.setdefault(key, {})[name] = gw["points_on_bench"]
+            cached = old_captains.get(key, {}).get(name)
+            if cached is None:
+                picks = get(f"entry/{entry_id}/event/{gw['event']}/picks/")["picks"]
+                cached = captain_pick(picks, live_points(gw["event"]), player_names)
+            captains.setdefault(key, {})[name] = cached
 
         used = {}
         for chip in history["chips"]:
@@ -111,6 +144,7 @@ def main():
         "matchweeks": order(matchweeks),
         "transfers": order(transfers),
         "bench": order(bench),
+        "captains": order(captains),
         "chips_used": chips_used,
     }
 

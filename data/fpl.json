@@ -363,6 +363,593 @@
       "Tiago Monteiro": 14
     }
   },
+  "captains": {
+    "GW1": {
+      "Diogo Lopes": {
+        "c": "Tzolis",
+        "pts": 6,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "Bernardo Saraiva": {
+        "c": "Isak",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "Miguel Antunes": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "Diogo Amarelo": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "António Moreira": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "João Pires": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "João Leitão": {
+        "c": "Kinsky",
+        "pts": 2,
+        "mult": 2,
+        "best": "Calafiori",
+        "best_pts": 9
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
+      "Tiago Monteiro": {
+        "c": "Isak",
+        "pts": 2,
+        "mult": 2,
+        "best": "Palmer",
+        "best_pts": 13
+      }
+    },
+    "GW2": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Miguel Antunes": {
+        "c": "B.Fernandes",
+        "pts": 23,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "Diogo Amarelo": {
+        "c": "B.Fernandes",
+        "pts": 23,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "António Moreira": {
+        "c": "B.Fernandes",
+        "pts": 23,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "João Pires": {
+        "c": "B.Fernandes",
+        "pts": 23,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
+      "Tiago Monteiro": {
+        "c": "Isak",
+        "pts": 8,
+        "mult": 2,
+        "best": "Saka",
+        "best_pts": 11
+      }
+    },
+    "GW3": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Gakpo",
+        "best_pts": 11
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Gakpo",
+        "best_pts": 11
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 9
+      },
+      "Diogo Amarelo": {
+        "c": "Cherki",
+        "pts": 3,
+        "mult": 2,
+        "best": "Isak",
+        "best_pts": 13
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Isak",
+        "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 9
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 9
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 9
+      },
+      "Tiago Monteiro": {
+        "c": "Isak",
+        "pts": 13,
+        "mult": 2,
+        "best": "Isak",
+        "best_pts": 13
+      }
+    },
+    "GW4": {
+      "Diogo Lopes": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 14
+      },
+      "Bernardo Saraiva": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Miguel Antunes": {
+        "c": "Palmer",
+        "pts": 5,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Diogo Amarelo": {
+        "c": "Palmer",
+        "pts": 5,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 14
+      },
+      "António Moreira": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 14
+      },
+      "João Pires": {
+        "c": "Isak",
+        "pts": 2,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 14
+      },
+      "João Leitão": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Rui Bimba": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "Groß",
+        "best_pts": 17
+      },
+      "Tiago Monteiro": {
+        "c": "Palmer",
+        "pts": 5,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 14
+      }
+    },
+    "GW5": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Barnes",
+        "best_pts": 9
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Groß",
+        "best_pts": 14
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Hall",
+        "best_pts": 13
+      },
+      "Diogo Amarelo": {
+        "c": "Gibbs-White",
+        "pts": 2,
+        "mult": 2,
+        "best": "Cherki",
+        "best_pts": 8
+      },
+      "António Moreira": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "Semenyo",
+        "best_pts": 17
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Cherki",
+        "best_pts": 8
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Thomas",
+        "best_pts": 9
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Groß",
+        "best_pts": 14
+      },
+      "Tiago Monteiro": {
+        "c": "Szoboszlai",
+        "pts": 2,
+        "mult": 2,
+        "best": "Virgil",
+        "best_pts": 8
+      }
+    },
+    "GW6": {
+      "Diogo Lopes": {
+        "c": "João Pedro",
+        "pts": 12,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "De Cuyper",
+        "best_pts": 15
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Diogo Amarelo": {
+        "c": "B.Fernandes",
+        "pts": 1,
+        "mult": 2,
+        "best": "De Cuyper",
+        "best_pts": 15
+      },
+      "António Moreira": {
+        "c": "B.Fernandes",
+        "pts": 1,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "João Pires": {
+        "c": "Rogers",
+        "pts": 9,
+        "mult": 2,
+        "best": "Rogers",
+        "best_pts": 9
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
+      "Rui Bimba": {
+        "c": "Saka",
+        "pts": 2,
+        "mult": 2,
+        "best": "Calafiori",
+        "best_pts": 9
+      },
+      "Tiago Monteiro": {
+        "c": "Wissa",
+        "pts": 2,
+        "mult": 2,
+        "best": "McGinn",
+        "best_pts": 10
+      }
+    },
+    "GW7": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Bernardo Saraiva": {
+        "c": "João Pedro",
+        "pts": 2,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Diogo Amarelo": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "Tiago Monteiro": {
+        "c": "Wissa",
+        "pts": 1,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 9
+      }
+    },
+    "GW8": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "Bernardo Saraiva": {
+        "c": "Tavernier",
+        "pts": 10,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "Diogo Amarelo": {
+        "c": "Palmer",
+        "pts": -1,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Barnes",
+        "best_pts": 8
+      },
+      "João Pires": {
+        "c": "Palmer",
+        "pts": -1,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
+      "Tiago Monteiro": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Virgil",
+        "best_pts": 9
+      }
+    },
+    "GW9": {
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
+      },
+      "Bernardo Saraiva": {
+        "c": "Tavernier",
+        "pts": 3,
+        "mult": 2,
+        "best": "Van Hecke",
+        "best_pts": 15
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
+      },
+      "Diogo Amarelo": {
+        "c": "N.Jackson",
+        "pts": 9,
+        "mult": 2,
+        "best": "Van Hecke",
+        "best_pts": 15
+      },
+      "António Moreira": {
+        "c": "Marmoush",
+        "pts": 2,
+        "mult": 2,
+        "best": "Rice",
+        "best_pts": 8
+      },
+      "João Pires": {
+        "c": "Evanilson",
+        "pts": 9,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Van Hecke",
+        "best_pts": 15
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
+      },
+      "Tiago Monteiro": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Raya",
+        "best_pts": 5
+      }
+    }
+  },
   "chips_used": {
     "Diogo Lopes": {
       "Bench Boost": [
@@ -438,5 +1025,5 @@
     },
     "Tiago Monteiro": {}
   },
-  "updated_at": "2026-11-05T10:06:39+00:00"
+  "updated_at": "2026-11-05T10:26:39+00:00"
 }

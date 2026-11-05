@@ -220,8 +220,13 @@
   text-align: center;
 }
 
-#chips-table thead th, #bench-table thead th { cursor: default; }
-#bench-table tbody td:not(:first-child), #bench-table thead th:not(:first-child) { text-align: right; }
+#chips-table thead th, #bench-table thead th, #captain-table thead th { cursor: default; }
+#bench-table tbody td:not(:first-child), #bench-table thead th:not(:first-child),
+#captain-table tbody td:not(:first-child), #captain-table thead th:not(:first-child) { text-align: right; }
+#captain-table .bench-total { font-family: var(--display); font-weight: 800; font-size: 16px; }
+.cap-cell { white-space: nowrap; }
+.cap-name { color: var(--muted); margin-right: 8px; }
+.cap-pts { font-weight: 700; font-variant-numeric: tabular-nums; }
 #bench-table .bench-total { font-family: var(--display); font-weight: 800; font-size: 16px; }
 .chip-used{
   display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600;
@@ -316,22 +321,26 @@
   #chips-table .chip-used { padding: 2px 7px; font-size: 11px; margin: 1px 0; }
 }
 
-/* Banco de Ouro on phones: name | last GW | total */
+/* Banco de Ouro / Capitães on phones: name | last GW | total */
 @media (max-width: 640px) {
-  #bench-table, #bench-table thead, #bench-table tbody { display: block; border-spacing: 0; }
-  #bench-table tr { display: grid; grid-template-columns: 1fr 44px 56px; align-items: center; column-gap: 10px; }
-  #bench-table thead tr { padding: 0 12px; }
-  #bench-table thead th { padding: 2px 0 6px; font-size: 10px; }
-  #bench-table tbody tr {
+  #bench-table, #bench-table thead, #bench-table tbody,
+  #captain-table, #captain-table thead, #captain-table tbody { display: block; border-spacing: 0; }
+  #bench-table tr, #captain-table tr { display: grid; align-items: center; column-gap: 10px; }
+  #bench-table tr { grid-template-columns: 1fr 44px 56px; }
+  #captain-table tr { grid-template-columns: 1fr auto 52px; }
+  #bench-table thead tr, #captain-table thead tr { padding: 0 12px; }
+  #bench-table thead th, #captain-table thead th { padding: 2px 0 6px; font-size: 10px; }
+  #bench-table tbody tr, #captain-table tbody tr {
     padding: 9px 12px; margin-bottom: 6px;
     border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03);
   }
-  #bench-table tbody td {
+  #bench-table tbody td, #captain-table tbody td {
     border: none !important; border-radius: 0 !important; padding: 0 !important;
     background: transparent !important; font-variant-numeric: tabular-nums;
   }
-  #bench-table tbody td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #bench-table .chip-used { padding: 2px 7px; font-size: 11px; }
+  #bench-table tbody td:first-child, #captain-table tbody td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #bench-table .chip-used, #captain-table .chip-used { padding: 2px 6px; font-size: 10px; }
+  .cap-name { font-size: 12px; margin-right: 6px; }
 }
 
 /* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
@@ -403,6 +412,7 @@
     <a href="#jornada">Jornada</a>
     <a href="#chips">Chips</a>
     <a href="#banco">Banco de Ouro</a>
+    <a href="#capitaes">Capitães</a>
     <a href="#evolucao">Evolução</a>
     <a href="#semanal">Semanal</a>
   </nav>
@@ -459,6 +469,17 @@
       </table>
       <div class="footer-note small">Acumulado da época. Jornadas com Bench Boost ativo não contam (os pontos do banco foram para a equipa).
         Setas: posições ganhas ou perdidas nesta jornada.</div>
+    </section>
+
+    <section class="panel" style="grid-column:1 / -1;" id="capitaes" hidden>
+      <h2>Capitães <span class="pill">Eficiência da braçadeira</span></h2>
+      <table id="captain-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+      <div class="footer-note small">Eficiência = pontos do capitão ÷ pontos do melhor jogador do teu onze, somados na época (100% = escolheste sempre o melhor).
+        Acertos: jornadas em que o capitão foi a melhor escolha. Perdidos: pontos que a braçadeira deixou de ganhar (×2 no Triple Captain).
+        Se o capitão não jogou, conta o vice-capitão.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="evolucao">
@@ -531,6 +552,10 @@
 
   // Points left on the bench per GW per player (only from data/fpl.json; no inline fallback)
   let BENCH = null;
+
+  // Captain picks per GW per player (only from data/fpl.json):
+  // {c: armband player, pts: their points, mult: 2 or 3, best: best player in the XI, best_pts}
+  let CAPTAINS = null;
 
   // Each chip can be played this many times a season (one per half)
   const CHIPS_PER_TYPE = 2;
@@ -784,6 +809,62 @@ function renderBench(){
         <td class="right" data-label="${last}">${lastCell}</td>
         <td class="right c-detail" data-label="Pior jornada">${r.worst ? `${r.worst.pts} <span class="muted small">(${r.worst.gw})</span>` : '—'}</td>
         <td class="right bench-total" data-label="Total">${r.total}</td>
+      </tr>`;
+  }).join('');
+}
+
+// Captains: how close each armband pick was to the best player in that manager's own XI
+function captainStandings(gws){
+  return PLAYERS.map(p => {
+    let pts = 0, best = 0, hits = 0, lost = 0, counted = 0;
+    gws.forEach(gw => {
+      const c = CAPTAINS?.[gw]?.[p];
+      if (!c) return;
+      counted++;
+      pts += c.pts;
+      best += c.best_pts;
+      if (c.c && c.pts >= c.best_pts) hits++;
+      lost += (c.best_pts - c.pts) * (Math.max(c.mult, 2) - 1); // extra points the armband missed
+    });
+    return { player: p, eff: best > 0 ? pts / best : null, hits, lost, counted };
+  })
+  .sort((a, b) => (b.eff ?? -1) - (a.eff ?? -1) || a.lost - b.lost || a.player.localeCompare(b.player))
+  .map((r, i) => ({ ...r, rank: i + 1 }));
+}
+
+function renderCaptains(){
+  const section = document.getElementById('capitaes');
+  const gws = HIST.gws;
+  if (!CAPTAINS || !gws.length) { section.hidden = true; return; }
+  section.hidden = false;
+
+  const last = gws[gws.length - 1];
+  const now = captainStandings(gws);
+  const before = Object.fromEntries(captainStandings(gws.slice(0, -1)).map(r => [r.player, r.rank]));
+
+  const table = document.getElementById('captain-table');
+  table.tHead.innerHTML = `
+    <tr>
+      <th>Jogador</th>
+      <th class="right">Capitão ${last}</th>
+      <th class="right c-detail">Acertos</th>
+      <th class="right c-detail">Perdidos</th>
+      <th class="right">Eficiência</th>
+    </tr>`;
+  table.tBodies[0].innerHTML = now.map(r => {
+    const c = CAPTAINS[last]?.[r.player];
+    const capCell = c?.c
+      ? `<span class="cap-name">${c.c}${c.mult === 3 ? ' <span class="chip-used">TC</span>' : ''}</span><span class="cap-pts">${c.pts * c.mult}</span>`
+      : '—';
+    const title = c ? `Melhor opção: ${c.best} (${c.best_pts})` : '';
+    const move = gws.length > 1 ? moveHTML(before[r.player] - r.rank) : '';
+    return `
+      <tr>
+        <td>${rankBadge(r.rank)}${nameHTML(r.player)}${move}</td>
+        <td class="right cap-cell" data-label="Capitão ${last}" title="${title}">${capCell}</td>
+        <td class="right c-detail" data-label="Acertos">${r.hits}/${r.counted}</td>
+        <td class="right c-detail" data-label="Perdidos">${r.lost}</td>
+        <td class="right bench-total" data-label="Eficiência">${r.eff == null ? '—' : `${Math.round(r.eff * 100)}%`}</td>
       </tr>`;
   }).join('');
 }
@@ -1288,6 +1369,7 @@ async function loadFplData(){
     TRANSFERS = d.transfers;
     CHIPS_USED = d.chips_used;
     BENCH = d.bench ?? null;
+    CAPTAINS = d.captains ?? null;
     return d;
   } catch (err) {
     console.warn('Could not load data/fpl.json, using inline data:', err);
@@ -1317,6 +1399,7 @@ async function loadFplData(){
   enableSorting(rows);
   renderChips(rows);
   renderBench();
+  renderCaptains();
 
   const gwSelector = document.getElementById('gw-selector');
   if (gwSelector) {
