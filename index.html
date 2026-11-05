@@ -1452,11 +1452,12 @@ function setupNotifications(){
   if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return;
 
   const base = location.pathname.replace(/[^/]*$/, ''); // "/liga-fundao/" on GitHub Pages
+  // The SDK resolves serviceWorkerPath against the site origin and the docs say: no leading slash
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async OneSignal => {
     await OneSignal.init({
       appId: ONESIGNAL_APP_ID,
-      serviceWorkerPath: `${base}sw.js`,          // our own worker also contains the OneSignal one
+      serviceWorkerPath: `${base.slice(1)}sw.js`, // "liga-fundao/sw.js": our own worker also contains the OneSignal one
       serviceWorkerParam: { scope: base },
       notifyButton: { enable: false },            // we have our own button
     });
@@ -1472,9 +1473,10 @@ function setupNotifications(){
     render();
     sub.addEventListener('change', render);
     btn.addEventListener('click', async () => {
+      // optIn(): resubscribes if the browser already gave a token, otherwise shows the permission prompt.
+      // Both must run from a tap (iPhone).
       if (sub.optedIn) await sub.optOut();
-      else if (OneSignal.Notifications.permission) await sub.optIn();
-      else await OneSignal.Notifications.requestPermission(); // must run from a tap (iPhone)
+      else await sub.optIn();
       render();
     });
   });

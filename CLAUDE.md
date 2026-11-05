@@ -28,7 +28,8 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - One notification per closed gameweek, same for everyone, **no money info**: 🏆 winner (net points), 👑 leader / new leader, 🎯 best captain (points earned with the multiplier), 🪑 most points left on the bench (Bench Boost weeks excluded), 📈 biggest climb (only if ≥2 places, or 1 place shared by at most 2). Preview with `python scripts/notify.py --gw 9`.
 - With notifications on, **OneSignal registers `sw.js`** (our worker `importScripts` the OneSignal worker). The page must not register `sw.js` itself then, or the two registrations replace each other and push stops working.
 - The button only shows where push works: Android and desktop browsers, and the installed app on iPhone (iOS 16.4+), never in a Safari tab.
-- Not verifiable from a cloud session: the OneSignal API request format and the browser prompt. Check them with the workflow's `test_notification` run and read the log.
+- OneSignal dashboard: integration type **Custom Code** (we call `OneSignal.init` ourselves; the dashboard path fields don't apply), Site URL = the origin only (`https://<owner>.github.io`, no repo path). `serviceWorkerPath` is resolved against the origin and must have no leading slash (e.g. `liga-fundao/sw.js`); the scope is the repo folder.
+- The request format (`POST https://api.onesignal.com/notifications`, `Authorization: Key …`, `target_channel: "push"`, `included_segments: ["Subscribed Users"]`) was checked against OneSignal's docs, but no real push has been sent from a cloud session. HTTP 200 without an `id` means nobody is subscribed. To verify: run the workflow with `test_notification` and read the log.
 
 ## League rules (keep these exact)
 

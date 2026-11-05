@@ -38,7 +38,7 @@ STATE_FILE = ROOT / "data" / "notified.json"
 INDEX_FILE = ROOT / "index.html"
 
 DEFAULT_SITE_URL = "https://antunes-miguel.github.io/liga-fundao/"
-API_URL = "https://api.onesignal.com/notifications?c=push"
+API_URL = "https://api.onesignal.com/notifications"  # create-message docs: Authorization "Key <app api key>"
 
 
 # ---------- message ----------
