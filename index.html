@@ -94,6 +94,10 @@
     }
     h1 span{display:block}
     .info-chips{justify-content:center; margin:0 0 14px}
+    .notif-btn{font:inherit; font-size:12px; cursor:pointer; color:var(--ink); border-color:var(--accent)}
+    .notif-btn:hover{background:var(--stripe2)}
+    .notif-btn.on{color:var(--muted); border-color:var(--border)}
+    .notif-btn:disabled{cursor:default; opacity:.7}
     .subtitle{color:var(--muted);margin-top:4px}
     .grid {
       display: flex;
@@ -483,6 +487,7 @@
 </header>
 <div class="chips info-chips">
   <span class="chip" id="cpp-chip"></span>
+  <button type="button" class="chip notif-btn" id="notif-btn" hidden>🔔 Ativar notificações</button>
 </div>
 
   <nav class="topnav" aria-label="Secções">
@@ -611,6 +616,10 @@
 
   // Cost per point (EUR)
   const COST_PER_POINT = 0.1;
+
+  // Push notifications (OneSignal). Public app id from the OneSignal dashboard; leave empty to switch the feature off
+  // (the "Ativar notificações" button then stays hidden). scripts/notify.py reads this value too.
+  const ONESIGNAL_APP_ID = "";
 
   // Manual payments (EUR) made so far by each player (optional)
   const MANUAL_PAYMENTS = {
@@ -1435,6 +1444,46 @@ function renderHeatmap(){
 }
 
 
+// Push notifications via OneSignal. The button only appears where push works: Android browsers,
+// desktop, and the installed app on iPhone (iOS 16.4+). Safari tabs on iPhone have no push at all.
+function setupNotifications(){
+  const btn = document.getElementById('notif-btn');
+  if (!btn || !ONESIGNAL_APP_ID || !location.protocol.startsWith('http')) return;
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return;
+
+  const base = location.pathname.replace(/[^/]*$/, ''); // "/liga-fundao/" on GitHub Pages
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async OneSignal => {
+    await OneSignal.init({
+      appId: ONESIGNAL_APP_ID,
+      serviceWorkerPath: `${base}sw.js`,          // our own worker also contains the OneSignal one
+      serviceWorkerParam: { scope: base },
+      notifyButton: { enable: false },            // we have our own button
+    });
+    const sub = OneSignal.User.PushSubscription;
+    const render = () => {
+      btn.hidden = false;
+      const blocked = Notification.permission === 'denied';
+      btn.disabled = blocked;
+      btn.classList.toggle('on', !!sub.optedIn);
+      btn.textContent = blocked ? '🔕 Notificações bloqueadas no browser'
+                      : sub.optedIn ? '🔔 Notificações ativas' : '🔔 Ativar notificações';
+    };
+    render();
+    sub.addEventListener('change', render);
+    btn.addEventListener('click', async () => {
+      if (sub.optedIn) await sub.optOut();
+      else if (OneSignal.Notifications.permission) await sub.optIn();
+      else await OneSignal.Notifications.requestPermission(); // must run from a tap (iPhone)
+      render();
+    });
+  });
+  const sdk = document.createElement('script');
+  sdk.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
+  sdk.defer = true;
+  document.head.appendChild(sdk); // offline or blocked: the button simply stays hidden
+}
+
 // Load data/fpl.json (written by the GitHub Action). Falls back to the inline data
 // above if it's missing, e.g. when the page is opened straight from disk.
 async function loadFplData(){
@@ -1536,10 +1585,13 @@ async function loadFplData(){
     });
   });
 
-  // Installable app: offline support (only on http/https, not when opened from disk)
-  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  // Installable app: offline support (only on http/https, not when opened from disk).
+  // With notifications on, OneSignal registers sw.js itself (a second registration with a
+  // different URL would replace it and switch the push handler off).
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http') && !ONESIGNAL_APP_ID) {
     navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker not registered:', err));
   }
+  setupNotifications();
 
   // Phones keep installed apps open in the background: when the app comes back
   // to the screen, reload if a newer data/fpl.json (new GW or new site version) is out.
