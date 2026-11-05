@@ -39,6 +39,10 @@ INDEX_FILE = ROOT / "index.html"
 
 DEFAULT_SITE_URL = "https://antunes-miguel.github.io/liga-fundao/"
 API_URL = "https://api.onesignal.com/notifications"  # create-message docs: Authorization "Key <app api key>"
+# Everyone who ever subscribed. OneSignal's docs still show a "Subscribed Users" segment, but new apps don't have
+# one (sending to it reaches nobody); they have "Total Subscriptions", "Active Subscriptions" (recent visitors only), ...
+# `python scripts/notify.py --test` prints the app's real audiences when a test reaches nobody.
+AUDIENCE = "Total Subscriptions"
 
 
 # ---------- message ----------
@@ -189,7 +193,7 @@ def send_push(title, body, url):
     payload = {
         "app_id": app_id,
         "target_channel": "push",
-        "included_segments": ["Subscribed Users"],
+        "included_segments": [AUDIENCE],
         "headings": {"en": title},
         "contents": {"en": body},
         "url": url,
@@ -212,6 +216,44 @@ def send_push(title, body, url):
         raise RuntimeError(f"OneSignal answered HTTP {exc.code}: {detail}") from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"Could not reach OneSignal: {exc.reason}") from exc
+
+
+def api_get(path):
+    """GET on the OneSignal API (read only). Returns parsed JSON."""
+    _, api_key = onesignal_config()
+    req = urllib.request.Request(
+        f"https://api.onesignal.com{path}",
+        headers={"Accept": "application/json", "Authorization": f"Key {api_key}"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.load(resp)
+    except urllib.error.HTTPError as exc:
+        raise RuntimeError(f"HTTP {exc.code}: {exc.read().decode('utf-8', errors='replace')[:300]}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"could not reach OneSignal: {exc.reason}") from exc
+
+
+def diagnose():
+    """Print which audiences (segments) the app has and how many subscribers each one holds.
+    Used when a test notification reaches nobody. Best effort; never prints the API key."""
+    app_id, api_key = onesignal_config()
+    if not app_id or not api_key:
+        return
+    print(f"\nDiagnosis for app {app_id}:")
+    try:
+        segments = api_get(f"/apps/{app_id}/segments?limit=300").get("segments", [])
+    except RuntimeError as exc:
+        print(f"  Could not list the app's audiences: {exc}")
+        return
+    if not segments:
+        print("  The app has no audiences (segments).")
+    for seg in segments:
+        try:
+            count = api_get(f"/apps/{app_id}/segments/{seg['id']}").get("subscriber_count", "?")
+        except RuntimeError as exc:
+            count = f"? ({exc})"
+        print(f"  - {seg.get('name')!r}: {count} subscriber(s)")
 
 
 def deliver(title, body):
@@ -243,6 +285,7 @@ def main():
 
     if args.test:
         if not deliver("🔔 Notificações ativas", "Se estás a ler isto, vais receber o resumo de cada jornada."):
+            diagnose()
             sys.exit("Test notification was not delivered (see the message above).")
         return
 
