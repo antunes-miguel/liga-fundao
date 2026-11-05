@@ -35,6 +35,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - Brand (from the Instagram artwork): maroon `--brand #3d0e1e`, stripes `#511726` / `#5d1a2b`, red band `#8b2d3b`, white. Colours are CSS variables in `:root`; use those, not new hex values.
 - Fonts: Montserrat 800 uppercase for the wordmark, headings and menu (`--display`); Inter for body text.
 - Phones matter most. At ≤640px, tables become compact one-row-per-player grids, with short names via `nameHTML()` / `shortName()` ("Diogo L.").
+  Each table panel has a "Tabela completa" button (phones only) that adds `.full-view` to the panel: the full desktop table, scrolling sideways, first column sticky. The compact phone CSS is scoped to `.panel:not(.full-view)`, so new compact rules must be too. The choice is saved per panel in `localStorage` (`lf-full-view`).
 - Standings chart: grey lines plus up to 3 highlighted players. The colours in `HL_COLORS` (blue, gold, green) were checked for contrast and colour blindness on the maroon panel; re-check if you change them. The highlight is saved in `localStorage` (`lf-rank-highlight`).
 
 ## Working on it
