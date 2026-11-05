@@ -2,9 +2,14 @@ name: Update FPL data
 
 on:
   schedule:
-    # Every 6 hours (UTC). Gameweeks are only written once FPL marks them final.
-    - cron: "17 */6 * * *"
+    # Hourly (UTC), so a finished gameweek shows up (and is announced) soon after FPL finalises it.
+    - cron: "17 * * * *"
   workflow_dispatch: # "Run workflow" button in the Actions tab
+    inputs:
+      test_notification:
+        description: "Only send a test push notification (changes nothing else)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -23,12 +28,28 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Send test notification
+        if: ${{ inputs.test_notification }}
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+        run: python scripts/notify.py --test
+
       - name: Fetch league data
+        if: ${{ !inputs.test_notification }}
         run: python scripts/fetch_fpl.py
 
+      # A failed notification must never stop the data from being saved
+      - name: Gameweek notification
+        if: ${{ !inputs.test_notification }}
+        continue-on-error: true
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+        run: python scripts/notify.py
+
       - name: Commit if changed
+        if: ${{ !inputs.test_notification }}
         run: |
-          # git status (not git diff) so a brand-new data/fpl.json is picked up too
+          # git status (not git diff) so brand-new files in data/ are picked up too
           if [ -z "$(git status --porcelain -- data/)" ]; then
             echo "Nothing to commit."
             exit 0

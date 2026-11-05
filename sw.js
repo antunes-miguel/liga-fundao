@@ -3,6 +3,10 @@
 // - Images, icons and fonts: cache first (they rarely change).
 // Bump VERSION when the list of cached files changes.
 const VERSION = 'v1';
+
+// Push notifications (OneSignal). In try/catch so the app still installs when offline.
+try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { /* no push until the next update */ }
+
 const CACHE = `fantasy-fundao-${VERSION}`;
 const SHELL = [
   './',

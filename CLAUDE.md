@@ -9,7 +9,8 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - `data/fpl.json`: league data (players, points, transfer costs, bench points, captains, chips). **Generated; never edit by hand.**
 - `data/names.json`: maps an FPL name or entry id to the name shown on the page (e.g. `"Antonio Moreira": "António Moreira"`).
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
-- `.github/workflows/update-data.yml`: runs the script every 6 hours and on manual dispatch, commits `data/` if it changed.
+- `scripts/notify.py`: builds and sends the "GWn fechada" push notification when a new gameweek is final. `data/notified.json` remembers the last gameweek announced (generated; first run only records it and sends nothing).
+- `.github/workflows/update-data.yml`: runs hourly and on manual dispatch: fetch data, send the notification, commit `data/` if it changed. "Run workflow" with `test_notification` ticked only sends a test push.
 - `manifest.webmanifest` + `sw.js`: installable app (PWA). The service worker serves page/data network-first (cached copy offline) and images/fonts cache-first. **Bump `VERSION` in `sw.js` when adding files to its `SHELL` list.**
 - `assets/crest.png` (white, transparent), `assets/icon-180.png` (favicon, iPhone home screen), `assets/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (app icons). `LF.png` and `GARDUNHA-*.jpg` are old and unused.
 
@@ -20,6 +21,15 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - `index.html` loads `data/fpl.json` into `PLAYERS`, `MATCHWEEKS`, `TRANSFERS`, `CHIPS_USED`. If the fetch fails (e.g. opened from disk), it falls back to the inline copies in the data section. Those inline copies are stale on purpose; don't update them.
 - **Edited by hand:** `MANUAL_PAYMENTS` (EUR paid per player, keyed by display name) and `COST_PER_POINT` in `index.html`.
 - If a `MANUAL_PAYMENTS` name doesn't match a player, the header shows a red "Pagamentos sem jogador" chip. The fix is usually a `data/names.json` entry.
+
+## Push notifications
+
+- OneSignal (free plan). Public app id in `ONESIGNAL_APP_ID` in `index.html` (empty = feature off, button hidden); the secret `ONESIGNAL_API_KEY` is a GitHub Actions secret. `notify.py` reads the app id from `index.html`.
+- One notification per closed gameweek, same for everyone, **no money info**: 🏆 winner (net points), 👑 leader / new leader, 🎯 best captain (points earned with the multiplier), 🪑 most points left on the bench (Bench Boost weeks excluded), 📈 biggest climb (only if ≥2 places, or 1 place shared by at most 2). Preview with `python scripts/notify.py --gw 9`.
+- With notifications on, **OneSignal registers `sw.js`** (our worker `importScripts` the OneSignal worker). The page must not register `sw.js` itself then, or the two registrations replace each other and push stops working.
+- The button only shows where push works: Android and desktop browsers, and the installed app on iPhone (iOS 16.4+), never in a Safari tab.
+- OneSignal dashboard: integration type **Custom Code** (we call `OneSignal.init` ourselves; the dashboard path fields don't apply), Site URL = the origin only (`https://<owner>.github.io`, no repo path). `serviceWorkerPath` is resolved against the origin and must have no leading slash (e.g. `liga-fundao/sw.js`); the scope is the repo folder.
+- The request format (`POST https://api.onesignal.com/notifications`, `Authorization: Key …`, `target_channel: "push"`, `included_segments: ["Subscribed Users"]`) was checked against OneSignal's docs, but no real push has been sent from a cloud session. HTTP 200 without an `id` means nobody is subscribed. To verify: run the workflow with `test_notification` and read the log.
 
 ## League rules (keep these exact)
 
