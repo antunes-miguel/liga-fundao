@@ -220,7 +220,9 @@
   text-align: center;
 }
 
-#chips-table thead th { cursor: default; }
+#chips-table thead th, #bench-table thead th { cursor: default; }
+#bench-table tbody td:not(:first-child), #bench-table thead th:not(:first-child) { text-align: right; }
+#bench-table .bench-total { font-family: var(--display); font-weight: 800; font-size: 16px; }
 .chip-used{
   display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:600;
   background:rgba(239,116,132,.18); color:var(--ink); border:1px solid var(--accent);
@@ -314,6 +316,24 @@
   #chips-table .chip-used { padding: 2px 7px; font-size: 11px; margin: 1px 0; }
 }
 
+/* Banco de Ouro on phones: name | last GW | total */
+@media (max-width: 640px) {
+  #bench-table, #bench-table thead, #bench-table tbody { display: block; border-spacing: 0; }
+  #bench-table tr { display: grid; grid-template-columns: 1fr 44px 56px; align-items: center; column-gap: 10px; }
+  #bench-table thead tr { padding: 0 12px; }
+  #bench-table thead th { padding: 2px 0 6px; font-size: 10px; }
+  #bench-table tbody tr {
+    padding: 9px 12px; margin-bottom: 6px;
+    border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03);
+  }
+  #bench-table tbody td {
+    border: none !important; border-radius: 0 !important; padding: 0 !important;
+    background: transparent !important; font-variant-numeric: tabular-nums;
+  }
+  #bench-table tbody td:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #bench-table .chip-used { padding: 2px 7px; font-size: 11px; }
+}
+
 /* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
 .hm-right{
   -webkit-mask-image: linear-gradient(90deg, #000 94%, transparent 100%);
@@ -382,6 +402,7 @@
     <a href="#global">Global</a>
     <a href="#jornada">Jornada</a>
     <a href="#chips">Chips</a>
+    <a href="#banco">Banco de Ouro</a>
     <a href="#evolucao">Evolução</a>
     <a href="#semanal">Semanal</a>
   </nav>
@@ -428,6 +449,16 @@
         <thead></thead>
         <tbody></tbody>
       </table>
+    </section>
+
+    <section class="panel" style="grid-column:1 / -1;" id="banco" hidden>
+      <h2>Banco de Ouro <span class="pill">Pontos deixados no banco</span></h2>
+      <table id="bench-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+      <div class="footer-note small">Acumulado da época. Jornadas com Bench Boost ativo não contam (os pontos do banco foram para a equipa).
+        Setas: posições ganhas ou perdidas nesta jornada.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="evolucao">
@@ -497,6 +528,9 @@
 
   // The chips available to each player
   const CHIPS = ["Wildcard", "Bench Boost", "Triple Captain", "Free Hit"];
+
+  // Points left on the bench per GW per player (only from data/fpl.json; no inline fallback)
+  let BENCH = null;
 
   // Each chip can be played this many times a season (one per half)
   const CHIPS_PER_TYPE = 2;
@@ -704,6 +738,55 @@ function compute() {
       `;
     }).join("");
   }
+
+// Banco de Ouro: cumulative points left on the bench, ignoring GWs with Bench Boost active
+function benchStandings(gws){
+  return PLAYERS.map(p => {
+    let total = 0, worst = null;
+    gws.forEach(gw => {
+      if (chipsPlayed(gw, p).includes('Bench Boost')) return;
+      const v = BENCH?.[gw]?.[p];
+      if (!Number.isFinite(v)) return;
+      total += v;
+      if (!worst || v > worst.pts) worst = { pts: v, gw };
+    });
+    return { player: p, total, worst };
+  })
+  .sort((a, b) => b.total - a.total || a.player.localeCompare(b.player))
+  .map((r, i) => ({ ...r, rank: i + 1 }));
+}
+
+function renderBench(){
+  const section = document.getElementById('banco');
+  const gws = HIST.gws;
+  if (!BENCH || !gws.length) { section.hidden = true; return; }
+  section.hidden = false;
+
+  const last = gws[gws.length - 1];
+  const now = benchStandings(gws);
+  const before = Object.fromEntries(benchStandings(gws.slice(0, -1)).map(r => [r.player, r.rank]));
+
+  const table = document.getElementById('bench-table');
+  table.tHead.innerHTML = `
+    <tr>
+      <th>Jogador</th>
+      <th class="right">${last}</th>
+      <th class="right c-detail">Pior jornada</th>
+      <th class="right">Total</th>
+    </tr>`;
+  table.tBodies[0].innerHTML = now.map(r => {
+    const bb = chipsPlayed(last, r.player).includes('Bench Boost');
+    const lastCell = bb ? '<span class="chip-used" title="Bench Boost: não conta">BB</span>' : (BENCH[last]?.[r.player] ?? '—');
+    const move = gws.length > 1 ? moveHTML(before[r.player] - r.rank) : '';
+    return `
+      <tr>
+        <td>${rankBadge(r.rank)}${nameHTML(r.player)}${move}</td>
+        <td class="right" data-label="${last}">${lastCell}</td>
+        <td class="right c-detail" data-label="Pior jornada">${r.worst ? `${r.worst.pts} <span class="muted small">(${r.worst.gw})</span>` : '—'}</td>
+        <td class="right bench-total" data-label="Total">${r.total}</td>
+      </tr>`;
+  }).join('');
+}
 
 function renderWeeks(weekTops){
   const wrapper = document.getElementById('weeks');
@@ -1204,6 +1287,7 @@ async function loadFplData(){
     MATCHWEEKS = d.matchweeks;
     TRANSFERS = d.transfers;
     CHIPS_USED = d.chips_used;
+    BENCH = d.bench ?? null;
     return d;
   } catch (err) {
     console.warn('Could not load data/fpl.json, using inline data:', err);
@@ -1232,6 +1316,7 @@ async function loadFplData(){
   renderKPIs(totals);
   enableSorting(rows);
   renderChips(rows);
+  renderBench();
 
   const gwSelector = document.getElementById('gw-selector');
   if (gwSelector) {

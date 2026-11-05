@@ -6,7 +6,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 ## Layout
 
 - `index.html`: the whole site (HTML, CSS and JS in one file, no build step, no dependencies besides Google Fonts).
-- `data/fpl.json`: league data (players, points, transfer costs, chips). **Generated; never edit by hand.**
+- `data/fpl.json`: league data (players, points, transfer costs, bench points, chips). **Generated; never edit by hand.**
 - `data/names.json`: maps an FPL name or entry id to the name shown on the page (e.g. `"Antonio Moreira": "António Moreira"`).
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
 - `.github/workflows/update-data.yml`: runs the script every 6 hours and on manual dispatch, commits `data/` if it changed.
@@ -26,6 +26,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 - Total = sum of weekly debts. Saldo = Total − Pago (≤ 0 is settled, shown green).
 - Standings: total net points desc, then fewer transfer points, then alphabetical.
 - Chips: Wildcard, Bench Boost, Triple Captain, Free Hit, each twice a season (`CHIPS_PER_TYPE = 2`).
+- Banco de Ouro: cumulative `points_on_bench` per player, **excluding GWs where that player had Bench Boost active**. Sorted desc, ties alphabetical.
 
 ## Design
 
