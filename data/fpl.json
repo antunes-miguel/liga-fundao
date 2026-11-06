@@ -6,6 +6,12 @@
   "last_gw": 9,
   "players": [
     {
+      "entry": 750098,
+      "name": "Miguel Antunes",
+      "fpl_name": "Miguel Antunes",
+      "team": "Konatasaray"
+    },
+    {
       "entry": 779777,
       "name": "Diogo Lopes",
       "fpl_name": "Diogo Lopes",
@@ -18,28 +24,22 @@
       "team": "BESA FC 6230"
     },
     {
-      "entry": 750098,
-      "name": "Miguel Antunes",
-      "fpl_name": "Miguel Antunes",
-      "team": "Konatasaray"
-    },
-    {
       "entry": 2869875,
       "name": "Diogo Amarelo",
       "fpl_name": "Diogo Amarelo",
       "team": "Yellow FC"
     },
     {
-      "entry": 3154219,
-      "name": "António Moreira",
-      "fpl_name": "Antonio Moreira",
-      "team": "antoneli"
-    },
-    {
       "entry": 5581304,
       "name": "João Pires",
       "fpl_name": "João Pires",
       "team": "João's Team"
+    },
+    {
+      "entry": 3154219,
+      "name": "António Moreira",
+      "fpl_name": "Antonio Moreira",
+      "team": "antoneli"
     },
     {
       "entry": 2866910,
@@ -62,100 +62,100 @@
   ],
   "matchweeks": {
     "GW1": {
+      "Miguel Antunes": 49,
       "Diogo Lopes": 51,
       "Bernardo Saraiva": 57,
-      "Miguel Antunes": 49,
       "Diogo Amarelo": 40,
-      "António Moreira": 51,
       "João Pires": 39,
+      "António Moreira": 51,
       "João Leitão": 36,
       "Rui Bimba": 38,
       "Tiago Monteiro": 47
     },
     "GW2": {
+      "Miguel Antunes": 125,
       "Diogo Lopes": 99,
       "Bernardo Saraiva": 70,
-      "Miguel Antunes": 125,
       "Diogo Amarelo": 108,
-      "António Moreira": 96,
       "João Pires": 98,
+      "António Moreira": 96,
       "João Leitão": 99,
       "Rui Bimba": 101,
       "Tiago Monteiro": 69
     },
     "GW3": {
+      "Miguel Antunes": 49,
       "Diogo Lopes": 62,
       "Bernardo Saraiva": 58,
-      "Miguel Antunes": 49,
       "Diogo Amarelo": 46,
-      "António Moreira": 56,
       "João Pires": 53,
+      "António Moreira": 56,
       "João Leitão": 50,
       "Rui Bimba": 53,
       "Tiago Monteiro": 59
     },
     "GW4": {
+      "Miguel Antunes": 79,
       "Diogo Lopes": 89,
       "Bernardo Saraiva": 87,
-      "Miguel Antunes": 79,
       "Diogo Amarelo": 53,
-      "António Moreira": 82,
       "João Pires": 64,
+      "António Moreira": 82,
       "João Leitão": 64,
       "Rui Bimba": 73,
       "Tiago Monteiro": 69
     },
     "GW5": {
+      "Miguel Antunes": 45,
       "Diogo Lopes": 39,
       "Bernardo Saraiva": 62,
-      "Miguel Antunes": 45,
       "Diogo Amarelo": 36,
-      "António Moreira": 48,
       "João Pires": 47,
+      "António Moreira": 48,
       "João Leitão": 49,
       "Rui Bimba": 45,
       "Tiago Monteiro": 31
     },
     "GW6": {
+      "Miguel Antunes": 70,
       "Diogo Lopes": 73,
       "Bernardo Saraiva": 78,
-      "Miguel Antunes": 70,
       "Diogo Amarelo": 53,
-      "António Moreira": 42,
       "João Pires": 51,
+      "António Moreira": 42,
       "João Leitão": 58,
       "Rui Bimba": 37,
       "Tiago Monteiro": 53
     },
     "GW7": {
+      "Miguel Antunes": 65,
       "Diogo Lopes": 92,
       "Bernardo Saraiva": 56,
-      "Miguel Antunes": 65,
       "Diogo Amarelo": 99,
-      "António Moreira": 89,
       "João Pires": 73,
+      "António Moreira": 89,
       "João Leitão": 55,
       "Rui Bimba": 59,
       "Tiago Monteiro": 47
     },
     "GW8": {
+      "Miguel Antunes": 53,
       "Diogo Lopes": 64,
       "Bernardo Saraiva": 67,
-      "Miguel Antunes": 53,
       "Diogo Amarelo": 60,
-      "António Moreira": 51,
       "João Pires": 41,
+      "António Moreira": 51,
       "João Leitão": 62,
       "Rui Bimba": 57,
       "Tiago Monteiro": 46
     },
     "GW9": {
+      "Miguel Antunes": 71,
       "Diogo Lopes": 49,
       "Bernardo Saraiva": 81,
-      "Miguel Antunes": 71,
       "Diogo Amarelo": 77,
-      "António Moreira": 41,
       "João Pires": 84,
+      "António Moreira": 41,
       "João Leitão": 66,
       "Rui Bimba": 46,
       "Tiago Monteiro": 21
@@ -163,100 +163,100 @@
   },
   "transfers": {
     "GW1": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 0,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW2": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 4,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW3": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 4,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW4": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 4,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 0,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW5": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 0,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW6": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 0,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW7": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 4,
-      "António Moreira": 8,
       "João Pires": 0,
+      "António Moreira": 8,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
     "GW8": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 0,
-      "António Moreira": 0,
       "João Pires": 0,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 8
     },
     "GW9": {
+      "Miguel Antunes": 0,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
       "Diogo Amarelo": 4,
-      "António Moreira": 0,
       "João Pires": 4,
+      "António Moreira": 0,
       "João Leitão": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
@@ -264,100 +264,100 @@
   },
   "bench": {
     "GW1": {
+      "Miguel Antunes": 7,
       "Diogo Lopes": 13,
       "Bernardo Saraiva": 11,
-      "Miguel Antunes": 7,
       "Diogo Amarelo": 14,
-      "António Moreira": 0,
       "João Pires": 1,
+      "António Moreira": 0,
       "João Leitão": 19,
       "Rui Bimba": 7,
       "Tiago Monteiro": 10
     },
     "GW2": {
+      "Miguel Antunes": 25,
       "Diogo Lopes": 0,
       "Bernardo Saraiva": 7,
-      "Miguel Antunes": 25,
       "Diogo Amarelo": 0,
-      "António Moreira": 16,
       "João Pires": 6,
+      "António Moreira": 16,
       "João Leitão": 9,
       "Rui Bimba": 0,
       "Tiago Monteiro": 2
     },
     "GW3": {
+      "Miguel Antunes": 10,
       "Diogo Lopes": 6,
       "Bernardo Saraiva": 14,
-      "Miguel Antunes": 10,
       "Diogo Amarelo": 13,
-      "António Moreira": 4,
       "João Pires": 11,
+      "António Moreira": 4,
       "João Leitão": 12,
       "Rui Bimba": 9,
       "Tiago Monteiro": 6
     },
     "GW4": {
+      "Miguel Antunes": 6,
       "Diogo Lopes": 2,
       "Bernardo Saraiva": 11,
-      "Miguel Antunes": 6,
       "Diogo Amarelo": 12,
-      "António Moreira": 9,
       "João Pires": 3,
+      "António Moreira": 9,
       "João Leitão": 1,
       "Rui Bimba": 9,
       "Tiago Monteiro": 16
     },
     "GW5": {
+      "Miguel Antunes": 8,
       "Diogo Lopes": 3,
       "Bernardo Saraiva": 15,
-      "Miguel Antunes": 8,
       "Diogo Amarelo": 14,
-      "António Moreira": 19,
       "João Pires": 14,
+      "António Moreira": 19,
       "João Leitão": 0,
       "Rui Bimba": 11,
       "Tiago Monteiro": 12
     },
     "GW6": {
+      "Miguel Antunes": 8,
       "Diogo Lopes": 3,
       "Bernardo Saraiva": 7,
-      "Miguel Antunes": 8,
       "Diogo Amarelo": 9,
-      "António Moreira": 20,
       "João Pires": 10,
+      "António Moreira": 20,
       "João Leitão": 0,
       "Rui Bimba": 14,
       "Tiago Monteiro": 20
     },
     "GW7": {
+      "Miguel Antunes": 8,
       "Diogo Lopes": 1,
       "Bernardo Saraiva": 14,
-      "Miguel Antunes": 8,
       "Diogo Amarelo": 9,
-      "António Moreira": 3,
       "João Pires": 11,
+      "António Moreira": 3,
       "João Leitão": 5,
       "Rui Bimba": 12,
       "Tiago Monteiro": 10
     },
     "GW8": {
+      "Miguel Antunes": 5,
       "Diogo Lopes": 1,
       "Bernardo Saraiva": 3,
-      "Miguel Antunes": 5,
       "Diogo Amarelo": 4,
-      "António Moreira": 11,
       "João Pires": 6,
+      "António Moreira": 11,
       "João Leitão": 0,
       "Rui Bimba": 6,
       "Tiago Monteiro": 2
     },
     "GW9": {
+      "Miguel Antunes": 17,
       "Diogo Lopes": 15,
       "Bernardo Saraiva": 12,
-      "Miguel Antunes": 17,
       "Diogo Amarelo": 24,
-      "António Moreira": 9,
       "João Pires": 0,
+      "António Moreira": 9,
       "João Leitão": 4,
       "Rui Bimba": 16,
       "Tiago Monteiro": 14
@@ -365,6 +365,13 @@
   },
   "captains": {
     "GW1": {
+      "Miguel Antunes": {
+        "c": "B.Fernandes",
+        "pts": 2,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 11
+      },
       "Diogo Lopes": {
         "c": "Tzolis",
         "pts": 6,
@@ -379,13 +386,6 @@
         "best": "João Pedro",
         "best_pts": 11
       },
-      "Miguel Antunes": {
-        "c": "B.Fernandes",
-        "pts": 2,
-        "mult": 2,
-        "best": "João Pedro",
-        "best_pts": 11
-      },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
         "pts": 2,
@@ -393,14 +393,14 @@
         "best": "João Pedro",
         "best_pts": 11
       },
-      "António Moreira": {
+      "João Pires": {
         "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 11
       },
-      "João Pires": {
+      "António Moreira": {
         "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
@@ -430,6 +430,13 @@
       }
     },
     "GW2": {
+      "Miguel Antunes": {
+        "c": "B.Fernandes",
+        "pts": 23,
+        "mult": 2,
+        "best": "B.Fernandes",
+        "best_pts": 23
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 13,
@@ -444,13 +451,6 @@
         "best": "Haaland",
         "best_pts": 13
       },
-      "Miguel Antunes": {
-        "c": "B.Fernandes",
-        "pts": 23,
-        "mult": 2,
-        "best": "B.Fernandes",
-        "best_pts": 23
-      },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
         "pts": 23,
@@ -458,14 +458,14 @@
         "best": "B.Fernandes",
         "best_pts": 23
       },
-      "António Moreira": {
+      "João Pires": {
         "c": "B.Fernandes",
         "pts": 23,
         "mult": 2,
         "best": "B.Fernandes",
         "best_pts": 23
       },
-      "João Pires": {
+      "António Moreira": {
         "c": "B.Fernandes",
         "pts": 23,
         "mult": 2,
@@ -495,6 +495,13 @@
       }
     },
     "GW3": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 9
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 9,
@@ -509,23 +516,9 @@
         "best": "Gakpo",
         "best_pts": 11
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 9,
-        "mult": 3,
-        "best": "Haaland",
-        "best_pts": 9
-      },
       "Diogo Amarelo": {
         "c": "Cherki",
         "pts": 3,
-        "mult": 2,
-        "best": "Isak",
-        "best_pts": 13
-      },
-      "António Moreira": {
-        "c": "Haaland",
-        "pts": 9,
         "mult": 2,
         "best": "Isak",
         "best_pts": 13
@@ -536,6 +529,13 @@
         "mult": 3,
         "best": "Haaland",
         "best_pts": 9
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Isak",
+        "best_pts": 13
       },
       "João Leitão": {
         "c": "Haaland",
@@ -560,6 +560,13 @@
       }
     },
     "GW4": {
+      "Miguel Antunes": {
+        "c": "Palmer",
+        "pts": 5,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
       "Diogo Lopes": {
         "c": "João Pedro",
         "pts": 12,
@@ -574,13 +581,6 @@
         "best": "João Pedro",
         "best_pts": 12
       },
-      "Miguel Antunes": {
-        "c": "Palmer",
-        "pts": 5,
-        "mult": 2,
-        "best": "João Pedro",
-        "best_pts": 12
-      },
       "Diogo Amarelo": {
         "c": "Palmer",
         "pts": 5,
@@ -588,16 +588,16 @@
         "best": "Raya",
         "best_pts": 14
       },
-      "António Moreira": {
-        "c": "João Pedro",
-        "pts": 12,
+      "João Pires": {
+        "c": "Isak",
+        "pts": 2,
         "mult": 2,
         "best": "Raya",
         "best_pts": 14
       },
-      "João Pires": {
-        "c": "Isak",
-        "pts": 2,
+      "António Moreira": {
+        "c": "João Pedro",
+        "pts": 12,
         "mult": 2,
         "best": "Raya",
         "best_pts": 14
@@ -625,6 +625,13 @@
       }
     },
     "GW5": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Hall",
+        "best_pts": 13
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 6,
@@ -639,16 +646,16 @@
         "best": "Groß",
         "best_pts": 14
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "Hall",
-        "best_pts": 13
-      },
       "Diogo Amarelo": {
         "c": "Gibbs-White",
         "pts": 2,
+        "mult": 2,
+        "best": "Cherki",
+        "best_pts": 8
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 6,
         "mult": 2,
         "best": "Cherki",
         "best_pts": 8
@@ -659,13 +666,6 @@
         "mult": 2,
         "best": "Semenyo",
         "best_pts": 17
-      },
-      "João Pires": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "Cherki",
-        "best_pts": 8
       },
       "João Leitão": {
         "c": "Haaland",
@@ -690,6 +690,13 @@
       }
     },
     "GW6": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
+      },
       "Diogo Lopes": {
         "c": "João Pedro",
         "pts": 12,
@@ -704,13 +711,6 @@
         "best": "De Cuyper",
         "best_pts": 15
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "João Pedro",
-        "best_pts": 12
-      },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
         "pts": 1,
@@ -718,19 +718,19 @@
         "best": "De Cuyper",
         "best_pts": 15
       },
-      "António Moreira": {
-        "c": "B.Fernandes",
-        "pts": 1,
-        "mult": 2,
-        "best": "João Pedro",
-        "best_pts": 12
-      },
       "João Pires": {
         "c": "Rogers",
         "pts": 9,
         "mult": 2,
         "best": "Rogers",
         "best_pts": 9
+      },
+      "António Moreira": {
+        "c": "B.Fernandes",
+        "pts": 1,
+        "mult": 2,
+        "best": "João Pedro",
+        "best_pts": 12
       },
       "João Leitão": {
         "c": "Haaland",
@@ -755,6 +755,13 @@
       }
     },
     "GW7": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 13,
@@ -769,21 +776,7 @@
         "best": "Haaland",
         "best_pts": 13
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 13,
-        "mult": 2,
-        "best": "Haaland",
-        "best_pts": 13
-      },
       "Diogo Amarelo": {
-        "c": "Haaland",
-        "pts": 13,
-        "mult": 3,
-        "best": "Haaland",
-        "best_pts": 13
-      },
-      "António Moreira": {
         "c": "Haaland",
         "pts": 13,
         "mult": 3,
@@ -794,6 +787,13 @@
         "c": "Haaland",
         "pts": 13,
         "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 3,
         "best": "Haaland",
         "best_pts": 13
       },
@@ -820,6 +820,13 @@
       }
     },
     "GW8": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 8,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 8,
@@ -834,14 +841,14 @@
         "best": "Konsa",
         "best_pts": 14
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 8,
+      "Diogo Amarelo": {
+        "c": "Palmer",
+        "pts": -1,
         "mult": 2,
         "best": "Konsa",
         "best_pts": 14
       },
-      "Diogo Amarelo": {
+      "João Pires": {
         "c": "Palmer",
         "pts": -1,
         "mult": 2,
@@ -854,13 +861,6 @@
         "mult": 2,
         "best": "Barnes",
         "best_pts": 8
-      },
-      "João Pires": {
-        "c": "Palmer",
-        "pts": -1,
-        "mult": 2,
-        "best": "Konsa",
-        "best_pts": 14
       },
       "João Leitão": {
         "c": "Haaland",
@@ -885,6 +885,13 @@
       }
     },
     "GW9": {
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
+      },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 2,
@@ -899,13 +906,6 @@
         "best": "Van Hecke",
         "best_pts": 15
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 2,
-        "mult": 2,
-        "best": "Konsa",
-        "best_pts": 10
-      },
       "Diogo Amarelo": {
         "c": "N.Jackson",
         "pts": 9,
@@ -913,19 +913,19 @@
         "best": "Van Hecke",
         "best_pts": 15
       },
-      "António Moreira": {
-        "c": "Marmoush",
-        "pts": 2,
-        "mult": 2,
-        "best": "Rice",
-        "best_pts": 8
-      },
       "João Pires": {
         "c": "Evanilson",
         "pts": 9,
         "mult": 2,
         "best": "Konsa",
         "best_pts": 10
+      },
+      "António Moreira": {
+        "c": "Marmoush",
+        "pts": 2,
+        "mult": 2,
+        "best": "Rice",
+        "best_pts": 8
       },
       "João Leitão": {
         "c": "Haaland",
@@ -951,6 +951,14 @@
     }
   },
   "chips_used": {
+    "Miguel Antunes": {
+      "Triple Captain": [
+        "GW3"
+      ],
+      "Wildcard": [
+        "GW4"
+      ]
+    },
     "Diogo Lopes": {
       "Bench Boost": [
         "GW2"
@@ -970,34 +978,12 @@
         "GW9"
       ]
     },
-    "Miguel Antunes": {
-      "Triple Captain": [
-        "GW3"
-      ],
-      "Wildcard": [
-        "GW4"
-      ]
-    },
     "Diogo Amarelo": {
       "Bench Boost": [
         "GW2"
       ],
       "Wildcard": [
         "GW5"
-      ],
-      "Triple Captain": [
-        "GW7"
-      ]
-    },
-    "António Moreira": {
-      "Bench Boost": [
-        "GW1"
-      ],
-      "Free Hit": [
-        "GW3"
-      ],
-      "Wildcard": [
-        "GW6"
       ],
       "Triple Captain": [
         "GW7"
@@ -1017,6 +1003,20 @@
         "GW9"
       ]
     },
+    "António Moreira": {
+      "Bench Boost": [
+        "GW1"
+      ],
+      "Free Hit": [
+        "GW3"
+      ],
+      "Wildcard": [
+        "GW6"
+      ],
+      "Triple Captain": [
+        "GW7"
+      ]
+    },
     "João Leitão": {},
     "Rui Bimba": {
       "Wildcard": [
@@ -1025,5 +1025,5 @@
     },
     "Tiago Monteiro": {}
   },
-  "updated_at": "2026-11-05T10:26:39+00:00"
+  "updated_at": "2026-11-06T23:14:32+00:00"
 }
