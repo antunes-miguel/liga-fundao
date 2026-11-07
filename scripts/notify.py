@@ -22,7 +22,7 @@ How it decides:
   fetch_fpl.py). Once it is within 24 hours, send one reminder; the gameweek is then stored as
   "deadline_gw" in data/notified.json, so it is never sent twice. The workflow runs hourly, so the
   reminder arrives somewhere between 23 and 24 hours before the deadline (less if the deadline was
-  announced late, and the text then says how long is really left).
+  announced late; the text says "hoje" or "amanhã" and the time, not the hours left).
 
 Sending uses OneSignal. It needs the app id (read from ONESIGNAL_APP_ID in
 index.html, or the ONESIGNAL_APP_ID env var) and the secret ONESIGNAL_API_KEY.
@@ -193,9 +193,7 @@ def deadline_text(gw, deadline, now):
     local = deadline.astimezone(LISBON)
     # Within 24 hours the deadline falls today or tomorrow, by the Lisbon calendar
     day = "hoje" if local.date() == now.astimezone(LISBON).date() else "amanhã"
-    hours = round((deadline - now).total_seconds() / 3600)
-    remaining = "Falta cerca de 1 hora." if hours <= 1 else f"Faltam cerca de {hours} horas."
-    return f"⏰ GW{gw}: prazo {day} às {local:%H:%M}", f"{remaining} Confirma a equipa e as transferências."
+    return f"⏰ GW{gw} Deadline", f"Prazo {day} às {local:%H:%M}, confirma a equipa e as transferências."
 
 
 def deadline_preview(data, now):
