@@ -16,7 +16,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 
 ## Data flow
 
-- Only gameweeks FPL marks `finished && data_checked` are written, so debts don't move mid-gameweek.
+- Only gameweeks FPL marks `finished && data_checked` are written, so debts don't move mid-gameweek. The one exception is `xi` (below): it also covers a gameweek whose deadline has passed but isn't final yet, because squads are visible and locked from the deadline and the XI view doesn't need results.
 - Captain and starting-XI data for finished GWs is reused from the existing `data/fpl.json` (one picks call per player per new GW gives both), so runs stay fast. To rebuild captains, delete the `captains` key and rerun; for XIs, delete `xi`.
 - `xi`: GW → player → the 11 FPL player ids picked to start (pick positions 1-11, in pick order, before automatic subs; a Bench Boost week still counts the same 11). `xi_names` maps id → name. Ids, not names, because FPL names are not unique (two "Martinez").
 - `index.html` loads `data/fpl.json` into `PLAYERS`, `MATCHWEEKS`, `TRANSFERS`, `CHIPS_USED`. If the fetch fails (e.g. opened from disk), it falls back to the inline copies in the data section. Those inline copies are stale on purpose; don't update them.
@@ -46,7 +46,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 
 ## Design
 
-- "Onzes Iniciais" panel (`#onze`, hidden if `data/fpl.json` has no `xi`): pick a player and a GW (or the season average) and every other player is ranked by how many of the 11 starters they share (`sharedXI` / `xiSimilarity` in `index.html`); for one GW it lists the shared players. The chosen player is saved in `localStorage` (`lf-xi-player`).
+- "Onzes Iniciais" panel (`#onze`, hidden if `data/fpl.json` has no `xi`): pick a player and a GW (or the season average) and every other player is ranked by how many of the 11 starters they share (`sharedXI` / `xiSimilarity` in `index.html`); for one GW it lists the shared players. A GW that is under way (in `xi` but not yet in `matchweeks`) is listed as "GWn (a decorrer)" and is the default. The chosen player is saved in `localStorage` (`lf-xi-player`).
 - Brand (from the Instagram artwork): maroon `--brand #3d0e1e`, stripes `#511726` / `#5d1a2b`, red band `#8b2d3b`, white. Colours are CSS variables in `:root`; use those, not new hex values.
 - Fonts: Montserrat 800 uppercase for the wordmark, headings and menu (`--display`); Inter for body text.
 - Phones matter most. At ≤640px, tables become compact one-row-per-player grids, with short names via `nameHTML()` / `shortName()` ("Diogo L.").

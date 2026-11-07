@@ -1031,9 +1031,12 @@ function renderXI(rows){
   const playerSel = document.getElementById('xi-player');
   const gwSel = document.getElementById('xi-gw');
   playerSel.replaceChildren(...order.map(p => new Option(p, p)));
+  // A GW whose deadline has passed but whose results aren't final yet has XIs but no scores
+  const underWay = g => !MATCHWEEKS[g];
+  const gwLabel = g => underWay(g) ? `${g} (a decorrer)` : g;
   gwSel.replaceChildren(
     new Option(`Média da época (${gws[0]}–${gws[gws.length - 1]})`, ''),
-    ...gws.map(g => new Option(g, g)));
+    ...gws.map(g => new Option(gwLabel(g), g)));
 
   let saved = null;
   try { saved = localStorage.getItem(XI_KEY); } catch (_) {}
@@ -1048,8 +1051,8 @@ function renderXI(rows){
     const mine = gw ? XI[gw]?.[p] : null;
     document.getElementById('xi-context').textContent = !gw
       ? `Média das ${gws.length} jornadas.`
-      : mine ? `Onze de ${p} na ${gw}: ${mine.map(id => XI_NAMES[id] ?? id).join(', ')}.`
-             : `Sem onze guardado para ${p} na ${gw}.`;
+      : mine ? `Onze de ${p} na ${gwLabel(gw)}: ${mine.map(id => XI_NAMES[id] ?? id).join(', ')}.`
+             : `Sem onze guardado para ${p} na ${gwLabel(gw)}.`;
 
     const list = xiSimilarity(p, gw, gws, order.filter(q => q !== p));
     document.getElementById('xi-list').innerHTML = list.map(r => {

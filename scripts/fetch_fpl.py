@@ -9,9 +9,11 @@ the Python standard library. Run it locally with:
 Only gameweeks that FPL has finished and checked (final bonus points) are
 written, so the debts don't move around while matches are still being played.
 
-Besides the points, it stores each manager's starting XI per finished gameweek
-("xi": GW -> manager -> 11 FPL player ids, in pick order) and "xi_names" (id -> player
-name) for the ids used. Ids, because two players can share a name ("Gabriel").
+Besides the points, it stores each manager's starting XI ("xi": GW -> manager -> 11 FPL
+player ids, in pick order) and "xi_names" (id -> player name) for the ids used. Ids,
+because two players can share a name ("Gabriel"). Unlike the points, the XIs are also
+stored for a gameweek that is under way (its deadline has passed, FPL shows the squads
+from then on, and they can no longer change), so they don't wait for the final result.
 """
 
 import json
@@ -109,9 +111,13 @@ def league_entries():
 def main():
     overrides = load_name_overrides()
 
+    now = datetime.now(timezone.utc)
     boot = get("bootstrap-static/")
     events = boot["events"]
     done = {e["id"] for e in events if e["finished"] and e["data_checked"]}
+    # Deadline passed but not final yet: squads are visible and locked, results still moving
+    under_way = {e["id"] for e in events
+                 if e.get("deadline_time") and parse_utc(e["deadline_time"]) <= now and e["id"] not in done}
     player_names = {e["id"]: e["web_name"] for e in boot["elements"]}
 
     # Finished GWs never change, so reuse the captain and XI data we already have
@@ -158,6 +164,18 @@ def main():
             captains.setdefault(key, {})[name] = cached
             xi.setdefault(key, {})[name] = cached_xi
 
+        # XIs of gameweeks under way (the loop above only covers final ones)
+        for gw in sorted(under_way):
+            key = f"GW{gw}"
+            cached_xi = old_xi.get(key, {}).get(name)
+            if cached_xi is None:
+                try:
+                    cached_xi = starting_xi(get(f"entry/{entry_id}/event/{gw}/picks/")["picks"])
+                except RuntimeError as exc:  # not available (yet): the next hourly run tries again
+                    print(f"No squad for {name} in {key}: {exc}")
+                    continue
+            xi.setdefault(key, {})[name] = cached_xi
+
         used = {}
         for chip in history["chips"]:
             if chip["event"] not in done:
@@ -178,7 +196,7 @@ def main():
         "xi": order(xi),
         "xi_names": {str(i): player_names.get(i, str(i)) for i in sorted({i for gw in xi.values() for ids in gw.values() for i in ids})},
         "chips_used": chips_used,
-        "next_deadline": next_deadline(events, datetime.now(timezone.utc)),
+        "next_deadline": next_deadline(events, now),
     }
 
     # Only touch the file (and its timestamp) when the data actually changed,
