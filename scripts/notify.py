@@ -9,6 +9,8 @@ Runs in GitHub Actions right after scripts/fetch_fpl.py (see
     python scripts/notify.py --dry-run    # print what would be sent, change nothing
     python scripts/notify.py --gw 9       # preview the message for GW9 (prints only)
     python scripts/notify.py --gw 9 --send  # really send GW9's message, marked "(teste)"; state untouched
+    python scripts/notify.py --deadline   # preview the deadline reminder (prints only)
+    python scripts/notify.py --deadline --send  # really send it, marked "(teste)"; state untouched
     python scripts/notify.py --test       # send a test push (does not touch the state)
     python scripts/notify.py --message "Texto" [--title "Título"]  # send a custom push (state untouched)
 
@@ -183,12 +185,29 @@ def deadline_reminder(data, state, now):
     if state.get("deadline_gw", 0) >= gw:
         return None, f"The reminder for GW{gw} was already sent."
 
+    return (gw, *deadline_text(gw, deadline, now)), ""
+
+
+def deadline_text(gw, deadline, now):
+    """(title, body) of the reminder, worded for sending it at `now` (within 24 h of the deadline)."""
     local = deadline.astimezone(LISBON)
     # Within 24 hours the deadline falls today or tomorrow, by the Lisbon calendar
     day = "hoje" if local.date() == now.astimezone(LISBON).date() else "amanhã"
-    hours = round(left.total_seconds() / 3600)
+    hours = round((deadline - now).total_seconds() / 3600)
     remaining = "Falta cerca de 1 hora." if hours <= 1 else f"Faltam cerca de {hours} horas."
-    return (gw, f"⏰ GW{gw}: prazo {day} às {local:%H:%M}", f"{remaining} Confirma a equipa e as transferências."), ""
+    return f"⏰ GW{gw}: prazo {day} às {local:%H:%M}", f"{remaining} Confirma a equipa e as transferências."
+
+
+def deadline_preview(data, now):
+    """The reminder for the next deadline whenever it is, ignoring the 24 h window and what was already
+    sent -> (title, body). Worded as it will read when really sent (24 h before)."""
+    nd = data.get("next_deadline")
+    if not nd:
+        sys.exit("No upcoming deadline in data/fpl.json yet. The hourly update adds it; try again after its next run.")
+    gw, deadline = nd["gw"], parse_utc(nd["time"])
+    if deadline <= now:
+        sys.exit(f"GW{gw}'s deadline has already passed. Try again after the next hourly update.")
+    return deadline_text(gw, deadline, max(now, deadline - REMINDER_WINDOW))
 
 
 # ---------- state ----------
@@ -320,7 +339,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true", help="print the message, send nothing, keep the state")
     ap.add_argument("--gw", type=int, help="preview the message for this gameweek (prints only, unless --send)")
-    ap.add_argument("--send", action="store_true", help="with --gw: send that message as a test (title gets '(teste)')")
+    ap.add_argument("--deadline", action="store_true", help="preview the deadline reminder for the next deadline (prints only, unless --send)")
+    ap.add_argument("--send", action="store_true", help="with --gw or --deadline: send that message as a test (title gets '(teste)')")
     ap.add_argument("--test", action="store_true", help="send a test notification")
     ap.add_argument("--message", help="send this text as a custom notification (state untouched)")
     ap.add_argument("--title", default=DEFAULT_TITLE, help=f"heading of the custom notification (default: {DEFAULT_TITLE})")
@@ -344,8 +364,19 @@ def main():
             sys.exit("Test notification was not delivered (see the message above).")
         return
 
-    if args.send and not args.gw:
-        sys.exit("--send needs --gw N")
+    if args.gw and args.deadline:
+        sys.exit("Use --gw or --deadline, not both.")
+    if args.send and not (args.gw or args.deadline):
+        sys.exit("--send needs --gw N or --deadline")
+    if args.deadline:
+        title, body = deadline_preview(data, datetime.now(timezone.utc))
+        if not args.send:
+            print(f"{title}\n{body}")
+            return
+        if not deliver(f"{title} (teste)", body):  # same text as the real one, marked as a test
+            diagnose()
+            sys.exit("The preview was not delivered (see the message above).")
+        return
     if args.gw:
         key = f"GW{args.gw}"
         if key not in data["matchweeks"]:
