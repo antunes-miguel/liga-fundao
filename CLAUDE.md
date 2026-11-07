@@ -6,7 +6,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 ## Layout
 
 - `index.html`: the whole site (HTML, CSS and JS in one file, no build step, no dependencies besides Google Fonts).
-- `data/fpl.json`: league data (players, points, transfer costs, bench points, captains, chips). **Generated; never edit by hand.**
+- `data/fpl.json`: league data (players, points, transfer costs, bench points, captains, starting XIs, chips). **Generated; never edit by hand.**
 - `data/names.json`: maps an FPL name or entry id to the name shown on the page (e.g. `"Antonio Moreira": "António Moreira"`).
 - `scripts/fetch_fpl.py`: fetches the FPL API and writes `data/fpl.json`. Python stdlib only.
 - `scripts/notify.py`: builds and sends the "GWn fechada" push notification when a new gameweek is final, and the deadline reminder (below). `data/notified.json` remembers the last gameweek announced (`last_gw`) and the last one whose deadline was announced (`deadline_gw`) (generated; first run only records `last_gw` and sends nothing).
@@ -16,8 +16,9 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 
 ## Data flow
 
-- Only gameweeks FPL marks `finished && data_checked` are written, so debts don't move mid-gameweek.
-- Captain data for finished GWs is reused from the existing `data/fpl.json` (one picks call per player per new GW), so runs stay fast. To rebuild it, delete the `captains` key and rerun.
+- Only gameweeks FPL marks `finished && data_checked` are written, so debts don't move mid-gameweek. The one exception is `xi` (below): it also covers a gameweek whose deadline has passed but isn't final yet, because squads are visible and locked from the deadline and the XI view doesn't need results.
+- Captain and starting-XI data for finished GWs is reused from the existing `data/fpl.json` (one picks call per player per new GW gives both), so runs stay fast. To rebuild captains, delete the `captains` key and rerun; for XIs, delete `xi`.
+- `xi`: GW → player → the 11 FPL player ids picked to start (pick positions 1-11, in pick order, before automatic subs; a Bench Boost week still counts the same 11). `xi_names` maps id → name. Ids, not names, because FPL names are not unique (two "Martinez").
 - `index.html` loads `data/fpl.json` into `PLAYERS`, `MATCHWEEKS`, `TRANSFERS`, `CHIPS_USED`. If the fetch fails (e.g. opened from disk), it falls back to the inline copies in the data section. Those inline copies are stale on purpose; don't update them.
 - **Edited by hand:** `MANUAL_PAYMENTS` (EUR paid per player, keyed by display name) and `COST_PER_POINT` in `index.html`.
 - If a `MANUAL_PAYMENTS` name doesn't match a player, the header shows a red "Pagamentos sem jogador" chip. The fix is usually a `data/names.json` entry.
@@ -45,6 +46,7 @@ UI text is in Portuguese (pt-PT). The owner writes to Claude in English.
 
 ## Design
 
+- "Onzes Iniciais" panel (`#onze`, hidden if `data/fpl.json` has no `xi`): pick a player and a GW (or the season average) and every other player is ranked by how many of the 11 starters they share (`sharedXI` / `xiSimilarity` in `index.html`); for one GW it lists the shared players. A GW that is under way (in `xi` but not yet in `matchweeks`) is listed as "GWn (a decorrer)" and is the default. The chosen player is saved in `localStorage` (`lf-xi-player`).
 - Brand (from the Instagram artwork): maroon `--brand #3d0e1e`, stripes `#511726` / `#5d1a2b`, red band `#8b2d3b`, white. Colours are CSS variables in `:root`; use those, not new hex values.
 - Fonts: Montserrat 800 uppercase for the wordmark, headings and menu (`--display`); Inter for body text.
 - Phones matter most. At ≤640px, tables become compact one-row-per-player grids, with short names via `nameHTML()` / `shortName()` ("Diogo L.").
