@@ -425,6 +425,26 @@
   .full-view #weeks table td:first-child { white-space: nowrap; }
 }
 
+/* --- Starting-XI similarity --- */
+.xi-controls{display:flex; flex-wrap:wrap; gap:10px; margin:0 0 12px}
+.xi-controls label{display:flex; flex-direction:column; gap:4px; flex:1 1 160px; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em}
+.xi-controls select{
+  font:inherit; font-size:14px; font-weight:600; text-transform:none; letter-spacing:0;
+  padding:8px 10px; border-radius:8px; border:2px solid var(--accent); background:var(--panel2); color:var(--ink); cursor:pointer;
+}
+.xi-context{margin:0 0 12px}
+.xi-list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.xi-row{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:12px; padding:10px 12px}
+.xi-top{display:grid; grid-template-columns:150px 1fr auto; align-items:center; gap:12px}
+.xi-name{font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.xi-bar{height:8px; border-radius:999px; background:rgba(255,255,255,.1); overflow:hidden}
+.xi-bar span{display:block; height:100%; border-radius:inherit; background:var(--accent)}
+.xi-n{min-width:48px; text-align:right; font-family:var(--display); font-weight:700; font-variant-numeric:tabular-nums}
+.xi-shared{margin-top:6px; font-size:12px; line-height:1.45; color:var(--muted)}
+@media (max-width: 640px){
+  .xi-top{grid-template-columns:84px 1fr auto; gap:10px}
+}
+
 /* Fade hint on horizontally-scrollable elements (heatmap) so it's clear there's more */
 .hm-right{
   -webkit-mask-image: linear-gradient(90deg, #000 94%, transparent 100%);
@@ -496,6 +516,7 @@
     <a href="#chips">Chips</a>
     <a href="#banco">Banco de Ouro</a>
     <a href="#capitaes">Capitães</a>
+    <a href="#onze" hidden>Onzes</a>
     <a href="#evolucao">Evolução</a>
     <a href="#semanal">Semanal</a>
   </nav>
@@ -563,6 +584,18 @@
       <div class="footer-note small">Eficiência = pontos do capitão ÷ pontos do melhor jogador do teu onze, somados na época (100% = escolheste sempre o melhor).
         Acertos: jornadas em que o capitão foi a melhor escolha. Perdidos: pontos que a braçadeira deixou de ganhar (×2 no Triple Captain).
         Se o capitão não jogou, conta o vice-capitão.</div>
+    </section>
+
+    <section class="panel" style="grid-column:1 / -1;" id="onze" hidden>
+      <h2>Onzes Iniciais <span class="pill">Semelhança</span></h2>
+      <div class="xi-controls">
+        <label>Jogador <select id="xi-player"></select></label>
+        <label>Jornada <select id="xi-gw"></select></label>
+      </div>
+      <div class="footer-note small xi-context" id="xi-context"></div>
+      <ol class="xi-list" id="xi-list"></ol>
+      <div class="footer-note small">Quantos dos 11 titulares são os mesmos (11/11 = onze idêntico). Conta os 11 escolhidos antes do apito inicial, sem substituições automáticas.
+        Na média da época, é a média das jornadas.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="evolucao">
@@ -643,6 +676,11 @@
   // Captain picks per GW per player (only from data/fpl.json):
   // {c: armband player, pts: their points, mult: 2 or 3, best: best player in the XI, best_pts}
   let CAPTAINS = null;
+
+  // Starting XIs: GW -> player -> the 11 FPL player ids picked to start, and id -> player name
+  // (only from data/fpl.json; no inline fallback)
+  let XI = null;
+  let XI_NAMES = {};
 
   // Each chip can be played this many times a season (one per half)
   const CHIPS_PER_TYPE = 2;
@@ -954,6 +992,89 @@ function renderCaptains(){
         <td class="right bench-total" data-label="Eficiência">${r.eff == null ? '—' : `${Math.round(r.eff * 100)}%`}</td>
       </tr>`;
   }).join('');
+}
+
+// Starters two managers share in a GW (FPL ids, in a's pick order); null if either XI is missing
+function sharedXI(gw, a, b){
+  const A = XI?.[gw]?.[a], B = XI?.[gw]?.[b];
+  if (!A || !B) return null;
+  const inB = new Set(B);
+  return A.filter(id => inB.has(id));
+}
+
+// How many starters `p` shares with each of `others`, best match first: in one GW, or averaged over all of them when gw is ""
+function xiSimilarity(p, gw, gws, others){
+  return others.map(q => {
+    if (gw) {
+      const shared = sharedXI(gw, p, q);
+      return { player: q, n: shared ? shared.length : null, shared };
+    }
+    const counts = gws.map(g => sharedXI(g, p, q)).filter(Boolean).map(s => s.length);
+    return { player: q, n: counts.length ? counts.reduce((a, b) => a + b, 0) / counts.length : null, shared: null };
+  })
+  .filter(r => r.n != null)
+  .sort((a, b) => b.n - a.n || a.player.localeCompare(b.player));
+}
+
+const XI_KEY = 'lf-xi-player';
+const escapeHTML = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+
+function renderXI(rows){
+  const section = document.getElementById('onze');
+  const link = document.querySelector('.topnav a[href="#onze"]');
+  const gws = XI ? sortGWsNumeric(Object.keys(XI)) : [];
+  section.hidden = !gws.length;
+  if (link) link.hidden = !gws.length;
+  if (!gws.length) return;
+
+  const order = rows.slice().sort((a, b) => a.rank - b.rank).map(r => r.player);
+  const playerSel = document.getElementById('xi-player');
+  const gwSel = document.getElementById('xi-gw');
+  playerSel.replaceChildren(...order.map(p => new Option(p, p)));
+  gwSel.replaceChildren(
+    new Option(`Média da época (${gws[0]}–${gws[gws.length - 1]})`, ''),
+    ...gws.map(g => new Option(g, g)));
+
+  let saved = null;
+  try { saved = localStorage.getItem(XI_KEY); } catch (_) {}
+  playerSel.value = order.includes(saved) ? saved : order[0];
+  gwSel.value = gws[gws.length - 1]; // latest GW
+
+  const nameOf = id => escapeHTML(XI_NAMES[id] ?? id);
+  const fmt = n => n.toLocaleString('pt-PT', {maximumFractionDigits: 1});
+
+  const draw = () => {
+    const p = playerSel.value, gw = gwSel.value;
+    const mine = gw ? XI[gw]?.[p] : null;
+    document.getElementById('xi-context').textContent = !gw
+      ? `Média das ${gws.length} jornadas.`
+      : mine ? `Onze de ${p} na ${gw}: ${mine.map(id => XI_NAMES[id] ?? id).join(', ')}.`
+             : `Sem onze guardado para ${p} na ${gw}.`;
+
+    const list = xiSimilarity(p, gw, gws, order.filter(q => q !== p));
+    document.getElementById('xi-list').innerHTML = list.map(r => {
+      const shared = r.shared == null ? ''
+        : r.n === 11 ? 'Onze idêntico'
+        : r.n === 0 ? 'Nenhum jogador em comum'
+        : r.shared.map(nameOf).join(', ');
+      return `
+        <li class="xi-row">
+          <div class="xi-top">
+            <span class="xi-name">${nameHTML(r.player)}</span>
+            <span class="xi-bar"><span style="width:${(r.n / 11 * 100).toFixed(1)}%"></span></span>
+            <span class="xi-n">${fmt(r.n)}/11</span>
+          </div>
+          ${shared ? `<div class="xi-shared">${shared}</div>` : ''}
+        </li>`;
+    }).join('');
+  };
+
+  playerSel.addEventListener('change', () => {
+    try { localStorage.setItem(XI_KEY, playerSel.value); } catch (_) {}
+    draw();
+  });
+  gwSel.addEventListener('change', draw);
+  draw();
 }
 
 function renderWeeks(weekTops){
@@ -1499,6 +1620,8 @@ async function loadFplData(){
     CHIPS_USED = d.chips_used;
     BENCH = d.bench ?? null;
     CAPTAINS = d.captains ?? null;
+    XI = d.xi ?? null;
+    XI_NAMES = d.xi_names ?? {};
     return d;
   } catch (err) {
     console.warn('Could not load data/fpl.json, using inline data:', err);
@@ -1529,6 +1652,7 @@ async function loadFplData(){
   renderChips(rows);
   renderBench();
   renderCaptains();
+  renderXI(rows);
 
   const gwSelector = document.getElementById('gw-selector');
   if (gwSelector) {

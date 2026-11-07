@@ -8,6 +8,10 @@ the Python standard library. Run it locally with:
 
 Only gameweeks that FPL has finished and checked (final bonus points) are
 written, so the debts don't move around while matches are still being played.
+
+Besides the points, it stores each manager's starting XI per finished gameweek
+("xi": GW -> manager -> 11 FPL player ids, in pick order) and "xi_names" (id -> player
+name) for the ids used. Ids, because two players can share a name ("Gabriel").
 """
 
 import json
@@ -87,6 +91,11 @@ def parse_utc(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
 
 
+def starting_xi(picks):
+    """The 11 players the manager picked to start (pick positions 1-11, in that order)."""
+    return [p["element"] for p in sorted(picks, key=lambda p: p["position"]) if p["position"] <= 11]
+
+
 def league_entries():
     entries, page = [], 1
     while True:
@@ -105,10 +114,11 @@ def main():
     done = {e["id"] for e in events if e["finished"] and e["data_checked"]}
     player_names = {e["id"]: e["web_name"] for e in boot["elements"]}
 
-    # Finished GWs never change, so reuse captain data we already have
-    old_captains = {}
+    # Finished GWs never change, so reuse the captain and XI data we already have
+    old_captains, old_xi = {}, {}
     if OUT_FILE.exists():
-        old_captains = json.loads(OUT_FILE.read_text(encoding="utf-8")).get("captains", {})
+        old = json.loads(OUT_FILE.read_text(encoding="utf-8"))
+        old_captains, old_xi = old.get("captains", {}), old.get("xi", {})
     live_cache = {}
 
     def live_points(gw):
@@ -118,7 +128,7 @@ def main():
 
     league, entries = league_entries()
 
-    players, matchweeks, transfers, bench, captains, chips_used = [], {}, {}, {}, {}, {}
+    players, matchweeks, transfers, bench, captains, xi, chips_used = [], {}, {}, {}, {}, {}, {}
     for e in entries:
         entry_id = e["entry"]
         name = overrides.get(str(entry_id)) or overrides.get(e["player_name"]) or e["player_name"]
@@ -138,10 +148,15 @@ def main():
             transfers.setdefault(key, {})[name] = gw["event_transfers_cost"]
             bench.setdefault(key, {})[name] = gw["points_on_bench"]
             cached = old_captains.get(key, {}).get(name)
-            if cached is None:
+            cached_xi = old_xi.get(key, {}).get(name)
+            if cached is None or cached_xi is None:  # one picks call gives both
                 picks = get(f"entry/{entry_id}/event/{gw['event']}/picks/")["picks"]
-                cached = captain_pick(picks, live_points(gw["event"]), player_names)
+                if cached is None:
+                    cached = captain_pick(picks, live_points(gw["event"]), player_names)
+                if cached_xi is None:
+                    cached_xi = starting_xi(picks)
             captains.setdefault(key, {})[name] = cached
+            xi.setdefault(key, {})[name] = cached_xi
 
         used = {}
         for chip in history["chips"]:
@@ -160,6 +175,8 @@ def main():
         "transfers": order(transfers),
         "bench": order(bench),
         "captains": order(captains),
+        "xi": order(xi),
+        "xi_names": {str(i): player_names.get(i, str(i)) for i in sorted({i for gw in xi.values() for ids in gw.values() for i in ids})},
         "chips_used": chips_used,
         "next_deadline": next_deadline(events, datetime.now(timezone.utc)),
     }
