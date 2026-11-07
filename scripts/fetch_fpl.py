@@ -72,6 +72,21 @@ def captain_pick(picks, live_pts, names):
     }
 
 
+def next_deadline(events, now):
+    """The earliest gameweek deadline still in the future, as {"gw": 10, "time": "<UTC ISO>"}.
+    None when the season is over. Used by scripts/notify.py for the deadline reminder."""
+    upcoming = [(e["deadline_time"], e["id"]) for e in events
+                if e.get("deadline_time") and parse_utc(e["deadline_time"]) > now]
+    if not upcoming:
+        return None
+    time_, gw = min(upcoming, key=lambda t: parse_utc(t[0]))
+    return {"gw": gw, "time": time_}
+
+
+def parse_utc(s):
+    return datetime.fromisoformat(s.replace("Z", "+00:00"))
+
+
 def league_entries():
     entries, page = [], 1
     while True:
@@ -146,6 +161,7 @@ def main():
         "bench": order(bench),
         "captains": order(captains),
         "chips_used": chips_used,
+        "next_deadline": next_deadline(events, datetime.now(timezone.utc)),
     }
 
     # Only touch the file (and its timestamp) when the data actually changed,

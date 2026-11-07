@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Send the "gameweek closed" push notification when a new GW becomes final.
+"""Send the league's automatic push notifications: "gameweek closed" when a new GW
+becomes final, and a reminder shortly before the next gameweek's deadline.
 
 Runs in GitHub Actions right after scripts/fetch_fpl.py (see
 .github/workflows/update-data.yml). Python standard library only.
@@ -8,6 +9,8 @@ Runs in GitHub Actions right after scripts/fetch_fpl.py (see
     python scripts/notify.py --dry-run    # print what would be sent, change nothing
     python scripts/notify.py --gw 9       # preview the message for GW9 (prints only)
     python scripts/notify.py --gw 9 --send  # really send GW9's message, marked "(teste)"; state untouched
+    python scripts/notify.py --deadline   # preview the deadline reminder (prints only)
+    python scripts/notify.py --deadline --send  # really send it, marked "(teste)"; state untouched
     python scripts/notify.py --test       # send a test push (does not touch the state)
     python scripts/notify.py --message "Texto" [--title "Título"]  # send a custom push (state untouched)
 
@@ -15,6 +18,11 @@ How it decides:
 - data/notified.json remembers the last gameweek we notified about.
 - First run (no state file): just records the current gameweek, sends nothing.
 - A newer final gameweek in data/fpl.json: build the message and send it.
+- Deadline reminder: data/fpl.json holds the next gameweek's deadline ("next_deadline", written by
+  fetch_fpl.py). Once it is within 24 hours, send one reminder; the gameweek is then stored as
+  "deadline_gw" in data/notified.json, so it is never sent twice. The workflow runs hourly, so the
+  reminder arrives somewhere between 23 and 24 hours before the deadline (less if the deadline was
+  announced late, and the text then says how long is really left).
 
 Sending uses OneSignal. It needs the app id (read from ONESIGNAL_APP_ID in
 index.html, or the ONESIGNAL_APP_ID env var) and the secret ONESIGNAL_API_KEY.
@@ -31,8 +39,9 @@ import sys
 import unicodedata
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "fpl.json"
@@ -40,12 +49,15 @@ STATE_FILE = ROOT / "data" / "notified.json"
 INDEX_FILE = ROOT / "index.html"
 
 DEFAULT_TITLE = "Fantasy Fundão"  # heading of custom notifications when none is given
-DEFAULT_SITE_URL ="https://antunes-miguel.github.io/liga-fundao/"
+DEFAULT_SITE_URL = "https://antunes-miguel.github.io/liga-fundao/"
 API_URL = "https://api.onesignal.com/notifications"  # create-message docs: Authorization "Key <app api key>"
 # Everyone who ever subscribed. OneSignal's docs still show a "Subscribed Users" segment, but new apps don't have
 # one (sending to it reaches nobody); they have "Total Subscriptions", "Active Subscriptions" (recent visitors only), ...
 # `python scripts/notify.py --test` prints the app's real audiences when a test reaches nobody.
 AUDIENCE = "Total Subscriptions"
+
+REMINDER_WINDOW = timedelta(hours=24)  # send the deadline reminder once the deadline is this close
+LISBON = ZoneInfo("Europe/Lisbon")  # the league's clock; deadlines are shown in it
 
 
 # ---------- message ----------
@@ -155,6 +167,49 @@ def build_message(data, gw_key):
     return f"{gw_key} fechada 🏁", "\n".join(lines)
 
 
+def parse_utc(s):
+    return datetime.fromisoformat(s.replace("Z", "+00:00"))
+
+
+def deadline_reminder(data, state, now):
+    """The deadline reminder if one is due now -> ((gw, title, body) or None, note for the log)."""
+    nd = data.get("next_deadline")
+    if not nd:
+        return None, "No upcoming deadline in data/fpl.json."
+    gw, deadline = nd["gw"], parse_utc(nd["time"])
+    left = deadline - now
+    if left <= timedelta(0):
+        return None, f"GW{gw}'s deadline has already passed."
+    if left > REMINDER_WINDOW:
+        return None, f"GW{gw}'s deadline is {left.total_seconds() / 3600:.0f} h away: too early for the reminder."
+    if state.get("deadline_gw", 0) >= gw:
+        return None, f"The reminder for GW{gw} was already sent."
+
+    return (gw, *deadline_text(gw, deadline, now)), ""
+
+
+def deadline_text(gw, deadline, now):
+    """(title, body) of the reminder, worded for sending it at `now` (within 24 h of the deadline)."""
+    local = deadline.astimezone(LISBON)
+    # Within 24 hours the deadline falls today or tomorrow, by the Lisbon calendar
+    day = "hoje" if local.date() == now.astimezone(LISBON).date() else "amanhã"
+    hours = round((deadline - now).total_seconds() / 3600)
+    remaining = "Falta cerca de 1 hora." if hours <= 1 else f"Faltam cerca de {hours} horas."
+    return f"⏰ GW{gw}: prazo {day} às {local:%H:%M}", f"{remaining} Confirma a equipa e as transferências."
+
+
+def deadline_preview(data, now):
+    """The reminder for the next deadline whenever it is, ignoring the 24 h window and what was already
+    sent -> (title, body). Worded as it will read when really sent (24 h before)."""
+    nd = data.get("next_deadline")
+    if not nd:
+        sys.exit("No upcoming deadline in data/fpl.json yet. The hourly update adds it; try again after its next run.")
+    gw, deadline = nd["gw"], parse_utc(nd["time"])
+    if deadline <= now:
+        sys.exit(f"GW{gw}'s deadline has already passed. Try again after the next hourly update.")
+    return deadline_text(gw, deadline, max(now, deadline - REMINDER_WINDOW))
+
+
 # ---------- state ----------
 
 def load_state():
@@ -163,8 +218,12 @@ def load_state():
     return json.loads(STATE_FILE.read_text(encoding="utf-8"))
 
 
-def save_state(last_gw):
-    state = {"last_gw": last_gw, "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+def save_state(**changes):
+    """Update the given fields (last_gw, deadline_gw) and keep the others."""
+    state = load_state() or {}
+    state.update(changes)
+    state.pop("updated_at", None)  # re-added last, so it stays at the end of the file
+    state["updated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     STATE_FILE.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
 
 
@@ -280,7 +339,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dry-run", action="store_true", help="print the message, send nothing, keep the state")
     ap.add_argument("--gw", type=int, help="preview the message for this gameweek (prints only, unless --send)")
-    ap.add_argument("--send", action="store_true", help="with --gw: send that message as a test (title gets '(teste)')")
+    ap.add_argument("--deadline", action="store_true", help="preview the deadline reminder for the next deadline (prints only, unless --send)")
+    ap.add_argument("--send", action="store_true", help="with --gw or --deadline: send that message as a test (title gets '(teste)')")
     ap.add_argument("--test", action="store_true", help="send a test notification")
     ap.add_argument("--message", help="send this text as a custom notification (state untouched)")
     ap.add_argument("--title", default=DEFAULT_TITLE, help=f"heading of the custom notification (default: {DEFAULT_TITLE})")
@@ -304,8 +364,19 @@ def main():
             sys.exit("Test notification was not delivered (see the message above).")
         return
 
-    if args.send and not args.gw:
-        sys.exit("--send needs --gw N")
+    if args.gw and args.deadline:
+        sys.exit("Use --gw or --deadline, not both.")
+    if args.send and not (args.gw or args.deadline):
+        sys.exit("--send needs --gw N or --deadline")
+    if args.deadline:
+        title, body = deadline_preview(data, datetime.now(timezone.utc))
+        if not args.send:
+            print(f"{title}\n{body}")
+            return
+        if not deliver(f"{title} (teste)", body):  # same text as the real one, marked as a test
+            diagnose()
+            sys.exit("The preview was not delivered (see the message above).")
+        return
     if args.gw:
         key = f"GW{args.gw}"
         if key not in data["matchweeks"]:
@@ -321,25 +392,44 @@ def main():
 
     state = load_state()
     if state is None:
-        save_state(last_gw)
+        save_state(last_gw=last_gw)
         print(f"First run: remembering GW{last_gw} as the last notified gameweek. Nothing sent.")
         return
+
+    errors = []  # a failure in one notification must not stop the other, but must still fail the run
+
+    # 1. "Gameweek closed"
     if last_gw <= state["last_gw"]:
         print(f"Nothing new (last notified: GW{state['last_gw']}).")
-        return
+    else:
+        title, body = build_message(data, f"GW{last_gw}")
+        if args.dry_run:
+            print(f"[dry run]\n{title}\n{body}")
+        else:
+            try:
+                deliver(title, body)
+                # Sent, or push isn't set up / nobody subscribed yet: don't repeat for this gameweek
+                save_state(last_gw=last_gw)
+            except RuntimeError as exc:
+                errors.append(str(exc))  # keep the state, so the next run tries again
 
-    title, body = build_message(data, f"GW{last_gw}")
-    if args.dry_run:
-        print(f"[dry run]\n{title}\n{body}")
-        return
-    try:
-        deliver(title, body)
-    except RuntimeError as exc:
-        # Keep the state, so the next run tries again
-        sys.exit(str(exc))
-    # Sent, or push isn't set up / nobody subscribed yet: don't repeat for this gameweek
-    save_state(last_gw)
+    # 2. Deadline reminder
+    reminder, note = deadline_reminder(data, state, datetime.now(timezone.utc))
+    if reminder is None:
+        print(note)
+    else:
+        gw, title, body = reminder
+        if args.dry_run:
+            print(f"[dry run]\n{title}\n{body}")
+        else:
+            try:
+                deliver(title, body)
+                save_state(deadline_gw=gw)
+            except RuntimeError as exc:
+                errors.append(str(exc))
 
+    if errors:
+        sys.exit("\n".join(errors))
 
 if __name__ == "__main__":
     main()
