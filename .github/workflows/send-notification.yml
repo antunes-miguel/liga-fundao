@@ -1,0 +1,36 @@
+name: Send custom notification
+
+# Manual only: Actions tab -> "Send custom notification" -> Run workflow -> type the text.
+# Goes to everyone subscribed to push notifications. Changes nothing in the repo.
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Text of the notification"
+        type: string
+        required: true
+      title:
+        description: "Heading of the notification"
+        type: string
+        default: "Fantasy Fundão"
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The inputs go through env vars, never straight into the script, so quotes in the text can't break the command
+      - name: Send notification
+        env:
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+          NOTIFICATION_TITLE: ${{ inputs.title }}
+          NOTIFICATION_MESSAGE: ${{ inputs.message }}
+        run: python scripts/notify.py --title "$NOTIFICATION_TITLE" --message "$NOTIFICATION_MESSAGE"

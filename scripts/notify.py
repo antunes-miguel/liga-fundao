@@ -9,6 +9,7 @@ Runs in GitHub Actions right after scripts/fetch_fpl.py (see
     python scripts/notify.py --gw 9       # preview the message for GW9 (prints only)
     python scripts/notify.py --gw 9 --send  # really send GW9's message, marked "(teste)"; state untouched
     python scripts/notify.py --test       # send a test push (does not touch the state)
+    python scripts/notify.py --message "Texto" [--title "Título"]  # send a custom push (state untouched)
 
 How it decides:
 - data/notified.json remembers the last gameweek we notified about.
@@ -38,7 +39,8 @@ DATA_FILE = ROOT / "data" / "fpl.json"
 STATE_FILE = ROOT / "data" / "notified.json"
 INDEX_FILE = ROOT / "index.html"
 
-DEFAULT_SITE_URL = "https://antunes-miguel.github.io/liga-fundao/"
+DEFAULT_TITLE = "Fantasy Fundão"  # heading of custom notifications when none is given
+DEFAULT_SITE_URL ="https://antunes-miguel.github.io/liga-fundao/"
 API_URL = "https://api.onesignal.com/notifications"  # create-message docs: Authorization "Key <app api key>"
 # Everyone who ever subscribed. OneSignal's docs still show a "Subscribed Users" segment, but new apps don't have
 # one (sending to it reaches nobody); they have "Total Subscriptions", "Active Subscriptions" (recent visitors only), ...
@@ -280,7 +282,18 @@ def main():
     ap.add_argument("--gw", type=int, help="preview the message for this gameweek (prints only, unless --send)")
     ap.add_argument("--send", action="store_true", help="with --gw: send that message as a test (title gets '(teste)')")
     ap.add_argument("--test", action="store_true", help="send a test notification")
+    ap.add_argument("--message", help="send this text as a custom notification (state untouched)")
+    ap.add_argument("--title", default=DEFAULT_TITLE, help=f"heading of the custom notification (default: {DEFAULT_TITLE})")
     args = ap.parse_args()
+
+    if args.message is not None:
+        message = args.message.strip()
+        if not message:
+            sys.exit("--message is empty: nothing to send.")
+        if not deliver(args.title.strip() or DEFAULT_TITLE, message):
+            diagnose()
+            sys.exit("The custom notification was not delivered (see the message above).")
+        return
 
     data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
     last_gw = data["last_gw"]
