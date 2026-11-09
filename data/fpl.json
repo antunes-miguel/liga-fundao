@@ -159,6 +159,17 @@
       "João Pires": 84,
       "Rui Bimba": 46,
       "Tiago Monteiro": 21
+    },
+    "GW10": {
+      "Bernardo Saraiva": 79,
+      "Miguel Antunes": 71,
+      "Diogo Lopes": 40,
+      "Diogo Amarelo": 66,
+      "João Leitão": 70,
+      "António Moreira": 63,
+      "João Pires": 52,
+      "Rui Bimba": 74,
+      "Tiago Monteiro": 50
     }
   },
   "transfers": {
@@ -258,6 +269,17 @@
       "João Leitão": 0,
       "António Moreira": 0,
       "João Pires": 4,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW10": {
+      "Bernardo Saraiva": 4,
+      "Miguel Antunes": 0,
+      "Diogo Lopes": 0,
+      "Diogo Amarelo": 0,
+      "João Leitão": 0,
+      "António Moreira": 4,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     }
@@ -361,6 +383,17 @@
       "João Pires": 0,
       "Rui Bimba": 16,
       "Tiago Monteiro": 14
+    },
+    "GW10": {
+      "Bernardo Saraiva": 18,
+      "Miguel Antunes": 25,
+      "Diogo Lopes": 3,
+      "Diogo Amarelo": 12,
+      "João Leitão": 5,
+      "António Moreira": 7,
+      "João Pires": 5,
+      "Rui Bimba": 12,
+      "Tiago Monteiro": 9
     }
   },
   "captains": {
@@ -947,6 +980,71 @@
         "mult": 2,
         "best": "Raya",
         "best_pts": 5
+      }
+    },
+    "GW10": {
+      "Bernardo Saraiva": {
+        "c": "Isak",
+        "pts": 8,
+        "mult": 2,
+        "best": "Wirtz",
+        "best_pts": 13
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Barry",
+        "best_pts": 16
+      },
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 8
+      },
+      "Diogo Amarelo": {
+        "c": "N.Jackson",
+        "pts": 11,
+        "mult": 2,
+        "best": "N.Jackson",
+        "best_pts": 11
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Ødegaard",
+        "best_pts": 11
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Wirtz",
+        "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Ødegaard",
+        "best_pts": 11
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 3,
+        "best": "E.Le Fée",
+        "best_pts": 11
+      },
+      "Tiago Monteiro": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 3,
+        "best": "McGinn",
+        "best_pts": 10
       }
     }
   },
@@ -2289,7 +2387,11 @@
         "GW7"
       ]
     },
-    "João Leitão": {},
+    "João Leitão": {
+      "Free Hit": [
+        "GW10"
+      ]
+    },
     "António Moreira": {
       "Bench Boost": [
         "GW1"
@@ -2321,13 +2423,28 @@
     "Rui Bimba": {
       "Wildcard": [
         "GW6"
+      ],
+      "Triple Captain": [
+        "GW10"
       ]
     },
-    "Tiago Monteiro": {}
+    "Tiago Monteiro": {
+      "Triple Captain": [
+        "GW10"
+      ]
+    }
   },
+  "provisional": [
+    {
+      "gw": 10,
+      "total": 10,
+      "played": 10,
+      "live": 0
+    }
+  ],
   "next_deadline": {
     "gw": 11,
     "time": "2026-11-21T11:00:00Z"
   },
-  "updated_at": "2026-11-08T20:32:26+00:00"
+  "updated_at": "2026-11-09T12:00:27+00:00"
 }
