@@ -2,8 +2,11 @@ name: Update FPL data
 
 on:
   schedule:
-    # Hourly (UTC), so a finished gameweek shows up (and is announced) soon after FPL finalises it.
-    - cron: "17 * * * *"
+    # Every 15 minutes (UTC, off the busy :00/:15/:30/:45 marks), so the page follows the matches while a
+    # gameweek is being played, and a gameweek is announced soon after FPL finalises it. A run only commits
+    # when the data changed. GitHub Pages republishes on every commit (soft limit: 10 builds an hour), so
+    # don't go below this interval.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch: # "Run workflow" button in the Actions tab
     inputs:
       test_notification:

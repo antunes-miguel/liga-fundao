@@ -28,6 +28,9 @@ Sending uses OneSignal. It needs the app id (read from ONESIGNAL_APP_ID in
 index.html, or the ONESIGNAL_APP_ID env var) and the secret ONESIGNAL_API_KEY.
 Without them the message is only printed.
 
+Only FINAL gameweeks are announced: data/fpl.json also holds the gameweek under way ("provisional"),
+but "last_gw" is always the last final one, and that is what this script goes by.
+
 The message has no money info: winner, leader, and a few weekly awards.
 """
 
@@ -379,6 +382,8 @@ def main():
         key = f"GW{args.gw}"
         if key not in data["matchweeks"]:
             sys.exit(f"{key} is not in data/fpl.json (available: {', '.join(sorted(data['matchweeks'], key=gw_num))}).")
+        if args.gw > last_gw:  # in matchweeks but not final: its numbers are provisional and can still change
+            sys.exit(f"{key} is not final yet (provisional numbers), so it can't be previewed or announced. Last final gameweek: GW{last_gw}.")
         title, body = build_message(data, key)
         if not args.send:
             print(f"{title}\n{body}")
