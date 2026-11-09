@@ -2,10 +2,11 @@ name: Update FPL data
 
 on:
   schedule:
-    # Every 15 minutes (UTC, off the busy :00/:15/:30/:45 marks), so the page follows the matches while a
-    # gameweek is being played, and a gameweek is announced soon after FPL finalises it. A run only commits
-    # when the data changed. GitHub Pages republishes on every commit (soft limit: 10 builds an hour), so
-    # don't go below this interval.
+    # BACKUP only. GitHub runs scheduled workflows on a best-effort basis, and on this repo it has been every
+    # 4-8 hours instead of every hour. The real every-15-minutes trigger is a cron-job.org job that calls the
+    # GitHub API (POST .../actions/workflows/update-data.yml/dispatches), see CLAUDE.md. A run only commits when
+    # the data changed. GitHub Pages republishes on every commit (soft limit: 10 builds an hour), so don't
+    # trigger more often than every 10-15 minutes.
     - cron: "7,22,37,52 * * * *"
   workflow_dispatch: # "Run workflow" button in the Actions tab
     inputs:
