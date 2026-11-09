@@ -94,6 +94,11 @@
     }
     h1 span{display:block}
     .info-chips{justify-content:center; margin:0 0 14px}
+    /* Shown while a gameweek isn't final yet: its numbers are provisional */
+    .prov-banner{margin:0 0 14px; padding:10px 14px; border-radius:12px; border:1px solid var(--gold);
+      background:rgba(244,201,93,.12); color:var(--ink); font-size:13px; line-height:1.45; text-align:center}
+    .prov-banner strong{color:var(--gold)}
+    .pill-prov{background:rgba(244,201,93,.18); color:var(--gold); border-color:var(--gold)}
     .notif-btn{font:inherit; font-size:12px; cursor:pointer; color:var(--ink); border-color:var(--accent)}
     .notif-btn:hover{background:var(--stripe2)}
     .notif-btn.on{color:var(--muted); border-color:var(--border)}
@@ -509,6 +514,7 @@
   <span class="chip" id="cpp-chip"></span>
   <button type="button" class="chip notif-btn" id="notif-btn" hidden>🔔 Ativar notificações</button>
 </div>
+<div class="prov-banner" id="prov-banner" role="status" hidden></div>
 
   <nav class="topnav" aria-label="Secções">
     <a href="#global">Global</a>
@@ -602,13 +608,13 @@
         <h2>Evolução das Classificações</h2>
         <div id="rank-chart-wrap" class="rank-wrap"></div>
         <div class="footer-note small">Toca num nome para o destacar (até 3). Toca num ponto para ver a posição e os pontos dessa jornada.
-          Desempates: menor número de transferências, ordem alfabética.</div>
+          Desempates: menor número de transferências, ordem alfabética. <span class="prov-note" hidden>* Jornada ainda não final.</span></div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="semanal">
       <h2>Performance Semanal<span class="pill">Pontos − Transferências</span></h2>
       <div id="gw-heatmap"></div>
-      <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada.</div>
+      <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada. <span class="prov-note" hidden>* Jornada ainda não final.</span></div>
     </section>
 
   </div>
@@ -680,6 +686,10 @@
   // Starting XIs: GW -> player -> the 11 FPL player ids picked to start, and id -> player name
   // (only from data/fpl.json; no inline fallback)
   let XI = null;
+
+  // Gameweeks under way whose numbers are already in the tables but may still change:
+  // Map "GW10" -> {gw, total, played, live}. Empty when everything shown is final.
+  let PROVISIONAL = new Map();
   let XI_NAMES = {};
 
   // Each chip can be played this many times a season (one per half)
@@ -828,7 +838,7 @@ function compute() {
     el.innerHTML = `
       <div class="kpi">
         <div class="label">Jornadas</div>
-        <div class="value">${kpis.gws}</div>
+        <div class="value">${kpis.gws}${PROVISIONAL.size ? '*' : ''}</div>
       </div>
       <div class="kpi">
         <div class="label">Total</div>
@@ -1033,7 +1043,7 @@ function renderXI(rows){
   playerSel.replaceChildren(...order.map(p => new Option(p, p)));
   // A GW whose deadline has passed but whose results aren't final yet has XIs but no scores
   const underWay = g => !MATCHWEEKS[g];
-  const gwLabel = g => underWay(g) ? `${g} (a decorrer)` : g;
+  const gwLabel = g => underWay(g) ? `${g} (a decorrer)` : PROVISIONAL.has(g) ? `${g} (provisória)` : g;
   gwSel.replaceChildren(
     new Option(`Média da época (${gws[0]}–${gws[gws.length - 1]})`, ''),
     ...gws.map(g => new Option(gwLabel(g), g)));
@@ -1151,7 +1161,7 @@ function renderWeeks(weekTops){
     header.style.alignItems = 'center';
     header.style.padding = '12px 14px';
     header.style.borderBottom = '1px solid var(--border)';
-    header.innerHTML = `<div><strong>${gw}</strong> <span class="muted small">Melhor Pontuação: ${topNet}</span></div>
+    header.innerHTML = `<div><strong>${gw}</strong>${PROVISIONAL.has(gw) ? ' <span class="pill pill-prov">provisória</span>' : ''} <span class="muted small">Melhor Pontuação: ${topNet}</span></div>
                         <div class="pill">Custo/pt: ${euro.format(COST_PER_POINT)}</div>`;
     
     const inner = document.createElement('div');
@@ -1329,7 +1339,7 @@ function renderRankChart(){
   for (let r = 1; r <= n; r++) el('line', { x1: 0, x2: plotW, y1: y(r), y2: y(r), class: 'rank-grid' }, svg);
   gws.forEach((gw, i) => {
     const t = el('text', { x: x(i), y: padTop + n * rowH + 18, class: 'rank-label', 'text-anchor': 'middle' }, svg);
-    t.textContent = gw.replace(/\D/g, '');
+    t.textContent = gw.replace(/\D/g, '') + (PROVISIONAL.has(gw) ? '*' : '');
   });
 
   const pathFor = p => series[p].ranks.map((r, i) => `${i ? 'L' : 'M'}${x(i)},${y(r)}`).join(' ');
@@ -1521,7 +1531,7 @@ function renderHeatmap(){
     text.setAttribute('class', 'hm-axis');
     text.setAttribute('text-anchor', 'middle');
     // Regex to show only number
-    text.textContent = gw.replace(/\D/g, ''); 
+    text.textContent = gw.replace(/\D/g, '') + (PROVISIONAL.has(gw) ? '*' : '');
     svgRight.appendChild(text);
   });
 
@@ -1610,6 +1620,22 @@ function setupNotifications(){
   document.head.appendChild(sdk); // offline or blocked: the button simply stays hidden
 }
 
+// Banner while a gameweek is under way: its numbers are already counted everywhere, but may still change
+function renderProvisionalBanner(){
+  const box = document.getElementById('prov-banner');
+  if (!box) return;
+  document.querySelectorAll('.prov-note').forEach(n => { n.hidden = !PROVISIONAL.size; });
+  if (!PROVISIONAL.size) { box.hidden = true; return; }
+  const parts = [...PROVISIONAL.entries()].map(([gw, p]) => {
+    const progress = p.played >= p.total
+      ? `todos os ${p.total} jogos terminaram, à espera da confirmação final da FPL`
+      : `${p.played} de ${p.total} jogos terminados${p.live ? `, ${p.live} a decorrer` : ''}`;
+    return `<strong>${p.played >= p.total ? '⏳' : '🔴'} ${gw} ainda não é final</strong>: ${progress}.`;
+  });
+  box.innerHTML = `${parts.join('<br>')}<br>Os pontos, as dívidas e as classificações já a incluem, mas <strong>podem mudar</strong> até a FPL a confirmar.`;
+  box.hidden = false;
+}
+
 // Load data/fpl.json (written by the GitHub Action). Falls back to the inline data
 // above if it's missing, e.g. when the page is opened straight from disk.
 async function loadFplData(){
@@ -1625,6 +1651,7 @@ async function loadFplData(){
     CAPTAINS = d.captains ?? null;
     XI = d.xi ?? null;
     XI_NAMES = d.xi_names ?? {};
+    PROVISIONAL = new Map((d.provisional ?? []).filter(p => MATCHWEEKS[`GW${p.gw}`]).map(p => [`GW${p.gw}`, p]));
     return d;
   } catch (err) {
     console.warn('Could not load data/fpl.json, using inline data:', err);
@@ -1638,8 +1665,10 @@ async function loadFplData(){
   const chipsEl = document.querySelector('.info-chips');
   if (fpl?.updated_at) {
     const when = new Date(fpl.updated_at).toLocaleString('pt-PT', {dateStyle:'short', timeStyle:'short'});
-    chipsEl.insertAdjacentHTML('beforeend', `<span class="chip">Atualizado: ${when} (GW${fpl.last_gw})</span>`);
+    const gwText = PROVISIONAL.size ? `${[...PROVISIONAL.keys()].pop()} provisória` : `GW${fpl.last_gw}`;
+    chipsEl.insertAdjacentHTML('beforeend', `<span class="chip">Atualizado: ${when} (${gwText})</span>`);
   }
+  renderProvisionalBanner();
   // Payments are keyed by name, so flag any that don't match a player
   const unknown = Object.keys(MANUAL_PAYMENTS).filter(n => !PLAYERS.includes(n));
   if (unknown.length) {
@@ -1669,7 +1698,7 @@ async function loadFplData(){
     gws.forEach(gw => {
       const opt = document.createElement('option');
       opt.value = gw;
-      opt.textContent = gw;
+      opt.textContent = PROVISIONAL.has(gw) ? `${gw} (provisória)` : gw;
       gwSelector.appendChild(opt);
     });
 
