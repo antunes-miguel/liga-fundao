@@ -3,7 +3,7 @@
     "id": 144341,
     "name": "Liga Fundão"
   },
-  "last_gw": 9,
+  "last_gw": 10,
   "players": [
     {
       "entry": 2700318,
@@ -2434,17 +2434,10 @@
       ]
     }
   },
-  "provisional": [
-    {
-      "gw": 10,
-      "total": 10,
-      "played": 10,
-      "live": 0
-    }
-  ],
+  "provisional": [],
   "next_deadline": {
     "gw": 11,
     "time": "2026-11-21T11:00:00Z"
   },
-  "updated_at": "2026-11-09T12:00:27+00:00"
+  "updated_at": "2026-11-09T15:02:26+00:00"
 }
