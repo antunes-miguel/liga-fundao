@@ -45,7 +45,7 @@
   --accent:#8B2D3A;              /* cherry red, labels and tags */
   --win:#1B4332; --loss:#8B2D3A;
   --good:#1B4332; --bad:#8B2D3A; --cell:#EDE6E4; --cell-text:#3D0F1E;
-  --s1:#8B2D3A; --s2:#1B4332; --s3:#3D0F1E;
+  --s1:#8B2D3A; --s2:#1B4332; --s3:#3D0F1E; --s4:#1F6FB5; --s5:#B7860B; --s6:#7B3FB0; --s7:#D2691E; --s8:#0E8A8A; --s9:#6B6B6B;
   --shard-a:rgba(92,26,42,.08);  /* exactly the wallpaper motif */
   --shard-b:rgba(27,67,50,.08);
   /* Liquid glass material */
@@ -75,7 +75,7 @@
     --text:#FFFFFF; --text-2:rgba(255,255,255,.72); --text-3:rgba(255,255,255,.52);
     --accent:#E07A8B; --win:#80CC80; --loss:#E07A8B;
     --good:#1B4332; --bad:#8B2D3A; --cell:#2B242A; --cell-text:#FFFFFF;
-    --s1:#FFFFFF; --s2:#80CC80; --s3:#E07A8B;
+    --s1:#FFFFFF; --s2:#80CC80; --s3:#E07A8B; --s4:#6CB4EE; --s5:#F2C94C; --s6:#C58AF9; --s7:#FF9F6B; --s8:#5ED6D6; --s9:#B8B8B8;
     --shard-a:rgba(92,26,42,.30); --shard-b:rgba(27,67,50,.30);
     --glass-tint:rgba(44,34,41,.38); --glass-rim:rgba(255,255,255,.42); --glass-rim-low:rgba(255,255,255,.08); --glass-sheen:rgba(255,255,255,.14);
     --glass-shadow:0 14px 36px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
@@ -89,7 +89,7 @@
   --text:#FFFFFF; --text-2:rgba(255,255,255,.72); --text-3:rgba(255,255,255,.52);
   --accent:#E07A8B; --win:#80CC80; --loss:#E07A8B;
   --good:#1B4332; --bad:#8B2D3A; --cell:#2B242A; --cell-text:#FFFFFF;
-  --s1:#FFFFFF; --s2:#80CC80; --s3:#E07A8B;
+  --s1:#FFFFFF; --s2:#80CC80; --s3:#E07A8B; --s4:#6CB4EE; --s5:#F2C94C; --s6:#C58AF9; --s7:#FF9F6B; --s8:#5ED6D6; --s9:#B8B8B8;
   --shard-a:rgba(92,26,42,.30); --shard-b:rgba(27,67,50,.30);
   --glass-tint:rgba(44,34,41,.38); --glass-rim:rgba(255,255,255,.42); --glass-rim-low:rgba(255,255,255,.08); --glass-sheen:rgba(255,255,255,.14);
     --glass-shadow:0 14px 36px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
@@ -468,7 +468,6 @@ table{border-collapse:separate;border-spacing:0}
 .legend button{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--text-2)}
 .legend button img{width:22px;height:22px;border-radius:999px;object-fit:cover;filter:grayscale(1);opacity:.6;box-shadow:0 0 0 2px transparent;transition:filter .2s,opacity .2s}
 .legend button[aria-pressed="true"]{color:var(--text);background:var(--surface-2)}
-.c1{--c:var(--s1)} .c2{--c:var(--s2)} .c3{--c:var(--s3)}
 .legend button[aria-pressed="true"] img{filter:none;opacity:1;box-shadow:0 0 0 2px var(--c)}
 
 .big{font:700 20px/1 var(--display);text-align:right}
@@ -1336,7 +1335,11 @@ const onzesImage = () => frameImage('ONZES', `Titulares em comum na J${XIGW}`, a
 
 /* Evolução: the bump chart, highlighted players drawn last with their faces at the end */
 const evoImage = () => frameImage('EVOLUÇÃO', `Posição depois de cada jornada`, async (ctx, box) => {
-  const n = PLAYERS.length, L = box.x + 70, R = box.x + box.w - 70, T = box.y + 60, B = box.y + box.h - 150;
+  const n = PLAYERS.length, L = box.x + 70, R = box.x + box.w - 70, T = box.y + 60;
+  /* legend rows wrap when many players are chosen; the chart gives them room */
+  ctx.font = `600 28px ${BODY}`;
+  let rows = 1, lw = 40; highlight.forEach(id => { const w = 60 + ctx.measureText(P[id].short).width + 40; if (lw + w > box.w - 60 && lw > 40) { rows++; lw = 40; } lw += w; });
+  const B = box.y + box.h - 106 - rows * 44, legendTop = box.y + box.h - 44 - (rows - 1) * 44;
   const x = g => L + (g-1) * (R - L) / (NGW - 1), y = r => T + r * (B - T) / (n - 1);
   const pos = {}; for (let g = 1; g <= NGW; g++) order(g).forEach((id, r) => (pos[id] ||= [])[g-1] = r);
   const faces = await facesFor(highlight);
@@ -1346,15 +1349,18 @@ const evoImage = () => frameImage('EVOLUÇÃO', `Posição depois de cada jornad
   const line = (id, color, w, dash) => { ctx.beginPath(); pos[id].forEach((r, k) => k ? ctx.lineTo(x(k+1), y(r)) : ctx.moveTo(x(1), y(r)));
     ctx.setLineDash(dash || []); ctx.lineWidth = w; ctx.strokeStyle = color; ctx.lineJoin = 'round'; ctx.stroke(); ctx.setLineDash([]); };
   PLAYERS.forEach(p => line(p.id, 'rgba(255,255,255,.14)', 3));
-  const colors = ['#FFFFFF', IMG.green, IMG.pink];
-  highlight.forEach((id, k) => { line(id, colors[k], 7, k === 2 ? [16, 12] : null);
+  const colors = ['#FFFFFF', IMG.green, IMG.pink, '#6CB4EE', '#F2C94C', '#C58AF9', '#FF9F6B', '#5ED6D6', '#B8B8B8'];
+  highlight.forEach(id => { const k = hlSlot[id]; line(id, colors[k], 7, DASH[k] && DASH[k].map(v => v * 2.4));
     pos[id].forEach((r, g) => { if (g < NGW - 1) { ctx.beginPath(); ctx.arc(x(g+1), y(r), 8, 0, Math.PI*2); ctx.fillStyle = colors[k]; ctx.fill(); } });
     const cx = x(NGW), cy = y(pos[id][NGW-1]); drawFace(ctx, faces[id], cx, cy, 26, 0);
     ctx.beginPath(); ctx.arc(cx, cy, 26, 0, Math.PI*2); ctx.lineWidth = 5; ctx.strokeStyle = colors[k]; ctx.stroke(); });
   /* legend */
-  let lx = box.x + 40; const ly = box.y + box.h - 44;
-  highlight.forEach((id, k) => { ctx.fillStyle = colors[k]; ctx.beginPath(); ctx.arc(lx + 10, ly - 9, 10, 0, Math.PI*2); ctx.fill();
-    ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.font = `600 28px ${BODY}`; ctx.fillText(P[id].short, lx + 30, ly); lx += 60 + ctx.measureText(P[id].short).width + 40; });
+  ctx.font = `600 28px ${BODY}`;
+  let lx = box.x + 40, ly = legendTop;
+  highlight.forEach(id => { const k = hlSlot[id], w = 60 + ctx.measureText(P[id].short).width;
+    if (lx + w > box.x + box.w - 30 && lx > box.x + 40) { lx = box.x + 40; ly += 44; }
+    ctx.fillStyle = colors[k]; ctx.beginPath(); ctx.arc(lx + 10, ly - 9, 10, 0, Math.PI*2); ctx.fill();
+    ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(P[id].short, lx + 30, ly); lx += w + 40; });
 });
 
 const STAT_IMAGES = { forma: formaImage, evolucao: evoImage, capitaes: capsImage, banco: bancoImage, chips: chipsImage, onzes: onzesImage };
@@ -1492,12 +1498,14 @@ const ALL_STATS = [
   {id:'onzes',    label:'Onzes',    has: () => !!XIGW}
 ];
 let stat = 'forma';
-let highlight = [];
+let highlight = [];      /* ids shown in the chart, any number; the default is the top 3 */
+let hlSlot = {};         /* id → colour slot 0..8, so colours don't move when others are added or removed */
+const DASH = [null, null, [7, 5], null, [7, 5], [2, 5], null, [7, 5], [2, 5]];   /* colour is never the only difference */
 let onzePair = null;   /* [a, b] shown under the grid; defaults to the most alike pair */
 
 const CAPTIONS = {
   forma: 'Os pontos de cada um em cada jornada, com a cor da posição nessa semana. O contorno marca quem ganhou.',
-  evolucao: 'O lugar de cada um na classificação depois de cada jornada. Toca num nome para o comparar.',
+  evolucao: 'O lugar de cada um na classificação depois de cada jornada. Toca nos nomes para escolher quantos quiseres.',
   capitaes: 'Pontos dos capitães a dividir pelos do melhor jogador de cada onze, na época toda.',
   banco: 'Pontos que ficaram no banco e não contaram. Jornadas com Bench Boost não entram.',
   chips: 'Quando cada um usou os chips (cada um pode usar dois de cada). Tracejado é por usar.',
@@ -1522,15 +1530,15 @@ const VIEWS = {
     const pos = {}; for (let g=1; g<=NGW; g++) order(g).forEach((id,r) => (pos[id] ||= [])[g-1] = r);
     const path = id => pos[id].map((r,i) => `${i?'L':'M'}${x(i+1).toFixed(1)} ${y(r).toFixed(1)}`).join('');
     const base = PLAYERS.map(p => `<path class="base" d="${path(p.id)}"/>`).join('');
-    const hl = highlight.map((id,i) => `<g style="--c:var(--s${i+1})"><path class="hl" stroke="var(--c)" ${i===2?'stroke-dasharray="7 5"':''} d="${path(id)}"/>${pos[id].slice(0,-1).map((r,g) => `<circle cx="${x(g+1)}" cy="${y(r)}" r="4" fill="var(--c)"><title>${P[id].short}, J${g+1}: ${r+1}.º</title></circle>`).join('')}${(() => {
+    const hl = highlight.map(id => { const i = hlSlot[id]; return `<g style="--c:var(--s${i+1})"><path class="hl" stroke="var(--c)" ${DASH[i] ? `stroke-dasharray="${DASH[i].join(' ')}"` : ''} d="${path(id)}"/>${pos[id].slice(0,-1).map((r,g) => `<circle cx="${x(g+1)}" cy="${y(r)}" r="4" fill="var(--c)"><title>${P[id].short}, J${g+1}: ${r+1}.º</title></circle>`).join('')}${(() => {
       const cx = x(NGW), cy = y(pos[id][NGW-1]), rr = narrow ? 11 : 13;
       return `<clipPath id="cp-${id}"><circle cx="${cx}" cy="${cy}" r="${rr}"/></clipPath><image href="${AVATARS[id]}" x="${cx-rr}" y="${cy-rr}" width="${rr*2}" height="${rr*2}" clip-path="url(#cp-${id})" preserveAspectRatio="xMidYMid slice"><title>${P[id].short}, J${NGW}: ${pos[id][NGW-1]+1}.º</title></image><circle cx="${cx}" cy="${cy}" r="${rr}" fill="none" stroke="var(--c)" stroke-width="2.5"/>`;
-    })()}</g>`).join('');
+    })()}</g>`; }).join('');
     const ax = [...Array(NGW)].map((_,i) => `<text x="${x(i+1)}" y="${H-10}" text-anchor="middle">${narrow && NGW > 14 && (NGW - 1 - i) % 2 ? '' : 'J' + (i+1) + (PROV.has(i+1) ? '*' : '')}</text>`).join('') +
                [...Array(n)].map((_,r) => `<text x="4" y="${y(r)+4}">${r+1}</text>`).join('');
     const legend = order(NGW).map(id => {
-      const i = highlight.indexOf(id);
-      return `<button data-hl="${id}" class="${i>=0?'c'+(i+1):''}" aria-pressed="${i>=0}"><img src="${AVATARS[id]}" alt="">${P[id].short}</button>`;
+      const i = hlSlot[id] ?? -1;
+      return `<button data-hl="${id}" ${i>=0 ? `style="--c:var(--s${i+1})"` : ''} aria-pressed="${i>=0}"><img src="${AVATARS[id]}" alt="">${P[id].short}</button>`;
     }).join('');
     return `<div class="bump"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de posições por jornada">${base}${hl}${ax}</svg></div><div class="legend">${legend}</div>`;
   },
@@ -1611,8 +1619,10 @@ function renderStats(){
   document.querySelectorAll('[data-stat]').forEach(b => b.onclick = () => { stat = b.dataset.stat; renderStats(); });
   document.querySelectorAll('[data-pair]').forEach(b => b.onclick = () => { onzePair = b.dataset.pair.split(','); renderStats(); });
   document.querySelectorAll('[data-hl]').forEach(b => b.onclick = () => {
-    const id = b.dataset.hl, i = highlight.indexOf(id);
-    if (i >= 0) highlight.splice(i,1); else { highlight.push(id); if (highlight.length > 3) highlight.shift(); }
+    const id = b.dataset.hl;
+    if (id in hlSlot) delete hlSlot[id];
+    else { let k = 0; while (Object.values(hlSlot).includes(k)) k++; hlSlot[id] = k; }   /* lowest free colour */
+    highlight = Object.keys(hlSlot).sort((a, b) => hlSlot[a] - hlSlot[b]);
     renderStats();
   });
 }
@@ -1813,7 +1823,7 @@ async function boot(){
     $('.app').innerHTML = '<p class="fail-msg">Não foi possível carregar os dados da liga. Tenta outra vez daqui a pouco.</p>';
     return;
   }
-  gw = NGW; highlight = order(NGW).slice(0, 3);
+  gw = NGW; highlight = order(NGW).slice(0, 3); hlSlot = Object.fromEntries(highlight.map((id, i) => [id, i]));
   renderFoot(); renderProvBanner(); renderJornada(); renderLiga(); renderStats(); show(); placeLenses(true);
   document.fonts && document.fonts.ready.then(() => placeLenses(true));
 

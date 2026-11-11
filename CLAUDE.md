@@ -64,7 +64,7 @@ Redesign (Nov 2026), designed by a friend of the owner; read `docs/HANDOFF.md` b
 - Phones matter most: bottom "liquid glass" tab bar that shrinks on scroll, below 480px tables use short names. Installed on iPhone the page runs under the status bar (`black-translucent`, `viewport-fit=cover`) and uses `env(safe-area-inset-*)`; keep that.
 - When the installed app comes back on screen, it reloads if `data/fpl.json` has a newer `updated_at` (checked at most every 5 minutes).
 - **Share buttons** (matchday card, Jornada/Geral table, every Insights view, profile debt): draw a 1080×1350 PNG on a canvas (`frameImage`, `drawList`, `drawGrid`; no libraries; avatars loaded from `assets/avatars`) and give it to the Web Share API as a `File`, or offer "Guardar imagem" where files can't be shared. Each view has its own `…Image()` function, so **a new view or column needs its image function updated too**. To test: stub `navigator.canShare` / `navigator.share` in Playwright and read the blob from `#sheet-img`; real phones can't be checked from a cloud session.
-- Evolução: grey lines plus up to 3 highlighted players (`HL` colours `--s1..--s3`, white / green / pink in dark); the highlight is not saved.
+- Evolução: grey lines plus any number of highlighted players (default: the top 3; tap names to add or remove). Each highlighted player gets the lowest free colour slot (`hlSlot`, `--s1..--s9`, two palettes for light/dark) and a dash pattern (`DASH`), so colours don't move when others change; the image (`evoImage`) uses the same slots and wraps its legend. The nine colours were chosen by eye, not checked for colour blindness (the dashes help). The highlight is not saved.
 
 
 ## Working on it
