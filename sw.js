@@ -2,7 +2,7 @@
 // - Page and data: network first (always fresh when online), cached copy when offline.
 // - Images, icons and fonts: cache first (they rarely change).
 // Bump VERSION when the list of cached files changes.
-const VERSION = 'v1';
+const VERSION = 'v2';
 
 // Push notifications (OneSignal). In try/catch so the app still installs when offline.
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) { /* no push until the next update */ }
@@ -17,6 +17,16 @@ const SHELL = [
   'assets/icon-180.png',
   'assets/icon-192.png',
   'assets/icon-512.png',
+  'assets/favicon-32.png',
+  'assets/avatars/b.jpg',
+  'assets/avatars/m.jpg',
+  'assets/avatars/dl.jpg',
+  'assets/avatars/da.jpg',
+  'assets/avatars/jl.jpg',
+  'assets/avatars/am.jpg',
+  'assets/avatars/jp.jpg',
+  'assets/avatars/rb.jpg',
+  'assets/avatars/tm.jpg',
 ];
 
 self.addEventListener('install', event => {
