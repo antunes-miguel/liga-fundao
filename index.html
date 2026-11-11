@@ -1643,7 +1643,7 @@ function show(h = location.hash.slice(1)){
   if (v !== lastView) { bar.classList.add('still'); barLock = performance.now() + 400; window.scrollTo({top:0, behavior:'instant'}); }
   lastView = v;
   placeLenses();
-  bar.classList.remove('compact');
+  /* the bar keeps its current size: growing back from 50 to 64 px moved its top edge up by 14 px */
   if (bar.classList.contains('still')) setTimeout(() => bar.classList.remove('still'), 450);
   if (v === 'numeros' && stat === 'evolucao') renderStats();
 }
