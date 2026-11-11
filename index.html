@@ -792,19 +792,20 @@ const ONESIGNAL_APP_ID = "6a13a491-480f-4530-b0d4-27f676af7227";
 const COST = 0.10;   /* custo por ponto (COST_PER_POINT) */
 
 /* ⚠ Escrito À MÃO pelo Miguel: o que cada jogador já pagou, pelo nome que aparece na página.
-   Pode ser o total (número) ou uma lista de pagamentos [{nome:'1.ª fase', data:'AAAA-MM-DD', valor: 5}] (aparece no perfil; nome e data são opcionais).
+   Pode ser o total (número) ou uma lista de pagamentos [{nome:'1.ª fase', de:1, ate:5, valor: 5}] (aparece no perfil; nome, data 'AAAA-MM-DD' e de/ate são opcionais).
+   de/ate = jornadas a que o pagamento diz respeito, mostradas inteiras (também as que o jogador ganhou); sem elas, mostra só as jornadas que o dinheiro cobriu.
    Fases até agora: 1.ª = J1 a J5, 2.ª = J6 a J10, com o valor que cada um ficou a dever nesse intervalo.
    Cada euro abate as jornadas mais antigas primeiro. */
 const MANUAL_PAYMENTS = {
-  "Diogo Lopes": [{nome: "1.ª fase", valor: 5.5}, {nome: "2.ª fase", valor: 7.8}],
-  "Diogo Amarelo": [{nome: "1.ª fase", valor: 12.0}, {nome: "2.ª fase", valor: 4.9}],
-  "Bernardo Saraiva": [{nome: "1.ª fase", valor: 6.5}, {nome: "2.ª fase", valor: 3.9}],
-  "Miguel Antunes": [{nome: "1.ª fase", valor: 4.8}, {nome: "2.ª fase", valor: 6.6}],
-  "Rui Bimba": [{nome: "1.ª fase", valor: 8.5}, {nome: "2.ª fase", valor: 12.3}],
-  "João Leitão": [{nome: "1.ª fase", valor: 9.7}, {nome: "2.ª fase", valor: 8.5}],
-  "António Moreira": [{nome: "1.ª fase", valor: 6.2}, {nome: "2.ª fase", valor: 12.2}],
-  "Tiago Monteiro": [{nome: "1.ª fase", valor: 12.0}, {nome: "2.ª fase", valor: 18.7}],
-  "João Pires": [{nome: "1.ª fase", valor: 9.4}, {nome: "2.ª fase", valor: 9.9}],
+  "Diogo Lopes": [{nome: "1.ª fase", de: 1, ate: 5, valor: 5.5}, {nome: "2.ª fase", de: 6, ate: 10, valor: 7.8}],
+  "Diogo Amarelo": [{nome: "1.ª fase", de: 1, ate: 5, valor: 12.0}, {nome: "2.ª fase", de: 6, ate: 10, valor: 4.9}],
+  "Bernardo Saraiva": [{nome: "1.ª fase", de: 1, ate: 5, valor: 6.5}, {nome: "2.ª fase", de: 6, ate: 10, valor: 3.9}],
+  "Miguel Antunes": [{nome: "1.ª fase", de: 1, ate: 5, valor: 4.8}, {nome: "2.ª fase", de: 6, ate: 10, valor: 6.6}],
+  "Rui Bimba": [{nome: "1.ª fase", de: 1, ate: 5, valor: 8.5}, {nome: "2.ª fase", de: 6, ate: 10, valor: 12.3}],
+  "João Leitão": [{nome: "1.ª fase", de: 1, ate: 5, valor: 9.7}, {nome: "2.ª fase", de: 6, ate: 10, valor: 8.5}],
+  "António Moreira": [{nome: "1.ª fase", de: 1, ate: 5, valor: 6.2}, {nome: "2.ª fase", de: 6, ate: 10, valor: 12.2}],
+  "Tiago Monteiro": [{nome: "1.ª fase", de: 1, ate: 5, valor: 12.0}, {nome: "2.ª fase", de: 6, ate: 10, valor: 18.7}],
+  "João Pires": [{nome: "1.ª fase", de: 1, ate: 5, valor: 9.4}, {nome: "2.ª fase", de: 6, ate: 10, valor: 9.9}],
 };
 
 /* Quem tem fotografia em assets/avatars/<id em minúsculas>.jpg. Os outros ficam com as iniciais. */
@@ -1455,7 +1456,7 @@ function renderPerfil(id){
   const pays = coverage(id).pays;
   $('#pf-pays').innerHTML = pays.length ? `<h3 class="pays-h">Pagamentos</h3><ol class="pays">${pays.slice().reverse().map(p => `<li>
       <span class="d">${p.nome || (p.data ? fmtDate(p.data) : 'Pago')}</span>
-      <span class="r">${weekRuns(p.gws)}${p.credito ? `${p.gws.length ? ', ' : ''}${eur(p.credito)} a favor` : ''}</span>
+      <span class="r">${p.de ? (p.de === p.ate ? `J${p.de}` : `J${p.de} a J${p.ate}`) : weekRuns(p.gws)}${p.credito ? `${p.gws.length ? ', ' : ''}${eur(p.credito)} a favor` : ''}</span>
       <span class="v num">${eur(p.valor)}</span></li>`).join('')}</ol>` : '';
   $('#share-debt').onclick = () => openShare(() => debtImage(id), `fantasy-fundao-divida-${id.toLowerCase()}.png`, `Dívida de ${P[id].short}`);
 
