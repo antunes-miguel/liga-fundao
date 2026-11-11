@@ -792,18 +792,19 @@ const ONESIGNAL_APP_ID = "6a13a491-480f-4530-b0d4-27f676af7227";
 const COST = 0.10;   /* custo por ponto (COST_PER_POINT) */
 
 /* ⚠ Escrito À MÃO pelo Miguel: o que cada jogador já pagou, pelo nome que aparece na página.
-   Pode ser o total (número) ou uma lista de pagamentos [{data:'AAAA-MM-DD', valor: 5}] (aparece no perfil).
+   Pode ser o total (número) ou uma lista de pagamentos [{nome:'1.ª fase', data:'AAAA-MM-DD', valor: 5}] (aparece no perfil; nome e data são opcionais).
+   Fases até agora: 1.ª = J1 a J5, 2.ª = J6 a J10, com o valor que cada um ficou a dever nesse intervalo.
    Cada euro abate as jornadas mais antigas primeiro. */
 const MANUAL_PAYMENTS = {
-  "Diogo Lopes": 13.3,
-  "Diogo Amarelo": 16.9,
-  "Bernardo Saraiva": 10.4,
-  "Miguel Antunes": 11.4,
-  "Rui Bimba": 20.8,
-  "João Leitão": 18.2,
-  "António Moreira": 18.4,
-  "Tiago Monteiro": 30.7,
-  "João Pires": 19.3,
+  "Diogo Lopes": [{nome: "1.ª fase", valor: 5.5}, {nome: "2.ª fase", valor: 7.8}],
+  "Diogo Amarelo": [{nome: "1.ª fase", valor: 12.0}, {nome: "2.ª fase", valor: 4.9}],
+  "Bernardo Saraiva": [{nome: "1.ª fase", valor: 6.5}, {nome: "2.ª fase", valor: 3.9}],
+  "Miguel Antunes": [{nome: "1.ª fase", valor: 4.8}, {nome: "2.ª fase", valor: 6.6}],
+  "Rui Bimba": [{nome: "1.ª fase", valor: 8.5}, {nome: "2.ª fase", valor: 12.3}],
+  "João Leitão": [{nome: "1.ª fase", valor: 9.7}, {nome: "2.ª fase", valor: 8.5}],
+  "António Moreira": [{nome: "1.ª fase", valor: 6.2}, {nome: "2.ª fase", valor: 12.2}],
+  "Tiago Monteiro": [{nome: "1.ª fase", valor: 12.0}, {nome: "2.ª fase", valor: 18.7}],
+  "João Pires": [{nome: "1.ª fase", valor: 9.4}, {nome: "2.ª fase", valor: 9.9}],
 };
 
 /* Quem tem fotografia em assets/avatars/<id em minúsculas>.jpg. Os outros ficam com as iniciais. */
@@ -1006,14 +1007,14 @@ let COVER = {};
 function coverage(id){
   if (COVER[id]) return COVER[id];
   const left = [...Array(NGW)].map((_, k) => Math.round(week(k+1).find(r => r.id === id).debt * 100));   /* cents, no float drift */
-  const pays = [...(PAGAMENTOS[id] || [])].sort((a, b) => (a.data || '').localeCompare(b.data || '')).map(p => ({...p, de: null, ate: null}));
+  const pays = [...(PAGAMENTOS[id] || [])].sort((a, b) => (a.data || '').localeCompare(b.data || '')).map(p => ({...p, gws: []}));
   let k = 0;
   for (const p of pays) {
     let cash = Math.round(p.valor * 100);
     while (k < NGW && cash > 0) {
       if (left[k] === 0) { k++; continue; }
       const take = Math.min(cash, left[k]); left[k] -= take; cash -= take;
-      p.de ??= k + 1; p.ate = k + 1;
+      (p.gws ||= []).push(k + 1);
       if (left[k] === 0) k++;
     }
     p.credito = cash / 100;   /* paid ahead of what is owed */
@@ -1393,6 +1394,13 @@ function renderLiga(g = gw){
 const slug = id => 'jogador-' + id.toLowerCase();
 const fromSlug = h => { const id = h.replace(/^jogador-/,'').toUpperCase(); return P[id] ? id : null; };
 const ord = n => n + '.º';
+/* [2,3,4,7] → "J2 a J4, J7": only weeks that really were covered, so a week won in between is not claimed */
+function weekRuns(gs){
+  const out = []; let i = 0;
+  while (i < gs.length) { let j = i; while (j + 1 < gs.length && gs[j + 1] === gs[j] + 1) j++;
+    out.push(j - i >= 2 ? `J${gs[i]} a J${gs[j]}` : gs.slice(i, j + 1).map(g => 'J' + g).join(', ')); i = j + 1; }
+  return out.join(', ');
+}
 function renderPerfil(id){
   const now = order(NGW), before = order(NGW-1), i = now.indexOf(id), c = cum(id,NGW);
   const weeks = [...Array(NGW)].map((_,k) => { const g = k+1, w = week(g), me = w.find(r => r.id === id);
@@ -1446,8 +1454,8 @@ function renderPerfil(id){
   const fmtDate = d => { const [, m, day] = d.split('-').map(Number); return `${day} ${MESES[m-1]}`; };
   const pays = coverage(id).pays;
   $('#pf-pays').innerHTML = pays.length ? `<h3 class="pays-h">Pagamentos</h3><ol class="pays">${pays.slice().reverse().map(p => `<li>
-      <span class="d">${p.data ? fmtDate(p.data) : 'Pago'}</span>
-      <span class="r">${p.de ? (p.de === p.ate ? `J${p.de}` : `J${p.de} a J${p.ate}`) : ''}${p.credito ? `${p.de ? ', ' : ''}${eur(p.credito)} a favor` : ''}</span>
+      <span class="d">${p.nome || (p.data ? fmtDate(p.data) : 'Pago')}</span>
+      <span class="r">${weekRuns(p.gws)}${p.credito ? `${p.gws.length ? ', ' : ''}${eur(p.credito)} a favor` : ''}</span>
       <span class="v num">${eur(p.valor)}</span></li>`).join('')}</ol>` : '';
   $('#share-debt').onclick = () => openShare(() => debtImage(id), `fantasy-fundao-divida-${id.toLowerCase()}.png`, `Dívida de ${P[id].short}`);
 
