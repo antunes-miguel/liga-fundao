@@ -99,6 +99,17 @@
       background:rgba(244,201,93,.12); color:var(--ink); font-size:13px; line-height:1.45; text-align:center}
     .prov-banner strong{color:var(--gold)}
     .pill-prov{background:rgba(244,201,93,.18); color:var(--gold); border-color:var(--gold)}
+    /* "Partilhar": shares an image of the section */
+    .share-btn{margin-left:auto; cursor:pointer; font:700 11px var(--display); text-transform:uppercase; letter-spacing:.03em;
+      color:var(--ink); background:var(--panel2); border:1px solid var(--border); border-radius:999px; padding:6px 10px}
+    .share-btn:hover{background:var(--stripe2)}
+    .share-btn:disabled{opacity:.7; cursor:wait}
+    .share-modal{position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:16px; background:rgba(15,4,9,.85)}
+    .share-modal .box{width:min(560px,100%); max-height:100%; overflow:auto; text-align:center; padding:14px;
+      background:var(--panel); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow)}
+    .share-modal img{display:block; width:100%; height:auto; border-radius:10px}
+    .share-modal .row{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px}
+    .share-modal .share-btn{margin-left:0}
     .notif-btn{font:inherit; font-size:12px; cursor:pointer; color:var(--ink); border-color:var(--accent)}
     .notif-btn:hover{background:var(--stripe2)}
     .notif-btn.on{color:var(--muted); border-color:var(--border)}
@@ -407,6 +418,7 @@
 /* "Tabela completa" toggle (phones only): the desktop table, scrolling sideways, names pinned left */
 .view-toggle { display: none; }
 @media (max-width: 640px) {
+  .view-toggle ~ .share-btn { margin-left: 8px; }
   .view-toggle {
     display: inline-block; margin-left: auto; cursor: pointer;
     font: 700 11px var(--display); text-transform: uppercase; letter-spacing: .03em;
@@ -530,7 +542,7 @@
   <div class="grid">
     <!-- Summary -->
     <section class="panel" id="global">
-      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
+      <h2>Global <span class="muted small hint-mobile">Toca num jogador para ver o detalhe</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button> <button type="button" class="share-btn" data-share="global">Partilhar</button></h2>
       <div class="totals" id="league-kpis"></div>
       <table id="summary-table">
         <thead>
@@ -557,14 +569,14 @@
         Tabelas por Jornada
         <select id="gw-selector" style="margin-left:12px; background:var(--panel2); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:4px 8px;">
           <option value="">Todas</option>
-        </select> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button>
+        </select> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button> <button type="button" class="share-btn" data-share="jornada">Partilhar</button>
       </h2>
       <div id="weeks"></div>
       <div class="footer-note"> A melhor pontuação não paga nada; Todos os outros devem. <span class="pill">(Melhor Pontuação − (Pontuação − Transferências)) × Custo por Ponto</span>.</div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="chips">
-      <h2>Chips <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
+      <h2>Chips <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button> <button type="button" class="share-btn" data-share="chips">Partilhar</button></h2>
       <table id="chips-table">
         <thead></thead>
         <tbody></tbody>
@@ -572,7 +584,7 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="banco" hidden>
-      <h2>Banco de Ouro <span class="pill">Pontos deixados no banco</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
+      <h2>Banco de Ouro <span class="pill">Pontos deixados no banco</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button> <button type="button" class="share-btn" data-share="banco">Partilhar</button></h2>
       <table id="bench-table">
         <thead></thead>
         <tbody></tbody>
@@ -582,7 +594,7 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="capitaes" hidden>
-      <h2>Capitães <span class="pill">Eficiência da braçadeira</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button></h2>
+      <h2>Capitães <span class="pill">Eficiência da braçadeira</span> <button type="button" class="view-toggle" aria-pressed="false">Tabela completa</button> <button type="button" class="share-btn" data-share="capitaes">Partilhar</button></h2>
       <table id="captain-table">
         <thead></thead>
         <tbody></tbody>
@@ -593,7 +605,7 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="onze" hidden>
-      <h2>Onzes Iniciais <span class="pill">Semelhança</span></h2>
+      <h2>Onzes Iniciais <span class="pill">Semelhança</span> <button type="button" class="share-btn" data-share="onze">Partilhar</button></h2>
       <div class="xi-controls">
         <label>Jogador <select id="xi-player"></select></label>
         <label>Jornada <select id="xi-gw"></select></label>
@@ -605,14 +617,14 @@
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="evolucao">
-        <h2>Evolução das Classificações</h2>
+        <h2>Evolução das Classificações <button type="button" class="share-btn" data-share="evolucao">Partilhar</button></h2>
         <div id="rank-chart-wrap" class="rank-wrap"></div>
         <div class="footer-note small">Toca num nome para o destacar (até 3). Toca num ponto para ver a posição e os pontos dessa jornada.
           Desempates: menor número de transferências, ordem alfabética. <span class="prov-note" hidden>* Jornada ainda não final.</span></div>
     </section>
 
     <section class="panel" style="grid-column:1 / -1;" id="semanal">
-      <h2>Performance Semanal<span class="pill">Pontos − Transferências</span></h2>
+      <h2>Performance Semanal<span class="pill">Pontos − Transferências</span> <button type="button" class="share-btn" data-share="semanal">Partilhar</button></h2>
       <div id="gw-heatmap"></div>
       <div class="footer-note small">As células são coloridas de valores baixos (vermelho) até altos (verde). Branco mostra o melhor de cada jornada. <span class="prov-note" hidden>* Jornada ainda não final.</span></div>
     </section>
@@ -1620,6 +1632,493 @@ function setupNotifications(){
   document.head.appendChild(sdk); // offline or blocked: the button simply stays hidden
 }
 
+// ===================== Partilhar como imagem =====================
+// Draws a purpose-made PNG on a canvas (1080 px wide, brand look) and hands it to the phone's share menu
+// (WhatsApp etc.). Where files can't be shared it opens a preview with save / copy. No libraries.
+// Tables are read from what the page shows, in the same view: "Vista compacta" (phones) or "Tabela completa".
+const SHARE_W = 1080;
+const cssVar = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+const sfont = (weight, px, family = 'Inter') => `${weight} ${px}px ${family}, system-ui, sans-serif`;
+let FPL_UPDATED = null;
+
+let _shareAssets = null;
+function shareAssets(){
+  if (!_shareAssets) {
+    const crest = new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = 'assets/crest.png'; });
+    const fonts = Promise.all(['800 40px Montserrat', '700 24px Inter', '600 24px Inter', '500 24px Inter', '400 24px Inter']
+      .map(f => (document.fonts ? document.fonts.load(f).catch(() => null) : null)));
+    _shareAssets = Promise.all([crest, fonts]).then(([c]) => ({ crest: c }));
+  }
+  return _shareAssets;
+}
+
+function palette(){
+  return {
+    brand: cssVar('--brand', '#3d0e1e'), stripe: cssVar('--stripe', '#511726'), stripe2: cssVar('--stripe2', '#5d1a2b'),
+    band: cssVar('--band', '#8b2d3b'), panel: cssVar('--panel', '#2e0b17'), panel2: cssVar('--panel2', '#4a1324'),
+    border: cssVar('--border', '#64202f'), ink: cssVar('--ink', '#fff5f6'), muted: cssVar('--muted', '#d9a7b0'),
+    accent: cssVar('--accent', '#ef7484'), good: cssVar('--good', '#43d68f'), bad: cssVar('--bad', '#ff8593'),
+    gold: cssVar('--gold', '#f4c95d'), silver: cssVar('--silver', '#c7cbe0'), bronze: cssVar('--bronze', '#d68c5a'),
+    lineMuted: cssVar('--line-muted', '#8c5562'),
+  };
+}
+
+function rrect(ctx, x, y, w, h, r){
+  r = Math.min(r, w / 2, h / 2);
+  ctx.beginPath(); ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+
+function wrapLines(ctx, text, maxW){
+  const words = String(text).split(/\s+/).filter(Boolean), lines = [];
+  let line = '';
+  for (const w of words) {
+    const t = line ? `${line} ${w}` : w;
+    if (!line || ctx.measureText(t).width <= maxW) line = t; else { lines.push(line); line = w; }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function pillWidth(ctx, text, px){ ctx.font = sfont(700, px); return ctx.measureText(text).width + px * 1.1; }
+function drawPill(ctx, C, text, x, cy, px, gold){
+  const w = pillWidth(ctx, text, px), h = px * 1.75;
+  rrect(ctx, x, cy - h / 2, w, h, h / 2);
+  ctx.fillStyle = gold ? 'rgba(244,201,93,.18)' : 'rgba(239,116,132,.18)'; ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = gold ? C.gold : C.accent; ctx.stroke();
+  ctx.fillStyle = gold ? C.gold : C.ink; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(text, x + px * 0.55, cy + 1);
+  return w;
+}
+
+// ---------- reading what the page shows ----------
+function isCompactView(panel){
+  return window.matchMedia('(max-width: 640px)').matches && !panel.classList.contains('full-view');
+}
+
+function headText(th, compact){
+  const c = th.cloneNode(true);
+  c.querySelectorAll(compact ? '.lg' : '.sh').forEach(x => x.remove());
+  return c.textContent.replace(/\s+/g, ' ').trim();
+}
+
+function cellInfo(td, compact){
+  const info = { text: '', pills: [], move: null, rank: null, sub: '', tone: null, bold: false, muted: false };
+  const medal = td.querySelector('.rank-medal');
+  if (medal) info.rank = parseInt(medal.textContent, 10);
+  const mv = td.querySelector('.move');
+  if (mv) info.move = { text: mv.textContent.trim(), kind: mv.classList.contains('up') ? 'up' : mv.classList.contains('down') ? 'down' : 'same' };
+  const hit = td.querySelector('.hit-inline');
+  if (hit) info.sub = hit.textContent.trim();
+  td.querySelectorAll('.pill, .chip-used').forEach(el => {
+    const c = el.cloneNode(true);
+    c.querySelectorAll(compact ? '.lg' : '.sh').forEach(x => x.remove());
+    const t = c.textContent.replace(/\s+/g, ' ').trim();
+    if (t) info.pills.push(t);
+  });
+  const c = td.cloneNode(true);
+  c.querySelectorAll('.rank-medal, .move, .hit-inline, .pill, .chip-used, .name-short, .sh').forEach(x => x.remove());
+  info.text = [...c.childNodes].map(n => n.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean).join(' ');
+  if (td.classList.contains('bad')) info.tone = 'bad';
+  if (td.classList.contains('good')) info.tone = 'good';
+  info.bold = !!info.tone || td.classList.contains('bench-total') || td.classList.contains('c-bal');
+  info.muted = info.text === '—' || info.text === '';
+  return info;
+}
+
+function scrapeTable(table, compact){
+  const ths = [...table.tHead.rows[0].cells];
+  const keep = ths.map((th, i) => i === 0 || !(compact && (th.classList.contains('c-detail') || th.classList.contains('c-count'))));
+  const headers = ths.map((th, i) => headText(th, compact)).filter((_, i) => keep[i]);
+  headers[0] = 'Jogador';
+  const rows = [...table.tBodies[0].rows].map(tr => [...tr.cells].filter((_, i) => keep[i]).map(td => cellInfo(td, compact)));
+  if (!compact) rows.forEach(r => r.forEach(c => { c.sub = ''; }));
+  const align = headers.map((_, j) => (j === 0 ? 'left' : rows.some(r => r[j] && r[j].pills.length) ? 'center' : 'right'));
+  return { type: 'table', headers, rows, align };
+}
+
+// ---------- body: table ----------
+function measureTable(ctx, t, px){
+  const headPx = 21, pad = 22;
+  const cellW = (cell, bold) => {
+    ctx.font = sfont(bold ? 700 : 600, px);
+    let w = ctx.measureText(cell.text).width;
+    if (cell.pills.length) w += cell.pills.reduce((a, p) => a + pillWidth(ctx, p, px * 0.62) + 8, 0);
+    return w;
+  };
+  const colW = [0], headLines = [];
+  for (let j = 1; j < t.headers.length; j++) {
+    ctx.font = sfont(700, headPx);
+    const words = t.headers[j].toUpperCase().split(' ');
+    const widest = Math.max(...words.map(w => ctx.measureText(w).width));
+    const whole = ctx.measureText(t.headers[j].toUpperCase()).width;
+    const body = Math.max(...t.rows.map(r => cellW(r[j], r[j].bold)), 0);
+    const w = Math.max(body + pad * 2, Math.min(whole, Math.max(widest, body)) + pad * 1.4);
+    colW[j] = Math.ceil(w);
+    headLines[j] = whole <= colW[j] - pad ? [t.headers[j].toUpperCase()]
+      : words.length > 1 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')]
+      : [t.headers[j].toUpperCase()];
+  }
+  headLines[0] = ['JOGADOR'];
+  let firstNeed = 0;
+  for (const r of t.rows) {
+    const c = r[0]; ctx.font = sfont(600, px);
+    let w = 18 + (c.rank != null ? px * 1.24 + 14 : 0) + ctx.measureText(c.text).width;
+    if (c.move) { ctx.font = sfont(700, px * 0.7); w += ctx.measureText(c.move.text).width + 14; }
+    w += c.pills.reduce((a, p) => a + pillWidth(ctx, p, px * 0.62) + 8, 0);
+    firstNeed = Math.max(firstNeed, w + 14);
+  }
+  const hasSub = t.rows.some(r => r.some(c => c.sub));
+  const twoLine = headLines.some(l => l && l.length > 1);
+  return { px, headPx, colW, headLines, firstNeed, rowH: hasSub ? Math.round(px * 2.6) : Math.round(px * 2.3),
+    headH: twoLine ? 70 : 46, numW: colW.slice(1).reduce((a, b) => a + b, 0) };
+}
+
+function tableBody(t){
+  let M = null;
+  return {
+    measure(ctx, w){
+      let px = 30;
+      for (;; px -= 2) { M = measureTable(ctx, t, px); if (M.firstNeed <= w - M.numW || px <= 22) break; }
+      return M.headH + 10 + t.rows.length * (M.rowH + 10);
+    },
+    draw(ctx, C, x, y, w){
+      const firstW = w - M.numW, px = M.px;
+      ctx.textBaseline = 'middle';
+      // header
+      let cx = x;
+      for (let j = 0; j < t.headers.length; j++) {
+        const cw = j === 0 ? firstW : M.colW[j];
+        ctx.font = sfont(700, M.headPx); ctx.fillStyle = C.muted;
+        const lines = M.headLines[j], lh = M.headPx + 4, top = y + (M.headH - lines.length * lh) / 2 + lh / 2;
+        lines.forEach((ln, k) => {
+          const align = t.align[j];
+          ctx.textAlign = align === 'left' ? 'left' : align === 'center' ? 'center' : 'right';
+          const tx = align === 'left' ? cx + 18 : align === 'center' ? cx + cw / 2 : cx + cw - 22;
+          ctx.fillText(ln, tx, top + k * lh);
+        });
+        cx += cw;
+      }
+      let ry = y + M.headH + 10;
+      for (const row of t.rows) {
+        rrect(ctx, x, ry, w, M.rowH, 18); ctx.fillStyle = 'rgba(255,255,255,.045)'; ctx.fill();
+        ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
+        const cy = ry + M.rowH / 2;
+        // first column: rank badge, name, movement, pills
+        const c0 = row[0]; let fx = x + 18;
+        if (c0.rank != null) {
+          const r = px * 0.62, bg = c0.rank === 1 ? C.gold : c0.rank === 2 ? C.silver : c0.rank === 3 ? C.bronze : C.panel2;
+          ctx.beginPath(); ctx.arc(fx + r, cy, r, 0, Math.PI * 2); ctx.fillStyle = bg; ctx.fill();
+          if (c0.rank > 3) { ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke(); }
+          ctx.fillStyle = c0.rank <= 3 ? '#2a1a06' : C.muted; ctx.font = sfont(700, px * 0.62, 'Montserrat');
+          ctx.textAlign = 'center'; ctx.fillText(String(c0.rank), fx + r, cy + 1);
+          fx += r * 2 + 14;
+        }
+        ctx.font = sfont(600, px); ctx.fillStyle = C.ink; ctx.textAlign = 'left';
+        ctx.fillText(c0.text, fx, cy + 1); fx += ctx.measureText(c0.text).width + 12;
+        if (c0.move) {
+          ctx.font = sfont(700, px * 0.7); ctx.fillStyle = c0.move.kind === 'up' ? C.good : c0.move.kind === 'down' ? C.bad : C.muted;
+          ctx.fillText(c0.move.text, fx, cy + 1); fx += ctx.measureText(c0.move.text).width + 14;
+        }
+        for (const p of c0.pills) fx += drawPill(ctx, C, p, fx, cy, px * 0.62) + 8;
+        // other columns
+        let colX = x + firstW;
+        for (let j = 1; j < t.headers.length; j++) {
+          const cell = row[j], cw = M.colW[j], align = t.align[j];
+          const center = colX + cw / 2, right = colX + cw - 22;
+          if (cell.pills.length && !cell.text.replace(/—/g, '').trim()) {
+            const total = cell.pills.reduce((a, p) => a + pillWidth(ctx, p, px * 0.62) + 8, 0) - 8;
+            let px0 = center - total / 2;
+            for (const p of cell.pills) px0 += drawPill(ctx, C, p, px0, cy, px * 0.62) + 8;
+          } else {
+            const pillsW = cell.pills.reduce((a, p) => a + pillWidth(ctx, p, px * 0.62) + 8, 0); // (sets the font: do it first)
+            ctx.font = sfont(cell.bold ? 700 : 600, px); ctx.textBaseline = 'middle';
+            ctx.fillStyle = cell.tone === 'bad' ? C.bad : cell.tone === 'good' ? C.good : cell.muted ? C.muted : C.ink;
+            const textW = ctx.measureText(cell.text).width;
+            const startX = align === 'center' ? center - (textW + pillsW) / 2 : right - (textW + pillsW);
+            ctx.textAlign = 'left';
+            ctx.fillText(cell.text, startX, cy + (cell.sub ? -px * 0.32 : 1));
+            if (cell.sub) { ctx.font = sfont(700, px * 0.62); ctx.fillStyle = C.bad; ctx.textAlign = 'right'; ctx.fillText(cell.sub, startX + textW, cy + px * 0.58); }
+            let q = startX + textW;
+            for (const p of cell.pills) { q += 8; q += drawPill(ctx, C, p, q, cy, px * 0.62); }
+          }
+          colX += cw;
+        }
+        ry += M.rowH + 10;
+      }
+    },
+  };
+}
+
+// ---------- body: standings chart ----------
+function chartBody(){
+  const rowH = 54, padTop = 8, axisH = 56, labelW = 330;
+  return {
+    measure(ctx, w){ return padTop + PLAYERS.length * rowH + axisH; },
+    draw(ctx, C, x, y, w){
+      const { gws, series } = HIST, nG = gws.length, n = PLAYERS.length, hl = loadHighlight();
+      const plotW = w - labelW, padX = 22;
+      const step = nG > 1 ? (plotW - padX * 2) / (nG - 1) : 0;
+      const X = i => x + (nG > 1 ? padX + i * step : plotW / 2), Y = r => y + padTop + (r - 0.5) * rowH;
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      for (let r = 1; r <= n; r++) { ctx.beginPath(); ctx.moveTo(x, Y(r)); ctx.lineTo(x + plotW, Y(r)); ctx.strokeStyle = C.border; ctx.lineWidth = 1.5; ctx.stroke(); }
+      const path = p => { ctx.beginPath(); series[p].ranks.forEach((r, i) => (i ? ctx.lineTo(X(i), Y(r)) : ctx.moveTo(X(i), Y(r)))); };
+      PLAYERS.filter(p => !(p in hl)).forEach(p => {
+        path(p); ctx.strokeStyle = C.lineMuted; ctx.globalAlpha = .8; ctx.lineWidth = 3.5; ctx.stroke(); ctx.globalAlpha = 1;
+        ctx.beginPath(); ctx.arc(X(nG - 1), Y(series[p].ranks[nG - 1]), 6, 0, Math.PI * 2); ctx.fillStyle = C.lineMuted; ctx.fill();
+      });
+      PLAYERS.filter(p => p in hl).forEach(p => {
+        const col = HL_COLORS[hl[p]];
+        path(p); ctx.strokeStyle = col; ctx.lineWidth = 8; ctx.stroke();
+        series[p].ranks.forEach((r, i) => { ctx.beginPath(); ctx.arc(X(i), Y(r), 10, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.panel; ctx.stroke(); });
+      });
+      // GW axis
+      const every = step >= 30 || nG <= 1 ? 1 : Math.ceil(30 / step);
+      ctx.font = sfont(600, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      gws.forEach((gw, i) => { if ((nG - 1 - i) % every === 0) ctx.fillText(gw.replace(/\D/g, '') + (PROVISIONAL.has(gw) ? '*' : ''), X(i), y + padTop + n * rowH + 26); });
+      // names at the line ends
+      const lx = x + plotW + 18;
+      PLAYERS.forEach(p => {
+        const r = series[p].ranks[nG - 1], cy = Y(r), on = p in hl;
+        ctx.textAlign = 'right'; ctx.font = sfont(700, 26, 'Montserrat'); ctx.fillStyle = on ? C.ink : C.muted; ctx.fillText(String(r), lx + 26, cy + 1);
+        ctx.beginPath(); ctx.arc(lx + 50, cy, 9, 0, Math.PI * 2);
+        if (on) { ctx.fillStyle = HL_COLORS[hl[p]]; ctx.fill(); } else { ctx.lineWidth = 3; ctx.strokeStyle = C.lineMuted; ctx.stroke(); }
+        ctx.textAlign = 'left'; ctx.font = sfont(on ? 700 : 500, 27); ctx.fillStyle = on ? C.ink : C.muted; ctx.fillText(p, lx + 72, cy + 1);
+      });
+    },
+  };
+}
+
+// ---------- body: heatmap ----------
+function heatmapBody(){
+  let note = '', shown = [];
+  const nameW = 250, cellH = 58, headH = 46;
+  return {
+    measure(ctx, w){
+      const { gws } = buildHeatmapData();
+      const fit = Math.max(1, Math.floor((w - nameW) / 50));
+      shown = gws.slice(-fit);
+      note = shown.length < gws.length ? `Últimas ${shown.length} jornadas.` : '';
+      return headH + PLAYERS.length * (cellH + 6);
+    },
+    draw(ctx, C, x, y, w){
+      const { gws, data, vMin, vMax, topIdxPerGW } = buildHeatmapData();
+      const first = gws.length - shown.length, cw = Math.min(96, (w - nameW) / shown.length);
+      const gx = x + nameW;
+      ctx.textBaseline = 'middle';
+      shown.forEach((gw, c) => {
+        ctx.font = sfont(700, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'center';
+        ctx.fillText(gw.replace(/\D/g, '') + (PROVISIONAL.has(gw) ? '*' : ''), gx + c * cw + cw / 2, y + headH / 2);
+      });
+      PLAYERS.forEach((p, r) => {
+        const ry = y + headH + r * (cellH + 6);
+        ctx.font = sfont(600, 27); ctx.fillStyle = C.ink; ctx.textAlign = 'left'; ctx.fillText(p, x + 6, ry + cellH / 2 + 1);
+        shown.forEach((gw, c) => {
+          const v = data[r][first + c], cx = gx + c * cw;
+          rrect(ctx, cx + 2, ry, cw - 4, cellH, 10); ctx.fillStyle = heatColor(v, vMin, vMax); ctx.fill();
+          if (topIdxPerGW[gw] === r) { ctx.lineWidth = 4; ctx.strokeStyle = '#fff'; ctx.stroke(); }
+          ctx.font = sfont(700, 26); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(String(v), cx + cw / 2, ry + cellH / 2 + 1);
+        });
+      });
+    },
+    get note(){ return note; },
+  };
+}
+
+// ---------- body: starting-XI similarity ----------
+function xiBody(){
+  const rows = [...document.querySelectorAll('#xi-list li.xi-row')].map(li => ({
+    name: (li.querySelector('.xi-name .name-full') || li.querySelector('.xi-name')).textContent.trim(),
+    n: li.querySelector('.xi-n').textContent.trim(),
+    pct: parseFloat(li.querySelector('.xi-bar span').style.width) || 0,
+    shared: (li.querySelector('.xi-shared') || { textContent: '' }).textContent.trim(),
+  }));
+  const intro = document.getElementById('xi-context').textContent.trim();
+  const rowsH = [];
+  return {
+    measure(ctx, w){
+      ctx.font = sfont(500, 24); const introH = wrapLines(ctx, intro, w).length * 34 + 16;
+      ctx.font = sfont(400, 22);
+      rows.forEach((r, i) => { rowsH[i] = 62 + (r.shared ? wrapLines(ctx, r.shared, w - 36).length * 30 + 6 : 0) + 16; });
+      this._introH = introH;
+      return introH + rowsH.reduce((a, b) => a + b, 0);
+    },
+    draw(ctx, C, x, y, w){
+      ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.font = sfont(500, 24); ctx.fillStyle = C.muted;
+      wrapLines(ctx, intro, w).forEach((ln, i) => ctx.fillText(ln, x, y + 17 + i * 34));
+      let ry = y + this._introH;
+      rows.forEach((r, i) => {
+        const h = rowsH[i] - 10;
+        rrect(ctx, x, ry, w, h, 18); ctx.fillStyle = 'rgba(255,255,255,.045)'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
+        ctx.font = sfont(600, 30); ctx.fillStyle = C.ink; ctx.textAlign = 'left'; ctx.fillText(r.name, x + 18, ry + 31);
+        const bx = x + 330, bw = w - 330 - 140;
+        rrect(ctx, bx, ry + 22, bw, 18, 9); ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fill();
+        if (r.pct > 0) { rrect(ctx, bx, ry + 22, Math.max(18, bw * r.pct / 100), 18, 9); ctx.fillStyle = C.accent; ctx.fill(); }
+        ctx.font = sfont(700, 30); ctx.fillStyle = C.ink; ctx.textAlign = 'right'; ctx.fillText(r.n, x + w - 18, ry + 31);
+        if (r.shared) { ctx.font = sfont(400, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'left'; wrapLines(ctx, r.shared, w - 36).forEach((ln, k) => ctx.fillText(ln, x + 18, ry + 70 + k * 30)); }
+        ry += rowsH[i];
+      });
+    },
+  };
+}
+
+// ---------- what to draw for each section ----------
+function shareSpec(id){
+  const panel = document.getElementById(id), compact = isCompactView(panel);
+  const gws = HIST.gws, last = gws[gws.length - 1];
+  const prov = PROVISIONAL.size ? `${[...PROVISIONAL.keys()].pop()} provisória` : '';
+  const provNote = '* Jornada ainda não final: os números podem mudar.';
+  const base = { id, tag: prov, notes: [] };
+  const tableOf = sel => scrapeTable(document.querySelector(sel), compact);
+  switch (id) {
+    case 'global':
+      return { ...base, title: 'Classificação', subtitle: `Pontos, pago e saldo após a ${last}`, body: tableBody(tableOf('#summary-table')),
+        notes: ['* Pontos já incluem as transferências. Saldo = Total − Pago.'] };
+    case 'jornada': {
+      const tables = [...document.querySelectorAll('#weeks table')];
+      const table = tables[tables.length - 1];
+      const gw = table.closest('.kpi').querySelector('strong').textContent.trim();
+      return { ...base, tag: PROVISIONAL.has(gw) ? `${gw} provisória` : '', title: gw, subtitle: 'Resultados e dívidas da jornada',
+        body: tableBody(scrapeTable(table, compact)), notes: ['A melhor pontuação não paga nada; os outros pagam a diferença × custo por ponto.'] };
+    }
+    case 'chips':
+      return { ...base, title: 'Chips', subtitle: 'Jornada em que cada chip foi usado', body: tableBody(tableOf('#chips-table')),
+        notes: ['Cada chip pode ser usado duas vezes por época.'] };
+    case 'banco':
+      return { ...base, title: 'Banco de Ouro', subtitle: 'Pontos deixados no banco, acumulado da época', body: tableBody(tableOf('#bench-table')),
+        notes: ['Jornadas com Bench Boost ativo não contam.'] };
+    case 'capitaes':
+      return { ...base, title: 'Capitães', subtitle: 'Eficiência da braçadeira', body: tableBody(tableOf('#captain-table')),
+        notes: ['Eficiência = pontos do capitão ÷ pontos do melhor jogador do onze, na época.'] };
+    case 'onze':
+      return { ...base, tag: '', title: 'Onzes Iniciais', subtitle: 'Quantos titulares são iguais', body: xiBody(),
+        notes: ['Conta os 11 escolhidos antes do apito inicial, sem substituições automáticas.'] };
+    case 'evolucao':
+      return { ...base, title: 'Evolução das Classificações', subtitle: `${gws[0]} a ${last}`, body: chartBody(),
+        notes: ['Desempates: menos transferências, depois ordem alfabética.'] };
+    case 'semanal': {
+      const body = heatmapBody();
+      return { ...base, title: 'Performance Semanal', subtitle: 'Pontos − transferências', body,
+        notes: ['Branco = o melhor de cada jornada.'], dynamicNote: () => body.note };
+    }
+  }
+  throw new Error('Secção desconhecida: ' + id);
+}
+
+// ---------- the whole image ----------
+async function renderShareImage(spec){
+  const assets = await shareAssets(), C = palette();
+  const mctx = document.createElement('canvas').getContext('2d');
+  const MARGIN = 40, CARD_PAD = 36, innerW = SHARE_W - 2 * MARGIN - 2 * CARD_PAD;
+  const headerH = 150, cardTop = MARGIN + headerH + 26;
+
+  mctx.font = sfont(500, 26);
+  const subLines = wrapLines(mctx, spec.subtitle, innerW - (spec.tag ? 300 : 0));
+  const titleBlockH = 58 + subLines.length * 36 + 22;
+  const bodyH = spec.body.measure(mctx, innerW);
+  const notes = [...spec.notes];
+  if (spec.dynamicNote && spec.dynamicNote()) notes.push(spec.dynamicNote());
+  if (spec.tag) notes.push('* Jornada ainda não final: os números podem mudar.');
+  mctx.font = sfont(400, 22);
+  const noteLines = notes.flatMap(n => wrapLines(mctx, n, innerW));
+  const notesH = noteLines.length ? noteLines.length * 30 + 18 : 0;
+  const cardH = CARD_PAD + titleBlockH + bodyH + notesH + CARD_PAD;
+  const H = cardTop + cardH + 34 + 40 + MARGIN;
+
+  const cv = document.createElement('canvas'); cv.width = SHARE_W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  // background + diagonal stripes
+  ctx.fillStyle = C.brand; ctx.fillRect(0, 0, SHARE_W, H);
+  const slant = H * 0.36;
+  [[.08, .19, C.stripe], [.58, .66, C.stripe], [.84, .92, C.stripe2]].forEach(([a, b, col]) => {
+    ctx.beginPath(); ctx.moveTo(SHARE_W * a + slant, 0); ctx.lineTo(SHARE_W * b + slant, 0);
+    ctx.lineTo(SHARE_W * b, H); ctx.lineTo(SHARE_W * a, H); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+  });
+  // header banner
+  const hx = MARGIN, hw = SHARE_W - 2 * MARGIN;
+  ctx.save(); rrect(ctx, hx, MARGIN, hw, headerH, 26); ctx.clip();
+  ctx.fillStyle = C.brand; ctx.fillRect(hx, MARGIN, hw, headerH);
+  const band = (a, b, col) => { ctx.beginPath(); ctx.moveTo(hx + hw * a + 40, MARGIN); ctx.lineTo(hx + hw * b + 40, MARGIN); ctx.lineTo(hx + hw * b, MARGIN + headerH); ctx.lineTo(hx + hw * a, MARGIN + headerH); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
+  band(-0.1, .09, C.band); band(.84, .92, C.stripe2); band(.92, 1.1, C.band);
+  ctx.restore();
+  rrect(ctx, hx, MARGIN, hw, headerH, 26); ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
+  ctx.font = sfont(800, 50, 'Montserrat');
+  const wordW = Math.max(ctx.measureText('FANTASY').width, ctx.measureText('FUNDÃO').width);
+  const crestH = 112, crestW = assets.crest ? crestH * assets.crest.width / assets.crest.height : 0;
+  const groupW = crestW + (crestW ? 26 : 0) + wordW, gx0 = SHARE_W / 2 - groupW / 2, cy0 = MARGIN + headerH / 2;
+  if (assets.crest) ctx.drawImage(assets.crest, gx0, cy0 - crestH / 2, crestW, crestH);
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText('FANTASY', gx0 + crestW + 26, cy0 - 27); ctx.fillText('FUNDÃO', gx0 + crestW + 26, cy0 + 27);
+  // card
+  rrect(ctx, MARGIN, cardTop, SHARE_W - 2 * MARGIN, cardH, 26); ctx.fillStyle = 'rgba(46,11,23,.93)'; ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
+  const cx = MARGIN + CARD_PAD; let cy = cardTop + CARD_PAD;
+  ctx.font = sfont(800, 44, 'Montserrat'); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.fillText(spec.title.toUpperCase(), cx, cy + 26);
+  if (spec.tag) {
+    const pw = pillWidth(ctx, spec.tag, 24);
+    drawPill(ctx, C, spec.tag, cx + innerW - pw, cy + 26, 24, true);
+  }
+  ctx.font = sfont(500, 26); ctx.fillStyle = C.muted;
+  subLines.forEach((ln, i) => ctx.fillText(ln, cx, cy + 74 + i * 36));
+  cy += titleBlockH;
+  spec.body.draw(ctx, C, cx, cy, innerW); cy += bodyH;
+  ctx.font = sfont(400, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  noteLines.forEach((ln, i) => ctx.fillText(ln, cx, cy + 22 + i * 30));
+  // footer
+  const fy = cardTop + cardH + 34 + 18;
+  ctx.font = sfont(600, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'left';
+  ctx.fillText(`Fantasy Fundão · ${location.host}${location.pathname.replace(/[^/]*$/, '').replace(/\/$/, '')}`, MARGIN + 6, fy);
+  if (FPL_UPDATED) {
+    const when = new Date(FPL_UPDATED).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    ctx.textAlign = 'right'; ctx.fillText(`Atualizado ${when}`, SHARE_W - MARGIN - 6, fy);
+  }
+  return new Promise((res, rej) => cv.toBlob(b => (b ? res(b) : rej(new Error('Não foi possível criar a imagem'))), 'image/png'));
+}
+
+// ---------- share / save ----------
+function closeSharePreview(){ document.querySelector('.share-modal')?.remove(); }
+function showSharePreview(blob, file){
+  closeSharePreview();
+  const url = URL.createObjectURL(blob);
+  const m = document.createElement('div');
+  m.className = 'share-modal';
+  m.innerHTML = `<div class="box" role="dialog" aria-label="Imagem para partilhar"><img alt="Pré-visualização da imagem"><div class="row"></div></div>`;
+  m.querySelector('img').src = url;
+  const row = m.querySelector('.row');
+  const add = (label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'share-btn'; b.textContent = label; b.addEventListener('click', fn); row.appendChild(b); return b; };
+  if (navigator.canShare?.({ files: [file] })) add('Partilhar', async () => { try { await navigator.share({ files: [file], title: 'Fantasy Fundão' }); } catch (_) {} });
+  add('Guardar imagem', () => { const a = document.createElement('a'); a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); });
+  if (navigator.clipboard && window.ClipboardItem) {
+    const b = add('Copiar imagem', async () => { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); b.textContent = 'Copiada ✓'; } catch (_) { b.textContent = 'Não foi possível copiar'; } });
+  }
+  add('Fechar', () => { closeSharePreview(); URL.revokeObjectURL(url); });
+  m.addEventListener('click', e => { if (e.target === m) { closeSharePreview(); URL.revokeObjectURL(url); } });
+  document.body.appendChild(m);
+}
+
+async function shareSection(id, btn){
+  const label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'A criar…';
+  try {
+    const blob = await renderShareImage(shareSpec(id));
+    const file = new File([blob], `fantasy-fundao-${id}.png`, { type: 'image/png' });
+    const data = { files: [file], title: 'Fantasy Fundão' };
+    if (navigator.canShare?.(data)) {
+      try { await navigator.share(data); return; }
+      catch (err) { if (err && err.name === 'AbortError') return; /* e.g. the browser wants a fresh tap: show the preview */ }
+    }
+    showSharePreview(blob, file);
+  } catch (err) {
+    console.warn('Share image failed:', err);
+    btn.textContent = 'Não foi possível';
+    await new Promise(r => setTimeout(r, 1800));
+  } finally {
+    btn.disabled = false; btn.textContent = label;
+  }
+}
+
 // Banner while a gameweek is under way: its numbers are already counted everywhere, but may still change
 function renderProvisionalBanner(){
   const box = document.getElementById('prov-banner');
@@ -1651,6 +2150,7 @@ async function loadFplData(){
     CAPTAINS = d.captains ?? null;
     XI = d.xi ?? null;
     XI_NAMES = d.xi_names ?? {};
+    FPL_UPDATED = d.updated_at ?? null;
     PROVISIONAL = new Map((d.provisional ?? []).filter(p => MATCHWEEKS[`GW${p.gw}`]).map(p => [`GW${p.gw}`, p]));
     return d;
   } catch (err) {
@@ -1712,6 +2212,13 @@ async function loadFplData(){
   renderWeeks(weekTops);
   renderRankChart();
   renderHeatmap();
+
+  // "Partilhar" buttons: share an image of that section. Fonts and the crest load now, so the tap is quick.
+  shareAssets();
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.share-btn[data-share]');
+    if (b) shareSection(b.dataset.share, b);
+  });
 
   // Re-render the charts (their sizing depends on viewport width) on resize/rotate.
   // Only when the width changes: mobile browsers fire resize while scrolling.
