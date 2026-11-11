@@ -543,12 +543,12 @@ table{border-collapse:separate;border-spacing:0}
 .lens.no-anim{transition:none}
 
 .tabbar{
-  position:fixed;z-index:25;left:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));
-  transform:translateX(-50%);
+  position:fixed;z-index:25;left:0;right:0;margin-inline:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));
   width:min(calc(100% - 32px),300px);height:64px;padding:4px;border-radius:999px;
   display:grid;grid-template-columns:repeat(2,1fr);
   transition:width .4s cubic-bezier(.3,1.2,.5,1),height .4s cubic-bezier(.3,1.2,.5,1);
 }
+.tabbar.still{transition:none}
 .tabbar button{
   position:relative;z-index:1;display:grid;justify-items:center;align-content:center;gap:2px;
   border-radius:999px;font-size:11px;font-weight:600;color:var(--text-2);
@@ -1615,7 +1615,7 @@ const VIEWS_IDS = ['jornada','numeros','perfil'];
 let lastView = '';
 /* Navigation keeps its own state and only mirrors it in the address bar when the browser allows.
    Inside previews and sandboxed viewers the URL can be locked, so nothing depends on it. */
-let route = '', backTo = null, lastPane = 'jornada';
+let route = '', backTo = null, lastPane = 'jornada', barLock = 0;
 function go(h, replace){
   if (h === route) return;
   if (h.startsWith('jogador-') && !route.startsWith('jogador-')) backTo = route || 'jornada';
@@ -1637,10 +1637,14 @@ function show(h = location.hash.slice(1)){
   $('#pane-jornada').hidden = pane !== 'jornada'; $('#pane-geral').hidden = pane !== 'liga';
   const tab = v === 'numeros' ? 'insights' : 'jornada';   /* profiles live under the first tab */
   document.querySelectorAll('[data-go]').forEach(b => b.dataset.go === tab ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
-  if (v !== lastView) window.scrollTo({top:0});   /* switching tables keeps your place */
+  /* Changing tab: put the bar back at full size without the springy animation (it made the bar jump up on iOS)
+     and don't let the scroll reset shrink it again */
+  const bar = $('.tabbar');
+  if (v !== lastView) { bar.classList.add('still'); barLock = performance.now() + 400; window.scrollTo({top:0, behavior:'instant'}); }
   lastView = v;
   placeLenses();
-  $('.tabbar').classList.remove('compact');
+  bar.classList.remove('compact');
+  if (bar.classList.contains('still')) setTimeout(() => bar.classList.remove('still'), 450);
   if (v === 'numeros' && stat === 'evolucao') renderStats();
 }
 /* The first tab reopens on the table you last looked at */
@@ -1682,6 +1686,7 @@ addEventListener('scroll', () => {
   if (ticking) return; ticking = true;
   requestAnimationFrame(() => {
     const y = scrollY, bar = $('.tabbar');
+    if (performance.now() < barLock) { lastY = y; ticking = false; return; }
     const sc = y > 16; $('.top').classList.toggle('scrolled', sc); document.body.classList.toggle('scrolled', sc);
     if (y > lastY + 6 && y > 120) bar.classList.add('compact');
     else if (y < lastY - 6 || y < 60) bar.classList.remove('compact');
