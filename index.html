@@ -2010,21 +2010,31 @@ function shareSpec(id){
 async function renderShareImage(spec){
   const assets = await shareAssets(), C = palette();
   const mctx = document.createElement('canvas').getContext('2d');
-  const MARGIN = 40, CARD_PAD = 36, innerW = SHARE_W - 2 * MARGIN - 2 * CARD_PAD;
-  const headerH = 150, cardTop = MARGIN + headerH + 26;
+  const MARGIN = 40, CARD_PAD = 36, innerW = SHARE_W - 2 * MARGIN - 2 * CARD_PAD, cardTop = MARGIN;
 
+  // A small crest sits at the right of the title; the text on the left keeps clear of it
+  const crestH = 92, crestW = assets.crest ? Math.round(crestH * assets.crest.width / assets.crest.height) : 0;
+  const textW = innerW - (crestW ? crestW + 28 : 0);
   mctx.font = sfont(500, 26);
-  const subLines = wrapLines(mctx, spec.subtitle, innerW - (spec.tag ? 300 : 0));
-  const titleBlockH = 58 + subLines.length * 36 + 22;
+  const subLines = wrapLines(mctx, spec.subtitle, textW);
+  const tagH = spec.tag ? 50 : 0;
+  const titleBlockH = Math.max(58 + subLines.length * 36 + tagH + 22, crestH + 24);
   const bodyH = spec.body.measure(mctx, innerW);
   const notes = [...spec.notes];
   if (spec.dynamicNote && spec.dynamicNote()) notes.push(spec.dynamicNote());
   if (spec.tag) notes.push('* Jornada ainda não final: os números podem mudar.');
   mctx.font = sfont(400, 22);
   const noteLines = notes.flatMap(n => wrapLines(mctx, n, innerW));
-  const notesH = noteLines.length ? noteLines.length * 30 + 18 : 0;
+  // "Atualizado ..." goes at the bottom right of the card: on the last note line if it fits, else on its own line
+  const when = FPL_UPDATED
+    ? `Atualizado ${new Date(FPL_UPDATED).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : '';
+  const whenW = when ? mctx.measureText(when).width : 0;
+  const lastW = noteLines.length ? mctx.measureText(noteLines[noteLines.length - 1]).width : 0;
+  const whenOnLastLine = !!when && noteLines.length > 0 && lastW + 40 + whenW <= innerW;
+  const lineCount = noteLines.length + (when && !whenOnLastLine ? 1 : 0);
+  const notesH = lineCount ? lineCount * 30 + 18 : 0;
   const cardH = CARD_PAD + titleBlockH + bodyH + notesH + CARD_PAD;
-  const H = cardTop + cardH + 34 + 40 + MARGIN;
+  const H = cardTop + cardH + MARGIN;
 
   const cv = document.createElement('canvas'); cv.width = SHARE_W; cv.height = H;
   const ctx = cv.getContext('2d');
@@ -2035,44 +2045,23 @@ async function renderShareImage(spec){
     ctx.beginPath(); ctx.moveTo(SHARE_W * a + slant, 0); ctx.lineTo(SHARE_W * b + slant, 0);
     ctx.lineTo(SHARE_W * b, H); ctx.lineTo(SHARE_W * a, H); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
   });
-  // header banner
-  const hx = MARGIN, hw = SHARE_W - 2 * MARGIN;
-  ctx.save(); rrect(ctx, hx, MARGIN, hw, headerH, 26); ctx.clip();
-  ctx.fillStyle = C.brand; ctx.fillRect(hx, MARGIN, hw, headerH);
-  const band = (a, b, col) => { ctx.beginPath(); ctx.moveTo(hx + hw * a + 40, MARGIN); ctx.lineTo(hx + hw * b + 40, MARGIN); ctx.lineTo(hx + hw * b, MARGIN + headerH); ctx.lineTo(hx + hw * a, MARGIN + headerH); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); };
-  band(-0.1, .09, C.band); band(.84, .92, C.stripe2); band(.92, 1.1, C.band);
-  ctx.restore();
-  rrect(ctx, hx, MARGIN, hw, headerH, 26); ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
-  ctx.font = sfont(800, 50, 'Montserrat');
-  const wordW = Math.max(ctx.measureText('FANTASY').width, ctx.measureText('FUNDÃO').width);
-  const crestH = 112, crestW = assets.crest ? crestH * assets.crest.width / assets.crest.height : 0;
-  const groupW = crestW + (crestW ? 26 : 0) + wordW, gx0 = SHARE_W / 2 - groupW / 2, cy0 = MARGIN + headerH / 2;
-  if (assets.crest) ctx.drawImage(assets.crest, gx0, cy0 - crestH / 2, crestW, crestH);
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-  ctx.fillText('FANTASY', gx0 + crestW + 26, cy0 - 27); ctx.fillText('FUNDÃO', gx0 + crestW + 26, cy0 + 27);
   // card
   rrect(ctx, MARGIN, cardTop, SHARE_W - 2 * MARGIN, cardH, 26); ctx.fillStyle = 'rgba(46,11,23,.93)'; ctx.fill();
   ctx.lineWidth = 2; ctx.strokeStyle = C.border; ctx.stroke();
   const cx = MARGIN + CARD_PAD; let cy = cardTop + CARD_PAD;
+  if (assets.crest) ctx.drawImage(assets.crest, cx + innerW - crestW, cy - 2, crestW, crestH);
   ctx.font = sfont(800, 44, 'Montserrat'); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   ctx.fillText(spec.title.toUpperCase(), cx, cy + 26);
-  if (spec.tag) {
-    const pw = pillWidth(ctx, spec.tag, 24);
-    drawPill(ctx, C, spec.tag, cx + innerW - pw, cy + 26, 24, true);
-  }
   ctx.font = sfont(500, 26); ctx.fillStyle = C.muted;
   subLines.forEach((ln, i) => ctx.fillText(ln, cx, cy + 74 + i * 36));
+  if (spec.tag) drawPill(ctx, C, spec.tag, cx, cy + 74 + (subLines.length - 1) * 36 + 46, 24, true);
   cy += titleBlockH;
   spec.body.draw(ctx, C, cx, cy, innerW); cy += bodyH;
   ctx.font = sfont(400, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   noteLines.forEach((ln, i) => ctx.fillText(ln, cx, cy + 22 + i * 30));
-  // footer
-  const fy = cardTop + cardH + 34 + 18;
-  ctx.font = sfont(600, 22); ctx.fillStyle = C.muted; ctx.textAlign = 'left';
-  ctx.fillText(`Fantasy Fundão · ${location.host}${location.pathname.replace(/[^/]*$/, '').replace(/\/$/, '')}`, MARGIN + 6, fy);
-  if (FPL_UPDATED) {
-    const when = new Date(FPL_UPDATED).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-    ctx.textAlign = 'right'; ctx.fillText(`Atualizado ${when}`, SHARE_W - MARGIN - 6, fy);
+  if (when) {
+    ctx.textAlign = 'right';
+    ctx.fillText(when, cx + innerW, cy + 22 + (whenOnLastLine ? noteLines.length - 1 : noteLines.length) * 30);
   }
   return new Promise((res, rej) => cv.toBlob(b => (b ? res(b) : rej(new Error('Não foi possível criar a imagem'))), 'image/png'));
 }
