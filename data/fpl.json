@@ -173,12 +173,12 @@
     },
     "GW11": {
       "Bernardo Saraiva": 27,
-      "Miguel Antunes": 30,
+      "Miguel Antunes": 31,
       "Diogo Lopes": 23,
       "Diogo Amarelo": 35,
-      "João Leitão": 40,
-      "João Pires": 26,
-      "António Moreira": 10,
+      "João Leitão": 42,
+      "João Pires": 27,
+      "António Moreira": 11,
       "Rui Bimba": 23,
       "Tiago Monteiro": 21
     }
@@ -424,8 +424,8 @@
       "Diogo Amarelo": 6,
       "João Leitão": 3,
       "João Pires": 1,
-      "António Moreira": 15,
-      "Rui Bimba": 6,
+      "António Moreira": 17,
+      "Rui Bimba": 7,
       "Tiago Monteiro": 12
     }
   },
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T18:47:24+00:00"
+  "updated_at": "2026-11-21T19:02:21+00:00"
 }
