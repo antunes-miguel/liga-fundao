@@ -170,6 +170,17 @@
       "João Pires": 52,
       "Rui Bimba": 74,
       "Tiago Monteiro": 50
+    },
+    "GW11": {
+      "Bernardo Saraiva": 1,
+      "Miguel Antunes": 2,
+      "Diogo Lopes": 3,
+      "Diogo Amarelo": 2,
+      "João Leitão": 2,
+      "António Moreira": 2,
+      "João Pires": 2,
+      "Rui Bimba": 2,
+      "Tiago Monteiro": 2
     }
   },
   "transfers": {
@@ -279,6 +290,17 @@
       "Diogo Amarelo": 0,
       "João Leitão": 0,
       "António Moreira": 4,
+      "João Pires": 0,
+      "Rui Bimba": 0,
+      "Tiago Monteiro": 0
+    },
+    "GW11": {
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Lopes": 0,
+      "Diogo Amarelo": 0,
+      "João Leitão": 0,
+      "António Moreira": 0,
       "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
@@ -394,6 +416,17 @@
       "João Pires": 5,
       "Rui Bimba": 12,
       "Tiago Monteiro": 9
+    },
+    "GW11": {
+      "Bernardo Saraiva": 0,
+      "Miguel Antunes": 0,
+      "Diogo Lopes": 0,
+      "Diogo Amarelo": 0,
+      "João Leitão": 0,
+      "António Moreira": 0,
+      "João Pires": 0,
+      "Rui Bimba": 1,
+      "Tiago Monteiro": 0
     }
   },
   "captains": {
@@ -1045,6 +1078,71 @@
         "mult": 3,
         "best": "McGinn",
         "best_pts": 10
+      }
+    },
+    "GW11": {
+      "Bernardo Saraiva": {
+        "c": "N.Jackson",
+        "pts": 0,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "Diogo Lopes": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Rúben",
+        "best_pts": 1
+      },
+      "Diogo Amarelo": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "João Leitão": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "Rui Bimba": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
+      },
+      "Tiago Monteiro": {
+        "c": "Haaland",
+        "pts": 1,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 1
       }
     }
   },
@@ -2551,13 +2649,23 @@
     "Tiago Monteiro": {
       "Triple Captain": [
         "GW10"
+      ],
+      "Wildcard": [
+        "GW11"
       ]
     }
   },
-  "provisional": [],
+  "provisional": [
+    {
+      "gw": 11,
+      "total": 10,
+      "played": 0,
+      "live": 1
+    }
+  ],
   "next_deadline": {
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T11:44:23+00:00"
+  "updated_at": "2026-11-21T12:47:19+00:00"
 }
