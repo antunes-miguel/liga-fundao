@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 3,
-      "Miguel Antunes": 4,
-      "Diogo Lopes": 7,
-      "Diogo Amarelo": 6,
-      "João Leitão": 6,
-      "António Moreira": 4,
-      "João Pires": 5,
-      "Rui Bimba": 4,
-      "Tiago Monteiro": 4
+      "Bernardo Saraiva": 8,
+      "Miguel Antunes": 9,
+      "Diogo Lopes": 9,
+      "Diogo Amarelo": 11,
+      "João Leitão": 10,
+      "António Moreira": 5,
+      "João Pires": 9,
+      "Rui Bimba": 7,
+      "Tiago Monteiro": 7
     }
   },
   "transfers": {
@@ -418,15 +418,15 @@
       "Tiago Monteiro": 9
     },
     "GW11": {
-      "Bernardo Saraiva": 0,
-      "Miguel Antunes": 0,
-      "Diogo Lopes": 0,
-      "Diogo Amarelo": 0,
-      "João Leitão": 0,
-      "António Moreira": 0,
-      "João Pires": 0,
+      "Bernardo Saraiva": 1,
+      "Miguel Antunes": 2,
+      "Diogo Lopes": 1,
+      "Diogo Amarelo": 1,
+      "João Leitão": 1,
+      "António Moreira": 1,
+      "João Pires": 1,
       "Rui Bimba": 4,
-      "Tiago Monteiro": 0
+      "Tiago Monteiro": 3
     }
   },
   "captains": {
@@ -1083,7 +1083,7 @@
     "GW11": {
       "Bernardo Saraiva": {
         "c": "N.Jackson",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
         "best": "Haaland",
         "best_pts": 2
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T15:02:21+00:00"
+  "updated_at": "2026-11-21T15:17:22+00:00"
 }
