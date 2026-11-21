@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 15,
-      "Miguel Antunes": 12,
-      "Diogo Lopes": 16,
-      "Diogo Amarelo": 21,
-      "João Leitão": 19,
-      "João Pires": 18,
+      "Bernardo Saraiva": 25,
+      "Miguel Antunes": 29,
+      "Diogo Lopes": 19,
+      "Diogo Amarelo": 32,
+      "João Leitão": 33,
+      "João Pires": 25,
       "António Moreira": 8,
-      "Rui Bimba": 13,
-      "Tiago Monteiro": 19
+      "Rui Bimba": 23,
+      "Tiago Monteiro": 20
     }
   },
   "transfers": {
@@ -418,15 +418,15 @@
       "Tiago Monteiro": 9
     },
     "GW11": {
-      "Bernardo Saraiva": 1,
-      "Miguel Antunes": 2,
-      "Diogo Lopes": 9,
-      "Diogo Amarelo": 1,
-      "João Leitão": 0,
-      "João Pires": 0,
-      "António Moreira": 1,
+      "Bernardo Saraiva": 2,
+      "Miguel Antunes": 4,
+      "Diogo Lopes": 10,
+      "Diogo Amarelo": 6,
+      "João Leitão": 3,
+      "João Pires": 1,
+      "António Moreira": 7,
       "Rui Bimba": 4,
-      "Tiago Monteiro": 6
+      "Tiago Monteiro": 11
     }
   },
   "captains": {
@@ -1083,38 +1083,38 @@
     "GW11": {
       "Bernardo Saraiva": {
         "c": "N.Jackson",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Tavernier",
-        "best_pts": 5
+        "best_pts": 7
       },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Rogers",
-        "best_pts": 4
+        "best": "Silva",
+        "best_pts": 9
       },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Tavernier",
-        "best_pts": 5
+        "best_pts": 7
       },
       "Diogo Amarelo": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Hill",
-        "best_pts": 6
+        "best_pts": 14
       },
       "João Leitão": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Evanilson",
-        "best_pts": 7
+        "best": "Silva",
+        "best_pts": 9
       },
       "João Pires": {
         "c": "Haaland",
@@ -1134,8 +1134,8 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Evanilson",
-        "best_pts": 7
+        "best": "Silva",
+        "best_pts": 9
       },
       "Tiago Monteiro": {
         "c": "Haaland",
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T16:17:19+00:00"
+  "updated_at": "2026-11-21T16:32:22+00:00"
 }
