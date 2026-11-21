@@ -175,12 +175,12 @@
       "Bernardo Saraiva": 15,
       "Miguel Antunes": 12,
       "Diogo Lopes": 16,
-      "Diogo Amarelo": 19,
+      "Diogo Amarelo": 21,
       "João Leitão": 19,
       "João Pires": 18,
-      "António Moreira": 5,
+      "António Moreira": 8,
       "Rui Bimba": 13,
-      "Tiago Monteiro": 16
+      "Tiago Monteiro": 19
     }
   },
   "transfers": {
@@ -420,7 +420,7 @@
     "GW11": {
       "Bernardo Saraiva": 1,
       "Miguel Antunes": 2,
-      "Diogo Lopes": 4,
+      "Diogo Lopes": 9,
       "Diogo Amarelo": 1,
       "João Leitão": 0,
       "João Pires": 0,
@@ -1106,8 +1106,8 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Tavernier",
-        "best_pts": 5
+        "best": "Hill",
+        "best_pts": 6
       },
       "João Leitão": {
         "c": "Haaland",
@@ -1127,8 +1127,8 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Haaland",
-        "best_pts": 2
+        "best": "Bogle",
+        "best_pts": 4
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T16:02:21+00:00"
+  "updated_at": "2026-11-21T16:17:19+00:00"
 }
