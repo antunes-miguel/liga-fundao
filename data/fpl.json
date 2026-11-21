@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 1,
-      "Miguel Antunes": 2,
-      "Diogo Lopes": 3,
-      "Diogo Amarelo": 2,
-      "João Leitão": 2,
-      "António Moreira": 2,
-      "João Pires": 2,
-      "Rui Bimba": 2,
-      "Tiago Monteiro": 2
+      "Bernardo Saraiva": 3,
+      "Miguel Antunes": 4,
+      "Diogo Lopes": 6,
+      "Diogo Amarelo": 5,
+      "João Leitão": 4,
+      "António Moreira": 4,
+      "João Pires": 4,
+      "Rui Bimba": 4,
+      "Tiago Monteiro": 4
     }
   },
   "transfers": {
@@ -425,7 +425,7 @@
       "João Leitão": 0,
       "António Moreira": 0,
       "João Pires": 0,
-      "Rui Bimba": 3,
+      "Rui Bimba": 4,
       "Tiago Monteiro": 0
     }
   },
@@ -1086,63 +1086,63 @@
         "pts": 0,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "Miguel Antunes": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "Diogo Lopes": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Rúben",
-        "best_pts": 1
+        "best_pts": 2
       },
       "Diogo Amarelo": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "João Leitão": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "António Moreira": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "João Pires": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "Rui Bimba": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       },
       "Tiago Monteiro": {
         "c": "Haaland",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
-        "best_pts": 1
+        "best_pts": 2
       }
     }
   },
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T13:47:17+00:00"
+  "updated_at": "2026-11-21T14:02:21+00:00"
 }
