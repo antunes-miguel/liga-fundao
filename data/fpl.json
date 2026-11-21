@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 12,
-      "Miguel Antunes": 14,
-      "Diogo Lopes": 13,
-      "Diogo Amarelo": 16,
-      "João Leitão": 22,
-      "João Pires": 20,
+      "Bernardo Saraiva": 15,
+      "Miguel Antunes": 12,
+      "Diogo Lopes": 16,
+      "Diogo Amarelo": 19,
+      "João Leitão": 19,
+      "João Pires": 18,
       "António Moreira": 5,
-      "Rui Bimba": 15,
-      "Tiago Monteiro": 18
+      "Rui Bimba": 13,
+      "Tiago Monteiro": 16
     }
   },
   "transfers": {
@@ -422,11 +422,11 @@
       "Miguel Antunes": 2,
       "Diogo Lopes": 4,
       "Diogo Amarelo": 1,
-      "João Leitão": 1,
-      "João Pires": 1,
+      "João Leitão": 0,
+      "João Pires": 0,
       "António Moreira": 1,
       "Rui Bimba": 4,
-      "Tiago Monteiro": 3
+      "Tiago Monteiro": 6
     }
   },
   "captains": {
@@ -1085,7 +1085,7 @@
         "c": "N.Jackson",
         "pts": 1,
         "mult": 2,
-        "best": "Rogers",
+        "best": "Tavernier",
         "best_pts": 5
       },
       "Miguel Antunes": {
@@ -1093,35 +1093,35 @@
         "pts": 2,
         "mult": 2,
         "best": "Rogers",
-        "best_pts": 5
+        "best_pts": 4
       },
       "Diogo Lopes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Rogers",
+        "best": "Tavernier",
         "best_pts": 5
       },
       "Diogo Amarelo": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Hill",
-        "best_pts": 6
+        "best": "Tavernier",
+        "best_pts": 5
       },
       "João Leitão": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Evanilson",
-        "best_pts": 8
+        "best_pts": 7
       },
       "João Pires": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Evanilson",
-        "best_pts": 8
+        "best_pts": 7
       },
       "António Moreira": {
         "c": "Haaland",
@@ -1135,14 +1135,14 @@
         "pts": 2,
         "mult": 2,
         "best": "Evanilson",
-        "best_pts": 8
+        "best_pts": 7
       },
       "Tiago Monteiro": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Evanilson",
-        "best_pts": 8
+        "best_pts": 7
       }
     }
   },
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-21T15:47:25+00:00"
+  "updated_at": "2026-11-21T16:02:21+00:00"
 }
