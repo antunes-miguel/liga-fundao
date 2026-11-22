@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 47,
-      "Miguel Antunes": 45,
-      "Diogo Lopes": 34,
-      "Diogo Amarelo": 43,
+      "Bernardo Saraiva": 34,
+      "Miguel Antunes": 39,
+      "Diogo Lopes": 27,
+      "Diogo Amarelo": 36,
       "João Leitão": 40,
-      "João Pires": 34,
-      "António Moreira": 17,
-      "Rui Bimba": 36,
-      "Tiago Monteiro": 29
+      "João Pires": 35,
+      "António Moreira": 18,
+      "Rui Bimba": 30,
+      "Tiago Monteiro": 25
     }
   },
   "transfers": {
@@ -421,9 +421,9 @@
       "Bernardo Saraiva": 3,
       "Miguel Antunes": 5,
       "Diogo Lopes": 9,
-      "Diogo Amarelo": 19,
+      "Diogo Amarelo": 12,
       "João Leitão": 3,
-      "João Pires": 4,
+      "João Pires": 8,
       "António Moreira": 15,
       "Rui Bimba": 9,
       "Tiago Monteiro": 12
@@ -1085,8 +1085,8 @@
         "c": "N.Jackson",
         "pts": 2,
         "mult": 2,
-        "best": "Verbruggen",
-        "best_pts": 9
+        "best": "Tavernier",
+        "best_pts": 8
       },
       "Miguel Antunes": {
         "c": "Haaland",
@@ -1099,7 +1099,7 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "De Cuyper",
+        "best": "Tavernier",
         "best_pts": 8
       },
       "Diogo Amarelo": {
@@ -1134,8 +1134,8 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Verbruggen",
-        "best_pts": 9
+        "best": "Silva",
+        "best_pts": 8
       },
       "Tiago Monteiro": {
         "c": "Haaland",
@@ -2659,13 +2659,13 @@
     {
       "gw": 11,
       "total": 10,
-      "played": 7,
-      "live": 1
+      "played": 8,
+      "live": 0
     }
   ],
   "next_deadline": {
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-22T15:47:20+00:00"
+  "updated_at": "2026-11-22T16:02:20+00:00"
 }
