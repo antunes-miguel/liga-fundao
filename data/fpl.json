@@ -36,16 +36,16 @@
       "team": "Skillz FC"
     },
     {
-      "entry": 5581304,
-      "name": "João Pires",
-      "fpl_name": "João Pires",
-      "team": "João's Team"
-    },
-    {
       "entry": 3154219,
       "name": "António Moreira",
       "fpl_name": "Antonio Moreira",
       "team": "antoneli"
+    },
+    {
+      "entry": 5581304,
+      "name": "João Pires",
+      "fpl_name": "João Pires",
+      "team": "João's Team"
     },
     {
       "entry": 73516,
@@ -67,8 +67,8 @@
       "Diogo Lopes": 51,
       "Diogo Amarelo": 40,
       "João Leitão": 36,
-      "João Pires": 39,
       "António Moreira": 51,
+      "João Pires": 39,
       "Rui Bimba": 38,
       "Tiago Monteiro": 47
     },
@@ -78,8 +78,8 @@
       "Diogo Lopes": 99,
       "Diogo Amarelo": 108,
       "João Leitão": 99,
-      "João Pires": 98,
       "António Moreira": 96,
+      "João Pires": 98,
       "Rui Bimba": 101,
       "Tiago Monteiro": 69
     },
@@ -89,8 +89,8 @@
       "Diogo Lopes": 62,
       "Diogo Amarelo": 46,
       "João Leitão": 50,
-      "João Pires": 53,
       "António Moreira": 56,
+      "João Pires": 53,
       "Rui Bimba": 53,
       "Tiago Monteiro": 59
     },
@@ -100,8 +100,8 @@
       "Diogo Lopes": 89,
       "Diogo Amarelo": 53,
       "João Leitão": 64,
-      "João Pires": 64,
       "António Moreira": 82,
+      "João Pires": 64,
       "Rui Bimba": 73,
       "Tiago Monteiro": 69
     },
@@ -111,8 +111,8 @@
       "Diogo Lopes": 39,
       "Diogo Amarelo": 36,
       "João Leitão": 49,
-      "João Pires": 47,
       "António Moreira": 48,
+      "João Pires": 47,
       "Rui Bimba": 45,
       "Tiago Monteiro": 31
     },
@@ -122,8 +122,8 @@
       "Diogo Lopes": 73,
       "Diogo Amarelo": 53,
       "João Leitão": 58,
-      "João Pires": 51,
       "António Moreira": 42,
+      "João Pires": 51,
       "Rui Bimba": 37,
       "Tiago Monteiro": 53
     },
@@ -133,8 +133,8 @@
       "Diogo Lopes": 92,
       "Diogo Amarelo": 99,
       "João Leitão": 55,
-      "João Pires": 73,
       "António Moreira": 89,
+      "João Pires": 73,
       "Rui Bimba": 59,
       "Tiago Monteiro": 47
     },
@@ -144,8 +144,8 @@
       "Diogo Lopes": 64,
       "Diogo Amarelo": 60,
       "João Leitão": 62,
-      "João Pires": 41,
       "António Moreira": 51,
+      "João Pires": 41,
       "Rui Bimba": 57,
       "Tiago Monteiro": 46
     },
@@ -155,8 +155,8 @@
       "Diogo Lopes": 49,
       "Diogo Amarelo": 77,
       "João Leitão": 66,
-      "João Pires": 84,
       "António Moreira": 41,
+      "João Pires": 84,
       "Rui Bimba": 46,
       "Tiago Monteiro": 21
     },
@@ -166,21 +166,21 @@
       "Diogo Lopes": 40,
       "Diogo Amarelo": 66,
       "João Leitão": 70,
-      "João Pires": 52,
       "António Moreira": 63,
+      "João Pires": 52,
       "Rui Bimba": 74,
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 34,
+      "Bernardo Saraiva": 40,
       "Miguel Antunes": 39,
       "Diogo Lopes": 27,
       "Diogo Amarelo": 36,
-      "João Leitão": 40,
+      "João Leitão": 41,
+      "António Moreira": 28,
       "João Pires": 35,
-      "António Moreira": 18,
-      "Rui Bimba": 30,
-      "Tiago Monteiro": 25
+      "Rui Bimba": 31,
+      "Tiago Monteiro": 35
     }
   },
   "transfers": {
@@ -190,8 +190,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -201,8 +201,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -212,8 +212,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -223,8 +223,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -234,8 +234,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -245,8 +245,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -256,8 +256,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 8,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -267,8 +267,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 8
     },
@@ -278,8 +278,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
-      "João Pires": 4,
       "António Moreira": 0,
+      "João Pires": 4,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -289,8 +289,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 4,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     },
@@ -300,8 +300,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
       "António Moreira": 0,
+      "João Pires": 0,
       "Rui Bimba": 0,
       "Tiago Monteiro": 0
     }
@@ -313,8 +313,8 @@
       "Diogo Lopes": 13,
       "Diogo Amarelo": 14,
       "João Leitão": 19,
-      "João Pires": 1,
       "António Moreira": 0,
+      "João Pires": 1,
       "Rui Bimba": 7,
       "Tiago Monteiro": 10
     },
@@ -324,8 +324,8 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 9,
-      "João Pires": 6,
       "António Moreira": 16,
+      "João Pires": 6,
       "Rui Bimba": 0,
       "Tiago Monteiro": 2
     },
@@ -335,8 +335,8 @@
       "Diogo Lopes": 6,
       "Diogo Amarelo": 13,
       "João Leitão": 12,
-      "João Pires": 11,
       "António Moreira": 4,
+      "João Pires": 11,
       "Rui Bimba": 9,
       "Tiago Monteiro": 6
     },
@@ -346,8 +346,8 @@
       "Diogo Lopes": 2,
       "Diogo Amarelo": 12,
       "João Leitão": 1,
-      "João Pires": 3,
       "António Moreira": 9,
+      "João Pires": 3,
       "Rui Bimba": 9,
       "Tiago Monteiro": 16
     },
@@ -357,8 +357,8 @@
       "Diogo Lopes": 3,
       "Diogo Amarelo": 14,
       "João Leitão": 0,
-      "João Pires": 14,
       "António Moreira": 19,
+      "João Pires": 14,
       "Rui Bimba": 11,
       "Tiago Monteiro": 12
     },
@@ -368,8 +368,8 @@
       "Diogo Lopes": 3,
       "Diogo Amarelo": 9,
       "João Leitão": 0,
-      "João Pires": 10,
       "António Moreira": 20,
+      "João Pires": 10,
       "Rui Bimba": 14,
       "Tiago Monteiro": 20
     },
@@ -379,8 +379,8 @@
       "Diogo Lopes": 1,
       "Diogo Amarelo": 9,
       "João Leitão": 5,
-      "João Pires": 11,
       "António Moreira": 3,
+      "João Pires": 11,
       "Rui Bimba": 12,
       "Tiago Monteiro": 10
     },
@@ -390,8 +390,8 @@
       "Diogo Lopes": 1,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
-      "João Pires": 6,
       "António Moreira": 11,
+      "João Pires": 6,
       "Rui Bimba": 6,
       "Tiago Monteiro": 2
     },
@@ -401,8 +401,8 @@
       "Diogo Lopes": 15,
       "Diogo Amarelo": 24,
       "João Leitão": 4,
-      "João Pires": 0,
       "António Moreira": 9,
+      "João Pires": 0,
       "Rui Bimba": 16,
       "Tiago Monteiro": 14
     },
@@ -412,19 +412,19 @@
       "Diogo Lopes": 3,
       "Diogo Amarelo": 12,
       "João Leitão": 5,
-      "João Pires": 5,
       "António Moreira": 7,
+      "João Pires": 5,
       "Rui Bimba": 12,
       "Tiago Monteiro": 9
     },
     "GW11": {
-      "Bernardo Saraiva": 3,
+      "Bernardo Saraiva": 7,
       "Miguel Antunes": 5,
-      "Diogo Lopes": 9,
+      "Diogo Lopes": 10,
       "Diogo Amarelo": 12,
       "João Leitão": 3,
-      "João Pires": 8,
       "António Moreira": 15,
+      "João Pires": 8,
       "Rui Bimba": 9,
       "Tiago Monteiro": 12
     }
@@ -466,14 +466,14 @@
         "best": "Calafiori",
         "best_pts": 9
       },
-      "João Pires": {
+      "António Moreira": {
         "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 11
       },
-      "António Moreira": {
+      "João Pires": {
         "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
@@ -531,14 +531,14 @@
         "best": "B.Fernandes",
         "best_pts": 23
       },
-      "João Pires": {
+      "António Moreira": {
         "c": "B.Fernandes",
         "pts": 23,
         "mult": 2,
         "best": "B.Fernandes",
         "best_pts": 23
       },
-      "António Moreira": {
+      "João Pires": {
         "c": "B.Fernandes",
         "pts": 23,
         "mult": 2,
@@ -596,19 +596,19 @@
         "best": "Haaland",
         "best_pts": 9
       },
-      "João Pires": {
-        "c": "Haaland",
-        "pts": 9,
-        "mult": 3,
-        "best": "Haaland",
-        "best_pts": 9
-      },
       "António Moreira": {
         "c": "Haaland",
         "pts": 9,
         "mult": 2,
         "best": "Isak",
         "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 3,
+        "best": "Haaland",
+        "best_pts": 9
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -661,16 +661,16 @@
         "best": "João Pedro",
         "best_pts": 12
       },
-      "João Pires": {
-        "c": "Isak",
-        "pts": 2,
+      "António Moreira": {
+        "c": "João Pedro",
+        "pts": 12,
         "mult": 2,
         "best": "Raya",
         "best_pts": 14
       },
-      "António Moreira": {
-        "c": "João Pedro",
-        "pts": 12,
+      "João Pires": {
+        "c": "Isak",
+        "pts": 2,
         "mult": 2,
         "best": "Raya",
         "best_pts": 14
@@ -726,19 +726,19 @@
         "best": "Thomas",
         "best_pts": 9
       },
-      "João Pires": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "Cherki",
-        "best_pts": 8
-      },
       "António Moreira": {
         "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
         "best": "Semenyo",
         "best_pts": 17
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Cherki",
+        "best_pts": 8
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -791,19 +791,19 @@
         "best": "João Pedro",
         "best_pts": 12
       },
-      "João Pires": {
-        "c": "Rogers",
-        "pts": 9,
-        "mult": 2,
-        "best": "Rogers",
-        "best_pts": 9
-      },
       "António Moreira": {
         "c": "B.Fernandes",
         "pts": 1,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 12
+      },
+      "João Pires": {
+        "c": "Rogers",
+        "pts": 9,
+        "mult": 2,
+        "best": "Rogers",
+        "best_pts": 9
       },
       "Rui Bimba": {
         "c": "Saka",
@@ -856,17 +856,17 @@
         "best": "Haaland",
         "best_pts": 13
       },
-      "João Pires": {
-        "c": "Haaland",
-        "pts": 13,
-        "mult": 2,
-        "best": "Haaland",
-        "best_pts": 13
-      },
       "António Moreira": {
         "c": "Haaland",
         "pts": 13,
         "mult": 3,
+        "best": "Haaland",
+        "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
         "best": "Haaland",
         "best_pts": 13
       },
@@ -921,19 +921,19 @@
         "best": "Konsa",
         "best_pts": 14
       },
-      "João Pires": {
-        "c": "Palmer",
-        "pts": -1,
-        "mult": 2,
-        "best": "Konsa",
-        "best_pts": 14
-      },
       "António Moreira": {
         "c": "Haaland",
         "pts": 8,
         "mult": 2,
         "best": "Barnes",
         "best_pts": 8
+      },
+      "João Pires": {
+        "c": "Palmer",
+        "pts": -1,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 14
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -986,19 +986,19 @@
         "best": "Van Hecke",
         "best_pts": 15
       },
-      "João Pires": {
-        "c": "Evanilson",
-        "pts": 9,
-        "mult": 2,
-        "best": "Konsa",
-        "best_pts": 10
-      },
       "António Moreira": {
         "c": "Marmoush",
         "pts": 2,
         "mult": 2,
         "best": "Rice",
         "best_pts": 8
+      },
+      "João Pires": {
+        "c": "Evanilson",
+        "pts": 9,
+        "mult": 2,
+        "best": "Konsa",
+        "best_pts": 10
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -1051,19 +1051,19 @@
         "best": "Ødegaard",
         "best_pts": 11
       },
-      "João Pires": {
-        "c": "Haaland",
-        "pts": 2,
-        "mult": 2,
-        "best": "Ødegaard",
-        "best_pts": 11
-      },
       "António Moreira": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Wirtz",
         "best_pts": 13
+      },
+      "João Pires": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Ødegaard",
+        "best_pts": 11
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -1116,19 +1116,19 @@
         "best": "Silva",
         "best_pts": 8
       },
+      "António Moreira": {
+        "c": "Haaland",
+        "pts": 2,
+        "mult": 2,
+        "best": "Wirtz",
+        "best_pts": 6
+      },
       "João Pires": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Petrović",
         "best_pts": 6
-      },
-      "António Moreira": {
-        "c": "Haaland",
-        "pts": 2,
-        "mult": 2,
-        "best": "Bogle",
-        "best_pts": 4
       },
       "Rui Bimba": {
         "c": "Haaland",
@@ -1141,7 +1141,7 @@
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
-        "best": "Evanilson",
+        "best": "Szoboszlai",
         "best_pts": 6
       }
     }
@@ -1213,19 +1213,6 @@
         427,
         411
       ],
-      "João Pires": [
-        1,
-        469,
-        112,
-        499,
-        426,
-        338,
-        557,
-        156,
-        411,
-        165,
-        346
-      ],
       "António Moreira": [
         1,
         8,
@@ -1236,6 +1223,19 @@
         542,
         397,
         552,
+        165,
+        346
+      ],
+      "João Pires": [
+        1,
+        469,
+        112,
+        499,
+        426,
+        338,
+        557,
+        156,
+        411,
         165,
         346
       ],
@@ -1332,19 +1332,6 @@
         165,
         411
       ],
-      "João Pires": [
-        412,
-        418,
-        469,
-        499,
-        426,
-        338,
-        557,
-        156,
-        411,
-        165,
-        346
-      ],
       "António Moreira": [
         1,
         8,
@@ -1357,6 +1344,19 @@
         514,
         552,
         165
+      ],
+      "João Pires": [
+        412,
+        418,
+        469,
+        499,
+        426,
+        338,
+        557,
+        156,
+        411,
+        165,
+        346
       ],
       "Rui Bimba": [
         496,
@@ -1451,19 +1451,6 @@
         165,
         411
       ],
-      "João Pires": [
-        412,
-        418,
-        87,
-        469,
-        426,
-        338,
-        557,
-        156,
-        346,
-        411,
-        165
-      ],
       "António Moreira": [
         384,
         8,
@@ -1476,6 +1463,19 @@
         166,
         379,
         411
+      ],
+      "João Pires": [
+        412,
+        418,
+        87,
+        469,
+        426,
+        338,
+        557,
+        156,
+        346,
+        411,
+        165
       ],
       "Rui Bimba": [
         109,
@@ -1570,19 +1570,6 @@
         165,
         411
       ],
-      "João Pires": [
-        1,
-        469,
-        418,
-        148,
-        627,
-        214,
-        40,
-        368,
-        411,
-        165,
-        379
-      ],
       "António Moreira": [
         1,
         8,
@@ -1595,6 +1582,19 @@
         514,
         346,
         165
+      ],
+      "João Pires": [
+        1,
+        469,
+        418,
+        148,
+        627,
+        214,
+        40,
+        368,
+        411,
+        165,
+        379
       ],
       "Rui Bimba": [
         109,
@@ -1689,19 +1689,6 @@
         544,
         411
       ],
-      "João Pires": [
-        412,
-        233,
-        391,
-        469,
-        426,
-        480,
-        399,
-        47,
-        346,
-        411,
-        464
-      ],
       "António Moreira": [
         1,
         8,
@@ -1714,6 +1701,19 @@
         480,
         542,
         346
+      ],
+      "João Pires": [
+        412,
+        233,
+        391,
+        469,
+        426,
+        480,
+        399,
+        47,
+        346,
+        411,
+        464
       ],
       "Rui Bimba": [
         496,
@@ -1808,19 +1808,6 @@
         411,
         165
       ],
-      "João Pires": [
-        28,
-        31,
-        391,
-        469,
-        426,
-        480,
-        40,
-        286,
-        47,
-        411,
-        464
-      ],
       "António Moreira": [
         1,
         8,
@@ -1833,6 +1820,19 @@
         453,
         346,
         165
+      ],
+      "João Pires": [
+        28,
+        31,
+        391,
+        469,
+        426,
+        480,
+        40,
+        286,
+        47,
+        411,
+        464
       ],
       "Rui Bimba": [
         1,
@@ -1927,19 +1927,6 @@
         165,
         411
       ],
-      "João Pires": [
-        28,
-        31,
-        87,
-        391,
-        233,
-        426,
-        40,
-        286,
-        411,
-        138,
-        346
-      ],
       "António Moreira": [
         1,
         8,
@@ -1952,6 +1939,19 @@
         138,
         411,
         165
+      ],
+      "João Pires": [
+        28,
+        31,
+        87,
+        391,
+        233,
+        426,
+        40,
+        286,
+        411,
+        138,
+        346
       ],
       "Rui Bimba": [
         1,
@@ -2046,19 +2046,6 @@
         544,
         411
       ],
-      "João Pires": [
-        412,
-        31,
-        391,
-        87,
-        469,
-        154,
-        480,
-        40,
-        286,
-        411,
-        138
-      ],
       "António Moreira": [
         1,
         8,
@@ -2069,6 +2056,19 @@
         427,
         94,
         453,
+        411,
+        138
+      ],
+      "João Pires": [
+        412,
+        31,
+        391,
+        87,
+        469,
+        154,
+        480,
+        40,
+        286,
         411,
         138
       ],
@@ -2165,19 +2165,6 @@
         79,
         411
       ],
-      "João Pires": [
-        57,
-        31,
-        391,
-        469,
-        47,
-        154,
-        480,
-        40,
-        286,
-        79,
-        411
-      ],
       "António Moreira": [
         496,
         8,
@@ -2190,6 +2177,19 @@
         411,
         401,
         138
+      ],
+      "João Pires": [
+        57,
+        31,
+        391,
+        469,
+        47,
+        154,
+        480,
+        40,
+        286,
+        79,
+        411
       ],
       "Rui Bimba": [
         1,
@@ -2284,19 +2284,6 @@
         79,
         411
       ],
-      "João Pires": [
-        57,
-        31,
-        391,
-        233,
-        47,
-        154,
-        15,
-        40,
-        138,
-        79,
-        411
-      ],
       "António Moreira": [
         1,
         8,
@@ -2309,6 +2296,19 @@
         411,
         379,
         138
+      ],
+      "João Pires": [
+        57,
+        31,
+        391,
+        233,
+        47,
+        154,
+        15,
+        40,
+        138,
+        79,
+        411
       ],
       "Rui Bimba": [
         1,
@@ -2403,19 +2403,6 @@
         79,
         411
       ],
-      "João Pires": [
-        57,
-        31,
-        391,
-        87,
-        124,
-        154,
-        15,
-        40,
-        138,
-        79,
-        411
-      ],
       "António Moreira": [
         1,
         8,
@@ -2428,6 +2415,19 @@
         411,
         379,
         138
+      ],
+      "João Pires": [
+        57,
+        31,
+        391,
+        87,
+        124,
+        154,
+        15,
+        40,
+        138,
+        79,
+        411
       ],
       "Rui Bimba": [
         109,
@@ -2610,20 +2610,6 @@
         "GW10"
       ]
     },
-    "João Pires": {
-      "Triple Captain": [
-        "GW3"
-      ],
-      "Free Hit": [
-        "GW4"
-      ],
-      "Wildcard": [
-        "GW5"
-      ],
-      "Bench Boost": [
-        "GW9"
-      ]
-    },
     "António Moreira": {
       "Bench Boost": [
         "GW1"
@@ -2636,6 +2622,20 @@
       ],
       "Triple Captain": [
         "GW7"
+      ]
+    },
+    "João Pires": {
+      "Triple Captain": [
+        "GW3"
+      ],
+      "Free Hit": [
+        "GW4"
+      ],
+      "Wildcard": [
+        "GW5"
+      ],
+      "Bench Boost": [
+        "GW9"
       ]
     },
     "Rui Bimba": {
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-22T16:32:22+00:00"
+  "updated_at": "2026-11-22T16:47:20+00:00"
 }
