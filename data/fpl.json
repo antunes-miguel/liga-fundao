@@ -172,15 +172,15 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 42,
+      "Bernardo Saraiva": 44,
       "Miguel Antunes": 39,
       "Diogo Lopes": 27,
       "Diogo Amarelo": 36,
-      "João Leitão": 41,
-      "António Moreira": 30,
+      "João Leitão": 42,
+      "António Moreira": 33,
       "João Pires": 35,
-      "Rui Bimba": 31,
-      "Tiago Monteiro": 38
+      "Rui Bimba": 32,
+      "Tiago Monteiro": 39
     }
   },
   "transfers": {
@@ -418,13 +418,13 @@
       "Tiago Monteiro": 9
     },
     "GW11": {
-      "Bernardo Saraiva": 7,
+      "Bernardo Saraiva": 8,
       "Miguel Antunes": 5,
       "Diogo Lopes": 10,
       "Diogo Amarelo": 12,
       "João Leitão": 3,
       "António Moreira": 15,
-      "João Pires": 9,
+      "João Pires": 10,
       "Rui Bimba": 9,
       "Tiago Monteiro": 12
     }
@@ -1085,8 +1085,8 @@
         "c": "N.Jackson",
         "pts": 2,
         "mult": 2,
-        "best": "Tavernier",
-        "best_pts": 8
+        "best": "Wirtz",
+        "best_pts": 10
       },
       "Miguel Antunes": {
         "c": "Haaland",
@@ -1121,7 +1121,7 @@
         "pts": 2,
         "mult": 2,
         "best": "Wirtz",
-        "best_pts": 8
+        "best_pts": 10
       },
       "João Pires": {
         "c": "Haaland",
@@ -2667,5 +2667,5 @@
     "gw": 12,
     "time": "2026-11-27T18:30:00Z"
   },
-  "updated_at": "2026-11-22T17:02:21+00:00"
+  "updated_at": "2026-11-22T18:02:21+00:00"
 }
