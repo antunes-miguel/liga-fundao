@@ -188,7 +188,7 @@
       "Diogo Lopes": 2,
       "Diogo Amarelo": 0,
       "João Leitão": 2,
-      "João Pires": 4,
+      "João Pires": 3,
       "António Moreira": 0,
       "Rui Bimba": 4,
       "Tiago Monteiro": 4
@@ -452,7 +452,7 @@
     },
     "GW12": {
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 15,
+      "Miguel Antunes": 13,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -1218,7 +1218,7 @@
         "c": "B.Fernandes",
         "pts": 0,
         "mult": 2,
-        "best": "N.Williams",
+        "best": "Rogers",
         "best_pts": 2
       },
       "António Moreira": {
@@ -2895,13 +2895,13 @@
     {
       "gw": 12,
       "total": 10,
-      "played": 0,
-      "live": 1
+      "played": 1,
+      "live": 0
     }
   ],
   "next_deadline": {
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-27T21:47:21+00:00"
+  "updated_at": "2026-11-27T22:02:24+00:00"
 }
