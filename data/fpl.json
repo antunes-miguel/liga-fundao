@@ -452,13 +452,13 @@
     },
     "GW12": {
       "Bernardo Saraiva": 0,
-      "Miguel Antunes": 1,
+      "Miguel Antunes": 6,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
       "António Moreira": 0,
       "João Pires": 0,
-      "Rui Bimba": 1,
+      "Rui Bimba": -1,
       "Tiago Monteiro": 0
     }
   },
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-27T20:02:25+00:00"
+  "updated_at": "2026-11-27T21:17:19+00:00"
 }
