@@ -184,14 +184,14 @@
     },
     "GW12": {
       "Miguel Antunes": 17,
-      "Bernardo Saraiva": 4,
-      "Diogo Lopes": 7,
-      "Diogo Amarelo": 5,
+      "Bernardo Saraiva": 3,
+      "Diogo Lopes": 6,
+      "Diogo Amarelo": 4,
       "João Leitão": 3,
       "João Pires": 6,
       "António Moreira": 1,
-      "Rui Bimba": 15,
-      "Tiago Monteiro": 6
+      "Rui Bimba": 14,
+      "Tiago Monteiro": 5
     }
   },
   "transfers": {
@@ -1204,8 +1204,8 @@
         "c": "B.Fernandes",
         "pts": 1,
         "mult": 2,
-        "best": "Okafor",
-        "best_pts": 2
+        "best": "Muharemović",
+        "best_pts": 1
       },
       "João Leitão": {
         "c": "Isak",
@@ -1225,7 +1225,7 @@
         "c": "Haaland",
         "pts": 0,
         "mult": 2,
-        "best": "Bogle",
+        "best": "Schade",
         "best_pts": 1
       },
       "Rui Bimba": {
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T15:47:21+00:00"
+  "updated_at": "2026-11-28T16:17:19+00:00"
 }
