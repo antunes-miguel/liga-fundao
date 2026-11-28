@@ -183,14 +183,14 @@
       "Tiago Monteiro": 47
     },
     "GW12": {
-      "Bernardo Saraiva": 14,
-      "Miguel Antunes": 24,
-      "Diogo Lopes": 28,
-      "Diogo Amarelo": 19,
+      "Bernardo Saraiva": 15,
+      "Miguel Antunes": 25,
+      "Diogo Lopes": 30,
+      "Diogo Amarelo": 21,
       "João Pires": 23,
       "João Leitão": 6,
       "António Moreira": 11,
-      "Rui Bimba": 26,
+      "Rui Bimba": 28,
       "Tiago Monteiro": 17
     }
   },
@@ -458,7 +458,7 @@
       "João Pires": 0,
       "João Leitão": 1,
       "António Moreira": 0,
-      "Rui Bimba": -1,
+      "Rui Bimba": 0,
       "Tiago Monteiro": 0
     }
   },
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T17:32:22+00:00"
+  "updated_at": "2026-11-28T17:47:27+00:00"
 }
