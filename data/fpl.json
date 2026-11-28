@@ -184,13 +184,13 @@
     },
     "GW12": {
       "Bernardo Saraiva": 14,
-      "Miguel Antunes": 26,
+      "Miguel Antunes": 24,
       "Diogo Lopes": 28,
-      "Diogo Amarelo": 15,
-      "João Pires": 19,
-      "João Leitão": 4,
-      "António Moreira": 6,
-      "Rui Bimba": 27,
+      "Diogo Amarelo": 19,
+      "João Pires": 23,
+      "João Leitão": 6,
+      "António Moreira": 11,
+      "Rui Bimba": 26,
       "Tiago Monteiro": 17
     }
   },
@@ -455,10 +455,10 @@
       "Miguel Antunes": 13,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
-      "João Pires": 1,
+      "João Pires": 0,
       "João Leitão": 1,
       "António Moreira": 0,
-      "Rui Bimba": 0,
+      "Rui Bimba": -1,
       "Tiago Monteiro": 0
     }
   },
@@ -1188,7 +1188,7 @@
       },
       "Miguel Antunes": {
         "c": "Calvert-Lewin",
-        "pts": 8,
+        "pts": 7,
         "mult": 2,
         "best": "Muharemović",
         "best_pts": 8
@@ -1202,14 +1202,14 @@
       },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
-        "pts": 2,
+        "pts": 4,
         "mult": 2,
         "best": "Muharemović",
         "best_pts": 8
       },
       "João Pires": {
         "c": "B.Fernandes",
-        "pts": 2,
+        "pts": 4,
         "mult": 2,
         "best": "Ajer",
         "best_pts": 12
@@ -1219,21 +1219,21 @@
         "pts": 0,
         "mult": 2,
         "best": "B.Fernandes",
-        "best_pts": 2
+        "best_pts": 4
       },
       "António Moreira": {
         "c": "Haaland",
         "pts": 0,
         "mult": 2,
-        "best": "Bogle",
-        "best_pts": 5
+        "best": "Schade",
+        "best_pts": 6
       },
       "Rui Bimba": {
         "c": "Justin",
         "pts": 6,
         "mult": 2,
         "best": "Calvert-Lewin",
-        "best_pts": 8
+        "best_pts": 7
       },
       "Tiago Monteiro": {
         "c": "Rogers",
@@ -2895,13 +2895,13 @@
     {
       "gw": 12,
       "total": 10,
-      "played": 1,
-      "live": 2
+      "played": 3,
+      "live": 0
     }
   ],
   "next_deadline": {
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T16:47:19+00:00"
+  "updated_at": "2026-11-28T17:02:29+00:00"
 }
