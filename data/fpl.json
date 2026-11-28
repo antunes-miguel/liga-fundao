@@ -183,15 +183,15 @@
       "Tiago Monteiro": 47
     },
     "GW12": {
-      "Bernardo Saraiva": 2,
-      "Miguel Antunes": 2,
-      "Diogo Lopes": 2,
-      "Diogo Amarelo": 2,
+      "Bernardo Saraiva": 4,
+      "Miguel Antunes": 5,
+      "Diogo Lopes": 6,
+      "Diogo Amarelo": 4,
       "João Leitão": 3,
       "João Pires": 6,
-      "António Moreira": 0,
-      "Rui Bimba": 4,
-      "Tiago Monteiro": 4
+      "António Moreira": 1,
+      "Rui Bimba": 8,
+      "Tiago Monteiro": 7
     }
   },
   "transfers": {
@@ -455,7 +455,7 @@
       "Miguel Antunes": 13,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
-      "João Leitão": 0,
+      "João Leitão": 1,
       "João Pires": 1,
       "António Moreira": 0,
       "Rui Bimba": 0,
@@ -1188,14 +1188,14 @@
       },
       "Miguel Antunes": {
         "c": "Calvert-Lewin",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
         "best": "Rogers",
         "best_pts": 2
       },
       "Diogo Lopes": {
         "c": "Muharemović",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
         "best": "Rogers",
         "best_pts": 2
@@ -1204,7 +1204,7 @@
         "c": "B.Fernandes",
         "pts": 1,
         "mult": 2,
-        "best": "B.Fernandes",
+        "best": "Muharemović",
         "best_pts": 1
       },
       "João Leitão": {
@@ -1225,12 +1225,12 @@
         "c": "Haaland",
         "pts": 0,
         "mult": 2,
-        "best": "Raya",
-        "best_pts": 0
+        "best": "Bogle",
+        "best_pts": 1
       },
       "Rui Bimba": {
         "c": "Justin",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
         "best": "Palmer",
         "best_pts": 2
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T15:02:24+00:00"
+  "updated_at": "2026-11-28T15:17:26+00:00"
 }
