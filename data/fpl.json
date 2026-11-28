@@ -183,15 +183,15 @@
       "Tiago Monteiro": 47
     },
     "GW12": {
-      "Miguel Antunes": 17,
-      "Bernardo Saraiva": 3,
-      "Diogo Lopes": 6,
-      "Diogo Amarelo": 4,
-      "João Leitão": 3,
-      "João Pires": 6,
-      "António Moreira": 1,
-      "Rui Bimba": 14,
-      "Tiago Monteiro": 5
+      "Miguel Antunes": 26,
+      "Bernardo Saraiva": 13,
+      "Diogo Lopes": 27,
+      "Diogo Amarelo": 15,
+      "João Leitão": 4,
+      "João Pires": 13,
+      "António Moreira": 6,
+      "Rui Bimba": 27,
+      "Tiago Monteiro": 16
     }
   },
   "transfers": {
@@ -455,10 +455,10 @@
       "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
-      "João Leitão": 0,
-      "João Pires": 0,
+      "João Leitão": 1,
+      "João Pires": 1,
       "António Moreira": 0,
-      "Rui Bimba": -1,
+      "Rui Bimba": 0,
       "Tiago Monteiro": 0
     }
   },
@@ -1181,66 +1181,66 @@
     "GW12": {
       "Miguel Antunes": {
         "c": "Calvert-Lewin",
-        "pts": 7,
+        "pts": 8,
         "mult": 2,
-        "best": "Calvert-Lewin",
-        "best_pts": 7
+        "best": "Muharemović",
+        "best_pts": 8
       },
       "Bernardo Saraiva": {
         "c": "Wirtz",
         "pts": 0,
         "mult": 3,
-        "best": "Rogers",
-        "best_pts": 2
+        "best": "Trafford",
+        "best_pts": 6
       },
       "Diogo Lopes": {
         "c": "Muharemović",
-        "pts": 1,
+        "pts": 8,
         "mult": 2,
-        "best": "Rogers",
-        "best_pts": 2
+        "best": "Muharemović",
+        "best_pts": 8
       },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
         "best": "Muharemović",
-        "best_pts": 1
+        "best_pts": 8
       },
       "João Leitão": {
         "c": "Isak",
         "pts": 0,
         "mult": 2,
-        "best": "Rogers",
+        "best": "B.Fernandes",
         "best_pts": 2
       },
       "João Pires": {
         "c": "B.Fernandes",
-        "pts": 1,
+        "pts": 2,
         "mult": 2,
-        "best": "Rogers",
-        "best_pts": 2
+        "best": "Ajer",
+        "best_pts": 6
       },
       "António Moreira": {
         "c": "Haaland",
         "pts": 0,
         "mult": 2,
-        "best": "Schade",
-        "best_pts": 1
+        "best": "Bogle",
+        "best_pts": 5
       },
       "Rui Bimba": {
         "c": "Justin",
-        "pts": 1,
+        "pts": 6,
         "mult": 2,
         "best": "Calvert-Lewin",
-        "best_pts": 7
+        "best_pts": 8
       },
       "Tiago Monteiro": {
         "c": "Rogers",
         "pts": 2,
         "mult": 2,
-        "best": "Rogers",
-        "best_pts": 2
+        "best": "Bogle",
+        "best_pts": 5
       }
     }
   },
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T16:17:19+00:00"
+  "updated_at": "2026-11-28T16:32:30+00:00"
 }
