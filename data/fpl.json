@@ -186,9 +186,9 @@
       "Bernardo Saraiva": 2,
       "Miguel Antunes": 2,
       "Diogo Lopes": 2,
-      "Diogo Amarelo": 0,
-      "João Leitão": 2,
-      "João Pires": 3,
+      "Diogo Amarelo": 2,
+      "João Leitão": 3,
+      "João Pires": 6,
       "António Moreira": 0,
       "Rui Bimba": 4,
       "Tiago Monteiro": 4
@@ -456,9 +456,9 @@
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
-      "João Pires": 0,
+      "João Pires": 1,
       "António Moreira": 0,
-      "Rui Bimba": -1,
+      "Rui Bimba": 0,
       "Tiago Monteiro": 0
     }
   },
@@ -1202,10 +1202,10 @@
       },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
-        "best": "Verbruggen",
-        "best_pts": 0
+        "best": "B.Fernandes",
+        "best_pts": 1
       },
       "João Leitão": {
         "c": "Isak",
@@ -1216,7 +1216,7 @@
       },
       "João Pires": {
         "c": "B.Fernandes",
-        "pts": 0,
+        "pts": 1,
         "mult": 2,
         "best": "Rogers",
         "best_pts": 2
@@ -2896,12 +2896,12 @@
       "gw": 12,
       "total": 10,
       "played": 1,
-      "live": 0
+      "live": 2
     }
   ],
   "next_deadline": {
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-27T22:02:24+00:00"
+  "updated_at": "2026-11-28T15:02:24+00:00"
 }
