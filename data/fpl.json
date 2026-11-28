@@ -185,12 +185,12 @@
     "GW12": {
       "Bernardo Saraiva": 4,
       "Miguel Antunes": 5,
-      "Diogo Lopes": 6,
-      "Diogo Amarelo": 4,
+      "Diogo Lopes": 8,
+      "Diogo Amarelo": 6,
       "João Leitão": 3,
       "João Pires": 6,
       "António Moreira": 1,
-      "Rui Bimba": 8,
+      "Rui Bimba": 10,
       "Tiago Monteiro": 7
     }
   },
@@ -1197,15 +1197,15 @@
         "c": "Muharemović",
         "pts": 1,
         "mult": 2,
-        "best": "Rogers",
-        "best_pts": 2
+        "best": "Okafor",
+        "best_pts": 3
       },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
         "pts": 1,
         "mult": 2,
-        "best": "Muharemović",
-        "best_pts": 1
+        "best": "Okafor",
+        "best_pts": 3
       },
       "João Leitão": {
         "c": "Isak",
@@ -1232,8 +1232,8 @@
         "c": "Justin",
         "pts": 1,
         "mult": 2,
-        "best": "Palmer",
-        "best_pts": 2
+        "best": "Okafor",
+        "best_pts": 3
       },
       "Tiago Monteiro": {
         "c": "Rogers",
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T15:17:26+00:00"
+  "updated_at": "2026-11-28T15:32:23+00:00"
 }
