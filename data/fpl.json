@@ -6,16 +6,16 @@
   "last_gw": 11,
   "players": [
     {
-      "entry": 2700318,
-      "name": "Bernardo Saraiva",
-      "fpl_name": "Bernardo Saraiva",
-      "team": "BESA FC 6230"
-    },
-    {
       "entry": 750098,
       "name": "Miguel Antunes",
       "fpl_name": "Miguel Antunes",
       "team": "Konatasaray"
+    },
+    {
+      "entry": 2700318,
+      "name": "Bernardo Saraiva",
+      "fpl_name": "Bernardo Saraiva",
+      "team": "BESA FC 6230"
     },
     {
       "entry": 779777,
@@ -62,8 +62,8 @@
   ],
   "matchweeks": {
     "GW1": {
-      "Bernardo Saraiva": 57,
       "Miguel Antunes": 49,
+      "Bernardo Saraiva": 57,
       "Diogo Lopes": 51,
       "Diogo Amarelo": 40,
       "João Leitão": 36,
@@ -73,8 +73,8 @@
       "Tiago Monteiro": 47
     },
     "GW2": {
-      "Bernardo Saraiva": 70,
       "Miguel Antunes": 125,
+      "Bernardo Saraiva": 70,
       "Diogo Lopes": 99,
       "Diogo Amarelo": 108,
       "João Leitão": 99,
@@ -84,8 +84,8 @@
       "Tiago Monteiro": 69
     },
     "GW3": {
-      "Bernardo Saraiva": 58,
       "Miguel Antunes": 49,
+      "Bernardo Saraiva": 58,
       "Diogo Lopes": 62,
       "Diogo Amarelo": 46,
       "João Leitão": 50,
@@ -95,8 +95,8 @@
       "Tiago Monteiro": 59
     },
     "GW4": {
-      "Bernardo Saraiva": 87,
       "Miguel Antunes": 79,
+      "Bernardo Saraiva": 87,
       "Diogo Lopes": 89,
       "Diogo Amarelo": 53,
       "João Leitão": 64,
@@ -106,8 +106,8 @@
       "Tiago Monteiro": 69
     },
     "GW5": {
-      "Bernardo Saraiva": 62,
       "Miguel Antunes": 45,
+      "Bernardo Saraiva": 62,
       "Diogo Lopes": 39,
       "Diogo Amarelo": 36,
       "João Leitão": 49,
@@ -117,8 +117,8 @@
       "Tiago Monteiro": 31
     },
     "GW6": {
-      "Bernardo Saraiva": 78,
       "Miguel Antunes": 70,
+      "Bernardo Saraiva": 78,
       "Diogo Lopes": 73,
       "Diogo Amarelo": 53,
       "João Leitão": 58,
@@ -128,8 +128,8 @@
       "Tiago Monteiro": 53
     },
     "GW7": {
-      "Bernardo Saraiva": 56,
       "Miguel Antunes": 65,
+      "Bernardo Saraiva": 56,
       "Diogo Lopes": 92,
       "Diogo Amarelo": 99,
       "João Leitão": 55,
@@ -139,8 +139,8 @@
       "Tiago Monteiro": 47
     },
     "GW8": {
-      "Bernardo Saraiva": 67,
       "Miguel Antunes": 53,
+      "Bernardo Saraiva": 67,
       "Diogo Lopes": 64,
       "Diogo Amarelo": 60,
       "João Leitão": 62,
@@ -150,8 +150,8 @@
       "Tiago Monteiro": 46
     },
     "GW9": {
-      "Bernardo Saraiva": 81,
       "Miguel Antunes": 71,
+      "Bernardo Saraiva": 81,
       "Diogo Lopes": 49,
       "Diogo Amarelo": 77,
       "João Leitão": 66,
@@ -161,8 +161,8 @@
       "Tiago Monteiro": 21
     },
     "GW10": {
-      "Bernardo Saraiva": 79,
       "Miguel Antunes": 71,
+      "Bernardo Saraiva": 79,
       "Diogo Lopes": 40,
       "Diogo Amarelo": 66,
       "João Leitão": 70,
@@ -172,8 +172,8 @@
       "Tiago Monteiro": 50
     },
     "GW11": {
-      "Bernardo Saraiva": 48,
       "Miguel Antunes": 41,
+      "Bernardo Saraiva": 48,
       "Diogo Lopes": 28,
       "Diogo Amarelo": 36,
       "João Leitão": 42,
@@ -183,21 +183,21 @@
       "Tiago Monteiro": 47
     },
     "GW12": {
+      "Miguel Antunes": 17,
       "Bernardo Saraiva": 4,
-      "Miguel Antunes": 5,
-      "Diogo Lopes": 8,
-      "Diogo Amarelo": 6,
+      "Diogo Lopes": 7,
+      "Diogo Amarelo": 5,
       "João Leitão": 3,
       "João Pires": 6,
       "António Moreira": 1,
-      "Rui Bimba": 10,
-      "Tiago Monteiro": 7
+      "Rui Bimba": 15,
+      "Tiago Monteiro": 6
     }
   },
   "transfers": {
     "GW1": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -207,8 +207,8 @@
       "Tiago Monteiro": 0
     },
     "GW2": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
@@ -218,8 +218,8 @@
       "Tiago Monteiro": 0
     },
     "GW3": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
@@ -229,8 +229,8 @@
       "Tiago Monteiro": 0
     },
     "GW4": {
-      "Bernardo Saraiva": 4,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 4,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -240,8 +240,8 @@
       "Tiago Monteiro": 0
     },
     "GW5": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -251,8 +251,8 @@
       "Tiago Monteiro": 0
     },
     "GW6": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -262,8 +262,8 @@
       "Tiago Monteiro": 0
     },
     "GW7": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
@@ -273,8 +273,8 @@
       "Tiago Monteiro": 0
     },
     "GW8": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -284,8 +284,8 @@
       "Tiago Monteiro": 8
     },
     "GW9": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
@@ -295,8 +295,8 @@
       "Tiago Monteiro": 0
     },
     "GW10": {
-      "Bernardo Saraiva": 4,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 4,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -306,8 +306,8 @@
       "Tiago Monteiro": 0
     },
     "GW11": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -317,8 +317,8 @@
       "Tiago Monteiro": 0
     },
     "GW12": {
-      "Bernardo Saraiva": 4,
       "Miguel Antunes": 0,
+      "Bernardo Saraiva": 4,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 0,
@@ -330,8 +330,8 @@
   },
   "bench": {
     "GW1": {
-      "Bernardo Saraiva": 11,
       "Miguel Antunes": 7,
+      "Bernardo Saraiva": 11,
       "Diogo Lopes": 13,
       "Diogo Amarelo": 14,
       "João Leitão": 19,
@@ -341,8 +341,8 @@
       "Tiago Monteiro": 10
     },
     "GW2": {
-      "Bernardo Saraiva": 7,
       "Miguel Antunes": 25,
+      "Bernardo Saraiva": 7,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
       "João Leitão": 9,
@@ -352,8 +352,8 @@
       "Tiago Monteiro": 2
     },
     "GW3": {
-      "Bernardo Saraiva": 14,
       "Miguel Antunes": 10,
+      "Bernardo Saraiva": 14,
       "Diogo Lopes": 6,
       "Diogo Amarelo": 13,
       "João Leitão": 12,
@@ -363,8 +363,8 @@
       "Tiago Monteiro": 6
     },
     "GW4": {
-      "Bernardo Saraiva": 11,
       "Miguel Antunes": 6,
+      "Bernardo Saraiva": 11,
       "Diogo Lopes": 2,
       "Diogo Amarelo": 12,
       "João Leitão": 1,
@@ -374,8 +374,8 @@
       "Tiago Monteiro": 16
     },
     "GW5": {
-      "Bernardo Saraiva": 15,
       "Miguel Antunes": 8,
+      "Bernardo Saraiva": 15,
       "Diogo Lopes": 3,
       "Diogo Amarelo": 14,
       "João Leitão": 0,
@@ -385,8 +385,8 @@
       "Tiago Monteiro": 12
     },
     "GW6": {
-      "Bernardo Saraiva": 7,
       "Miguel Antunes": 8,
+      "Bernardo Saraiva": 7,
       "Diogo Lopes": 3,
       "Diogo Amarelo": 9,
       "João Leitão": 0,
@@ -396,8 +396,8 @@
       "Tiago Monteiro": 20
     },
     "GW7": {
-      "Bernardo Saraiva": 14,
       "Miguel Antunes": 8,
+      "Bernardo Saraiva": 14,
       "Diogo Lopes": 1,
       "Diogo Amarelo": 9,
       "João Leitão": 5,
@@ -407,8 +407,8 @@
       "Tiago Monteiro": 10
     },
     "GW8": {
-      "Bernardo Saraiva": 3,
       "Miguel Antunes": 5,
+      "Bernardo Saraiva": 3,
       "Diogo Lopes": 1,
       "Diogo Amarelo": 4,
       "João Leitão": 0,
@@ -418,8 +418,8 @@
       "Tiago Monteiro": 2
     },
     "GW9": {
-      "Bernardo Saraiva": 12,
       "Miguel Antunes": 17,
+      "Bernardo Saraiva": 12,
       "Diogo Lopes": 15,
       "Diogo Amarelo": 24,
       "João Leitão": 4,
@@ -429,8 +429,8 @@
       "Tiago Monteiro": 14
     },
     "GW10": {
-      "Bernardo Saraiva": 18,
       "Miguel Antunes": 25,
+      "Bernardo Saraiva": 18,
       "Diogo Lopes": 3,
       "Diogo Amarelo": 12,
       "João Leitão": 5,
@@ -440,8 +440,8 @@
       "Tiago Monteiro": 9
     },
     "GW11": {
-      "Bernardo Saraiva": 14,
       "Miguel Antunes": 5,
+      "Bernardo Saraiva": 14,
       "Diogo Lopes": 10,
       "Diogo Amarelo": 12,
       "João Leitão": 3,
@@ -451,28 +451,28 @@
       "Tiago Monteiro": 4
     },
     "GW12": {
-      "Bernardo Saraiva": 0,
       "Miguel Antunes": 13,
+      "Bernardo Saraiva": 0,
       "Diogo Lopes": 0,
       "Diogo Amarelo": 0,
-      "João Leitão": 1,
-      "João Pires": 1,
+      "João Leitão": 0,
+      "João Pires": 0,
       "António Moreira": 0,
-      "Rui Bimba": 0,
+      "Rui Bimba": -1,
       "Tiago Monteiro": 0
     }
   },
   "captains": {
     "GW1": {
-      "Bernardo Saraiva": {
-        "c": "Isak",
+      "Miguel Antunes": {
+        "c": "B.Fernandes",
         "pts": 2,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 11
       },
-      "Miguel Antunes": {
-        "c": "B.Fernandes",
+      "Bernardo Saraiva": {
+        "c": "Isak",
         "pts": 2,
         "mult": 2,
         "best": "João Pedro",
@@ -529,19 +529,19 @@
       }
     },
     "GW2": {
-      "Bernardo Saraiva": {
-        "c": "Haaland",
-        "pts": 13,
-        "mult": 2,
-        "best": "Haaland",
-        "best_pts": 13
-      },
       "Miguel Antunes": {
         "c": "B.Fernandes",
         "pts": 23,
         "mult": 2,
         "best": "B.Fernandes",
         "best_pts": 23
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 13,
+        "mult": 2,
+        "best": "Haaland",
+        "best_pts": 13
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -594,19 +594,19 @@
       }
     },
     "GW3": {
-      "Bernardo Saraiva": {
-        "c": "Haaland",
-        "pts": 9,
-        "mult": 2,
-        "best": "Gakpo",
-        "best_pts": 11
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 9,
         "mult": 3,
         "best": "Haaland",
         "best_pts": 9
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 9,
+        "mult": 2,
+        "best": "Gakpo",
+        "best_pts": 11
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -659,16 +659,16 @@
       }
     },
     "GW4": {
-      "Bernardo Saraiva": {
-        "c": "João Pedro",
-        "pts": 12,
+      "Miguel Antunes": {
+        "c": "Palmer",
+        "pts": 5,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 12
       },
-      "Miguel Antunes": {
-        "c": "Palmer",
-        "pts": 5,
+      "Bernardo Saraiva": {
+        "c": "João Pedro",
+        "pts": 12,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 12
@@ -724,19 +724,19 @@
       }
     },
     "GW5": {
-      "Bernardo Saraiva": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "Groß",
-        "best_pts": 14
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 6,
         "mult": 2,
         "best": "Hall",
         "best_pts": 13
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "Groß",
+        "best_pts": 14
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -789,19 +789,19 @@
       }
     },
     "GW6": {
-      "Bernardo Saraiva": {
-        "c": "Haaland",
-        "pts": 6,
-        "mult": 2,
-        "best": "De Cuyper",
-        "best_pts": 15
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 6,
         "mult": 2,
         "best": "João Pedro",
         "best_pts": 12
+      },
+      "Bernardo Saraiva": {
+        "c": "Haaland",
+        "pts": 6,
+        "mult": 2,
+        "best": "De Cuyper",
+        "best_pts": 15
       },
       "Diogo Lopes": {
         "c": "João Pedro",
@@ -854,16 +854,16 @@
       }
     },
     "GW7": {
-      "Bernardo Saraiva": {
-        "c": "João Pedro",
-        "pts": 2,
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 13,
         "mult": 2,
         "best": "Haaland",
         "best_pts": 13
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 13,
+      "Bernardo Saraiva": {
+        "c": "João Pedro",
+        "pts": 2,
         "mult": 2,
         "best": "Haaland",
         "best_pts": 13
@@ -919,16 +919,16 @@
       }
     },
     "GW8": {
-      "Bernardo Saraiva": {
-        "c": "Tavernier",
-        "pts": 10,
+      "Miguel Antunes": {
+        "c": "Haaland",
+        "pts": 8,
         "mult": 2,
         "best": "Konsa",
         "best_pts": 14
       },
-      "Miguel Antunes": {
-        "c": "Haaland",
-        "pts": 8,
+      "Bernardo Saraiva": {
+        "c": "Tavernier",
+        "pts": 10,
         "mult": 2,
         "best": "Konsa",
         "best_pts": 14
@@ -984,19 +984,19 @@
       }
     },
     "GW9": {
-      "Bernardo Saraiva": {
-        "c": "Tavernier",
-        "pts": 3,
-        "mult": 2,
-        "best": "Van Hecke",
-        "best_pts": 15
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Konsa",
         "best_pts": 10
+      },
+      "Bernardo Saraiva": {
+        "c": "Tavernier",
+        "pts": 3,
+        "mult": 2,
+        "best": "Van Hecke",
+        "best_pts": 15
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -1049,19 +1049,19 @@
       }
     },
     "GW10": {
-      "Bernardo Saraiva": {
-        "c": "Isak",
-        "pts": 8,
-        "mult": 2,
-        "best": "Wirtz",
-        "best_pts": 13
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Barry",
         "best_pts": 16
+      },
+      "Bernardo Saraiva": {
+        "c": "Isak",
+        "pts": 8,
+        "mult": 2,
+        "best": "Wirtz",
+        "best_pts": 13
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -1114,19 +1114,19 @@
       }
     },
     "GW11": {
-      "Bernardo Saraiva": {
-        "c": "N.Jackson",
-        "pts": 2,
-        "mult": 2,
-        "best": "Wirtz",
-        "best_pts": 14
-      },
       "Miguel Antunes": {
         "c": "Haaland",
         "pts": 2,
         "mult": 2,
         "best": "Silva",
         "best_pts": 8
+      },
+      "Bernardo Saraiva": {
+        "c": "N.Jackson",
+        "pts": 2,
+        "mult": 2,
+        "best": "Wirtz",
+        "best_pts": 14
       },
       "Diogo Lopes": {
         "c": "Haaland",
@@ -1179,6 +1179,13 @@
       }
     },
     "GW12": {
+      "Miguel Antunes": {
+        "c": "Calvert-Lewin",
+        "pts": 7,
+        "mult": 2,
+        "best": "Calvert-Lewin",
+        "best_pts": 7
+      },
       "Bernardo Saraiva": {
         "c": "Wirtz",
         "pts": 0,
@@ -1186,26 +1193,19 @@
         "best": "Rogers",
         "best_pts": 2
       },
-      "Miguel Antunes": {
-        "c": "Calvert-Lewin",
-        "pts": 1,
-        "mult": 2,
-        "best": "Rogers",
-        "best_pts": 2
-      },
       "Diogo Lopes": {
         "c": "Muharemović",
         "pts": 1,
         "mult": 2,
-        "best": "Okafor",
-        "best_pts": 3
+        "best": "Rogers",
+        "best_pts": 2
       },
       "Diogo Amarelo": {
         "c": "B.Fernandes",
         "pts": 1,
         "mult": 2,
         "best": "Okafor",
-        "best_pts": 3
+        "best_pts": 2
       },
       "João Leitão": {
         "c": "Isak",
@@ -1232,8 +1232,8 @@
         "c": "Justin",
         "pts": 1,
         "mult": 2,
-        "best": "Okafor",
-        "best_pts": 3
+        "best": "Calvert-Lewin",
+        "best_pts": 7
       },
       "Tiago Monteiro": {
         "c": "Rogers",
@@ -1246,19 +1246,6 @@
   },
   "xi": {
     "GW1": {
-      "Bernardo Saraiva": [
-        1,
-        8,
-        200,
-        356,
-        368,
-        480,
-        427,
-        557,
-        525,
-        165,
-        379
-      ],
       "Miguel Antunes": [
         412,
         532,
@@ -1271,6 +1258,19 @@
         165,
         411,
         346
+      ],
+      "Bernardo Saraiva": [
+        1,
+        8,
+        200,
+        356,
+        368,
+        480,
+        427,
+        557,
+        525,
+        165,
+        379
       ],
       "Diogo Lopes": [
         1,
@@ -1365,19 +1365,6 @@
       ]
     },
     "GW2": {
-      "Bernardo Saraiva": [
-        496,
-        391,
-        8,
-        115,
-        367,
-        154,
-        335,
-        557,
-        401,
-        165,
-        411
-      ],
       "Miguel Antunes": [
         412,
         532,
@@ -1390,6 +1377,19 @@
         165,
         411,
         346
+      ],
+      "Bernardo Saraiva": [
+        496,
+        391,
+        8,
+        115,
+        367,
+        154,
+        335,
+        557,
+        401,
+        165,
+        411
       ],
       "Diogo Lopes": [
         1,
@@ -1484,19 +1484,6 @@
       ]
     },
     "GW3": {
-      "Bernardo Saraiva": [
-        496,
-        115,
-        391,
-        87,
-        403,
-        335,
-        367,
-        154,
-        165,
-        401,
-        411
-      ],
       "Miguel Antunes": [
         412,
         532,
@@ -1509,6 +1496,19 @@
         124,
         411,
         346
+      ],
+      "Bernardo Saraiva": [
+        496,
+        115,
+        391,
+        87,
+        403,
+        335,
+        367,
+        154,
+        165,
+        401,
+        411
       ],
       "Diogo Lopes": [
         1,
@@ -1603,19 +1603,6 @@
       ]
     },
     "GW4": {
-      "Bernardo Saraiva": [
-        496,
-        115,
-        391,
-        8,
-        403,
-        335,
-        40,
-        15,
-        411,
-        165,
-        379
-      ],
       "Miguel Antunes": [
         496,
         31,
@@ -1628,6 +1615,19 @@
         15,
         411,
         165
+      ],
+      "Bernardo Saraiva": [
+        496,
+        115,
+        391,
+        8,
+        403,
+        335,
+        40,
+        15,
+        411,
+        165,
+        379
       ],
       "Diogo Lopes": [
         1,
@@ -1722,19 +1722,6 @@
       ]
     },
     "GW5": {
-      "Bernardo Saraiva": [
-        385,
-        31,
-        391,
-        8,
-        367,
-        335,
-        40,
-        15,
-        124,
-        411,
-        379
-      ],
       "Miguel Antunes": [
         496,
         449,
@@ -1747,6 +1734,19 @@
         40,
         15,
         411
+      ],
+      "Bernardo Saraiva": [
+        385,
+        31,
+        391,
+        8,
+        367,
+        335,
+        40,
+        15,
+        124,
+        411,
+        379
       ],
       "Diogo Lopes": [
         1,
@@ -1841,19 +1841,6 @@
       ]
     },
     "GW6": {
-      "Bernardo Saraiva": [
-        385,
-        115,
-        391,
-        8,
-        87,
-        335,
-        40,
-        15,
-        124,
-        165,
-        411
-      ],
       "Miguel Antunes": [
         496,
         449,
@@ -1866,6 +1853,19 @@
         411,
         165,
         249
+      ],
+      "Bernardo Saraiva": [
+        385,
+        115,
+        391,
+        8,
+        87,
+        335,
+        40,
+        15,
+        124,
+        165,
+        411
       ],
       "Diogo Lopes": [
         1,
@@ -1960,19 +1960,6 @@
       ]
     },
     "GW7": {
-      "Bernardo Saraiva": [
-        109,
-        391,
-        8,
-        115,
-        31,
-        124,
-        40,
-        335,
-        15,
-        165,
-        411
-      ],
       "Miguel Antunes": [
         496,
         115,
@@ -1985,6 +1972,19 @@
         411,
         165,
         249
+      ],
+      "Bernardo Saraiva": [
+        109,
+        391,
+        8,
+        115,
+        31,
+        124,
+        40,
+        335,
+        15,
+        165,
+        411
       ],
       "Diogo Lopes": [
         1,
@@ -2079,19 +2079,6 @@
       ]
     },
     "GW8": {
-      "Bernardo Saraiva": [
-        385,
-        31,
-        87,
-        115,
-        8,
-        124,
-        40,
-        335,
-        68,
-        379,
-        411
-      ],
       "Miguel Antunes": [
         496,
         8,
@@ -2103,6 +2090,19 @@
         124,
         480,
         154,
+        411
+      ],
+      "Bernardo Saraiva": [
+        385,
+        31,
+        87,
+        115,
+        8,
+        124,
+        40,
+        335,
+        68,
+        379,
         411
       ],
       "Diogo Lopes": [
@@ -2198,19 +2198,6 @@
       ]
     },
     "GW9": {
-      "Bernardo Saraiva": [
-        496,
-        112,
-        87,
-        277,
-        449,
-        53,
-        40,
-        68,
-        106,
-        79,
-        166
-      ],
       "Miguel Antunes": [
         496,
         334,
@@ -2223,6 +2210,19 @@
         411,
         166,
         249
+      ],
+      "Bernardo Saraiva": [
+        496,
+        112,
+        87,
+        277,
+        449,
+        53,
+        40,
+        68,
+        106,
+        79,
+        166
       ],
       "Diogo Lopes": [
         1,
@@ -2317,19 +2317,6 @@
       ]
     },
     "GW10": {
-      "Bernardo Saraiva": [
-        109,
-        31,
-        8,
-        112,
-        399,
-        40,
-        68,
-        366,
-        124,
-        379,
-        411
-      ],
       "Miguel Antunes": [
         496,
         8,
@@ -2342,6 +2329,19 @@
         411,
         166,
         249
+      ],
+      "Bernardo Saraiva": [
+        109,
+        31,
+        8,
+        112,
+        399,
+        40,
+        68,
+        366,
+        124,
+        379,
+        411
       ],
       "Diogo Lopes": [
         1,
@@ -2436,19 +2436,6 @@
       ]
     },
     "GW11": {
-      "Bernardo Saraiva": [
-        109,
-        8,
-        112,
-        115,
-        68,
-        366,
-        124,
-        40,
-        399,
-        411,
-        166
-      ],
       "Miguel Antunes": [
         496,
         8,
@@ -2461,6 +2448,19 @@
         411,
         166,
         249
+      ],
+      "Bernardo Saraiva": [
+        109,
+        8,
+        112,
+        115,
+        68,
+        366,
+        124,
+        40,
+        399,
+        411,
+        166
       ],
       "Diogo Lopes": [
         1,
@@ -2555,19 +2555,6 @@
       ]
     },
     "GW12": {
-      "Bernardo Saraiva": [
-        385,
-        330,
-        112,
-        115,
-        362,
-        366,
-        124,
-        68,
-        40,
-        379,
-        166
-      ],
       "Miguel Antunes": [
         496,
         334,
@@ -2580,6 +2567,19 @@
         15,
         166,
         346
+      ],
+      "Bernardo Saraiva": [
+        385,
+        330,
+        112,
+        115,
+        362,
+        366,
+        124,
+        68,
+        40,
+        379,
+        166
       ],
       "Diogo Lopes": [
         385,
@@ -2788,6 +2788,14 @@
     "650": "Affengruber"
   },
   "chips_used": {
+    "Miguel Antunes": {
+      "Triple Captain": [
+        "GW3"
+      ],
+      "Wildcard": [
+        "GW4"
+      ]
+    },
     "Bernardo Saraiva": {
       "Wildcard": [
         "GW2"
@@ -2797,14 +2805,6 @@
       ],
       "Triple Captain": [
         "GW12"
-      ]
-    },
-    "Miguel Antunes": {
-      "Triple Captain": [
-        "GW3"
-      ],
-      "Wildcard": [
-        "GW4"
       ]
     },
     "Diogo Lopes": {
@@ -2903,5 +2903,5 @@
     "gw": 13,
     "time": "2026-12-01T18:30:00Z"
   },
-  "updated_at": "2026-11-28T15:32:23+00:00"
+  "updated_at": "2026-11-28T15:47:21+00:00"
 }
